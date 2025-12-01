@@ -100,4 +100,14 @@ p {
 .list--inline .list__item {
   display: inline-block;
   margin-right: 2rem;
+}
+
+/* Navigation */
+.nav {
+  background: #fefaef;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  align-items: center;
 }/*# sourceMappingURL=styles.css.map */
