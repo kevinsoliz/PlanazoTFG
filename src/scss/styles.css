@@ -88,4 +88,16 @@ p {
 .collapsible--expanded .collapsible__content {
   max-height: 100vh;
   opacity: 1;
+}
+
+/* Lists */
+.list {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* skins */
+.list--inline .list__item {
+  display: inline-block;
+  margin-right: 2rem;
 }/*# sourceMappingURL=styles.css.map */
