@@ -102,6 +102,11 @@ p {
   margin-right: 2rem;
 }
 
+/* Links */
+a {
+  text-decoration: none;
+}
+
 /* Navigation */
 .nav {
   background: #fefaef;
@@ -110,4 +115,16 @@ p {
   flex-wrap: wrap;
   padding: 0 1rem;
   align-items: center;
+}
+
+.nav .logo {
+  font-size: 4rem;
+  color: #928ef5;
+  margin: 0;
+}
+
+@media screen and (min-width: 1440px) {
+  .nav .logo {
+    font-size: 5.7rem;
+  }
 }/*# sourceMappingURL=styles.css.map */

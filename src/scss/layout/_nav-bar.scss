@@ -8,3 +8,14 @@
   padding: 0 1rem;
   align-items: center;
 }
+
+.nav .logo {
+  font-size: 4rem;
+  color:$secondary-middle;
+  margin: 0;
+}
+@media screen and (min-width: 1440px) {
+  .nav .logo {
+    font-size: 5.7rem;
+  }
+}
