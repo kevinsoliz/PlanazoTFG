@@ -167,20 +167,8 @@ a {
   cursor: pointer;
 }
 
-.nav__toggler:hover .icon {
+.nav__toggler:hover {
   stroke: #ee9e46;
-}
-
-.icon--close {
-  display: none;
-}
-
-.collapsible--expanded .icon--menu {
-  display: none;
-}
-
-.collapsible--expanded .icon--close {
-  display: block;
 }
 
 @media screen and (min-width: 768px) {
