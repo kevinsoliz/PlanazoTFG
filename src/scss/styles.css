@@ -12140,6 +12140,27 @@ a {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+.btn-cta {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #566be1;
+  --bs-btn-border-color: #928ef5;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: rgb(73.1, 90.95, 191.25);
+  --bs-btn-hover-border-color: rgb(116.8, 113.6, 196);
+  --bs-btn-focus-shadow-rgb: 162, 159, 247;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: rgb(68.8, 85.6, 180);
+  --bs-btn-active-border-color: rgb(109.5, 106.5, 183.75);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #566be1;
+  --bs-btn-disabled-border-color: #928ef5;
+  border-radius: 15px;
+  padding: 1rem 3rem;
+  font-size: 2rem;
+  color: white;
+}
+
 /* Navigation */
 .nav {
   background: #fefaef;
