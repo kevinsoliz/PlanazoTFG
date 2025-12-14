@@ -1,0 +1,18 @@
+@use '../abstracts/variables' as *;
+
+.block {
+    padding: 6rem 2rem;
+}
+
+.block--light {
+    background: $background-light;
+}
+
+.block__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.block__heading {
+  margin-top: 0;
+}
