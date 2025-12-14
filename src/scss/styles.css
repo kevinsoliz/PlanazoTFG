@@ -150,13 +150,15 @@ a {
 }
 
 .nav__item {
-  padding: 0.5rem 2rem;
+  margin-left: 0.5rem;
+  margin-top: 1rem;
 }
 
 .nav__item > a {
   color: #928ef5;
   transition: color 0.3s;
   padding: 0.5rem 0;
+  font-weight: bold;
 }
 
 .nav__item > a:hover {
@@ -172,6 +174,9 @@ a {
 }
 
 @media screen and (min-width: 768px) {
+  .nav {
+    padding: 0 2rem;
+  }
   .nav__toggler {
     display: none;
   }
@@ -183,6 +188,7 @@ a {
     opacity: 1;
   }
   .nav__item {
-    border: 0;
+    margin-left: 2rem;
+    margin-top: 2rem;
   }
 }/*# sourceMappingURL=styles.css.map */

@@ -3,15 +3,8 @@
     <symbol id="menu" viewBox="0 0 30 26">
         <path d="M2 2H28M2 13H28M2 24H28" stroke-width="4" stroke-linecap="round"/>
     </symbol>
-
-    <symbol id="close" viewBox="0 0 24 24">
-        <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+    <symbol id="close" viewBox="0 0 26 24">
+        <path d="M2 2.00002L24 22M2 22L24 2.00002" stroke-width="4" stroke-linecap="round"/>
     </symbol>
-
-    <symbol id="user" viewBox="0 0 24 24">
-        <circle cx="12" cy="8" r="4" stroke-width="2" fill="none"/>
-        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke-width="2" fill="none"/>
-    </symbol>
-
 
 </svg>
