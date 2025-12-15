@@ -12250,7 +12250,7 @@ a {
   font-size: 2rem;
   letter-spacing: 1px;
   margin-bottom: 2rem;
-  color: #a5ceff;
+  color: #171718;
 }
 
 .hero__image {
@@ -12259,7 +12259,7 @@ a {
 
 .hero__content > h1 {
   font-size: 4rem;
-  color: #566be1;
+  color: #171718;
 }
 
 @media screen and (min-width: 1024px) {
