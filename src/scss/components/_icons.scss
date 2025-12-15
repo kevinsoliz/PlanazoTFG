@@ -2,8 +2,9 @@
 @use '../abstracts/variables' as *; 
 
 .icon {
-  width: 26px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
+  stroke: $primary-dark;
 }
 
 .icon-container {
