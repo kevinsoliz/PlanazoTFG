@@ -43,18 +43,20 @@
 .nav__toggler {
   cursor: pointer;
 }
+
 .nav__toggler:hover {
   stroke: $primary-middle;
 }
 
+.nav > a:last-of-type {
+    display: none;
+}
 
 @media screen and (min-width: 768px) {
   .nav {
     padding: 0 2rem;
   }
-  .nav__toggler {
-    display: none;
-  }
+
 
   .nav__list {
     width: auto;
@@ -65,7 +67,14 @@
   }
 
   .nav__item {
-    margin-left: 2rem;
-    margin-top: 2rem;
+    margin-left: 5rem;
+  }
+
+  .nav > a:last-of-type {
+    display: inline;
+  }
+
+  .nav__icons {
+    display: none;
   }
 }

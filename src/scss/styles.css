@@ -12162,6 +12162,19 @@ a {
   color: white;
 }
 
+.btn--outline {
+  border: 3px solid #928ef5;
+  border-radius: 15px;
+  padding: 0.2rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #928ef5;
+}
+.btn--outline:hover {
+  color: white;
+  background: #928ef5;
+}
+
 /* Navigation */
 .nav {
   background: #fefaef;
@@ -12207,12 +12220,13 @@ a {
   stroke: #ee9e46;
 }
 
+.nav > a:last-of-type {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   .nav {
     padding: 0 2rem;
-  }
-  .nav__toggler {
-    display: none;
   }
   .nav__list {
     width: auto;
@@ -12222,8 +12236,13 @@ a {
     opacity: 1;
   }
   .nav__item {
-    margin-left: 2rem;
-    margin-top: 2rem;
+    margin-left: 5rem;
+  }
+  .nav > a:last-of-type {
+    display: inline;
+  }
+  .nav__icons {
+    display: none;
   }
 }
 /* Hero */

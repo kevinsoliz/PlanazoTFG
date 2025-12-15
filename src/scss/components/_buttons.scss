@@ -8,3 +8,20 @@
   font-size: 2rem;
   color: white;
 }
+
+.btn--outline {
+  border: 3px solid $secondary-middle;
+  border-radius: 15px;
+  padding: 0.2rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $secondary-middle;
+
+  &:hover{
+    color: white;
+    background: $secondary-middle;
+  }
+}
+
+
+  

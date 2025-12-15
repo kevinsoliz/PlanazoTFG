@@ -1,3 +1,4 @@
+
 const collapsibles = document.querySelectorAll(".collapsible");
 collapsibles.forEach((elemento) =>
   elemento.addEventListener("click", function () {
