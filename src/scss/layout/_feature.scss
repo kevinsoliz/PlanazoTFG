@@ -1,0 +1,30 @@
+@use '../abstracts/variables' as *;
+
+.feature {
+    background: $secondary-middle;
+    margin: 4rem 4rem;
+    padding: 5rem 2rem;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid $ink-dark;
+    box-shadow: 6px 6px 0 $ink-dark;
+    gap: 4rem;
+
+    .link-flecha {
+        color: $ink-dark;
+    }
+    p {
+        margin-bottom: 2rem;
+    }
+}
+
+
+.feature__image {
+    width: 80%;
+    place-self: center;
+}
+
+.feature__heading {
+    font-weight: bold;
+}
+

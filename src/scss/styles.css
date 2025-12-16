@@ -12088,6 +12088,16 @@ a {
   text-decoration: none;
 }
 
+.link-flecha {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 1024px) {
+  .link-flecha {
+    font-size: 2.4rem;
+  }
+}
 /* Icons */
 .icon {
   width: 25px;
@@ -12328,4 +12338,29 @@ a {
     opacity: 1;
     max-height: 100%;
   }
+}
+.feature {
+  background: #928ef5;
+  margin: 4rem 4rem;
+  padding: 5rem 2rem;
+  text-align: center;
+  border-radius: 20px;
+  border: 1px solid #171718;
+  box-shadow: 6px 6px 0 #171718;
+  gap: 4rem;
+}
+.feature .link-flecha {
+  color: #171718;
+}
+.feature p {
+  margin-bottom: 2rem;
+}
+
+.feature__image {
+  width: 80%;
+  place-self: center;
+}
+
+.feature__heading {
+  font-weight: bold;
 }/*# sourceMappingURL=styles.css.map */
