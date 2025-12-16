@@ -12348,6 +12348,7 @@ a {
   border: 1px solid #171718;
   box-shadow: 6px 6px 0 #171718;
   gap: 4rem;
+  place-items: center;
 }
 .feature .link-flecha {
   color: #171718;
@@ -12358,9 +12359,24 @@ a {
 
 .feature__image {
   width: 80%;
-  place-self: center;
 }
 
 .feature__heading {
   font-weight: bold;
+}
+
+@media screen and (min-width: 1024px) {
+  .feature {
+    text-align: left;
+    font-size: 2.8rem;
+    padding: 7rem 8rem;
+    max-width: 970px;
+    margin: 8rem auto;
+  }
+  .feature__heading {
+    font-size: 5.7rem;
+  }
+  .feature__image {
+    width: 120%;
+  }
 }/*# sourceMappingURL=styles.css.map */

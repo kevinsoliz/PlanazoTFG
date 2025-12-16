@@ -9,9 +9,11 @@
     border: 1px solid $ink-dark;
     box-shadow: 6px 6px 0 $ink-dark;
     gap: 4rem;
+    place-items: center;
 
     .link-flecha {
         color: $ink-dark;
+        // Por alguna razón el margin-top no funciona
     }
     p {
         margin-bottom: 2rem;
@@ -21,10 +23,26 @@
 
 .feature__image {
     width: 80%;
-    place-self: center;
 }
 
 .feature__heading {
     font-weight: bold;
 }
 
+
+@media screen and (min-width: 1024px) {
+    .feature {
+        text-align: left;
+        font-size: 2.8rem;
+        padding: 7rem 8rem;
+        max-width: 970px;
+        margin: 8rem auto;
+    }
+    .feature__heading {
+        font-size: 5.7rem;
+    }
+
+    .feature__image {
+        width: 120%;
+    }
+}
