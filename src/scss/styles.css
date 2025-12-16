@@ -11992,7 +11992,7 @@ html {
 
 body {
   font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
-  font-size: 2rem;
+  font-size: 1.4rem;
   line-height: 1.3;
   color: #171718;
 }
@@ -12023,7 +12023,7 @@ p {
 
 @media screen and (min-width: 1024px) {
   body {
-    font-size: 1.4rem;
+    font-size: 2rem;
   }
   h1 {
     font-size: 8rem;
@@ -12089,13 +12089,13 @@ a {
 }
 
 .link-flecha {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: bold;
 }
 
 @media screen and (min-width: 1024px) {
   .link-flecha {
-    font-size: 2.4rem;
+    font-size: 2rem;
   }
 }
 /* Icons */
@@ -12340,7 +12340,7 @@ a {
   }
 }
 .feature {
-  background: #928ef5;
+  background: #fefaef;
   margin: 4rem 4rem;
   padding: 5rem 2rem;
   text-align: center;
@@ -12365,10 +12365,35 @@ a {
   font-weight: bold;
 }
 
+/* Skins */
+.feature--secondary-middle {
+  background: #928ef5;
+}
+
+.feature--primary-light {
+  background: #fcd665;
+}
+
+.feature--accent-main {
+  background: #47ceba;
+}
+
+.feature--dark {
+  background: #171718;
+  color: #e0604d;
+  border: 1px solid #e0604d;
+  box-shadow: 6px 6px 0 #e0604d;
+}
+.feature--dark .feature__heading {
+  color: #e0604d;
+}
+.feature--dark .link-flecha {
+  color: #e0604d;
+}
+
 @media screen and (min-width: 1024px) {
   .feature {
     text-align: left;
-    font-size: 2.8rem;
     padding: 7rem 8rem;
     max-width: 970px;
     margin: 8rem auto;
