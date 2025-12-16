@@ -13,5 +13,9 @@
         <path d="M2 2L14 13L26 2"  stroke-width="4" stroke-linecap="round" fill="none"/>
     </symbol>
 
+    <symbol id="flecha" viewBox="0 0 23 20"> 
+        <path d="M1.5 10H21.5M21.5 10L14 1.5M21.5 10L14 18.5"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
    
 </svg>

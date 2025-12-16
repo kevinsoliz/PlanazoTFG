@@ -12352,9 +12352,26 @@ a {
 }
 .feature .link-flecha {
   color: #171718;
+  transition: color 0.15s ease;
+}
+.feature .icon {
+  stroke: black;
+  width: 13px;
+  transition: transform 0.15s ease, stroke 0.15s ease;
 }
 .feature p {
   margin-bottom: 2rem;
+}
+
+.feature__link {
+  display: inline-block;
+}
+
+.feature__link:hover .link-flecha {
+  text-decoration: underline;
+}
+.feature__link:hover .icon {
+  transform: translateX(5px);
 }
 
 .feature__image {
@@ -12389,6 +12406,9 @@ a {
 }
 .feature--dark .link-flecha {
   color: #e0604d;
+}
+.feature--dark .icon {
+  stroke: #e0604d;
 }
 
 @media screen and (min-width: 1024px) {

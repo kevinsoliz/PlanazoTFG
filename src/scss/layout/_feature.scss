@@ -14,9 +14,32 @@
     .link-flecha {
         color: $ink-dark;
         // Por alguna razón el margin-top no funciona
+         transition: color 0.15s ease;
     }
+
+    .icon {
+        stroke: black;
+        width: 13px;
+        transition: transform 0.15s ease, stroke 0.15s ease;
+    }
+    
     p {
         margin-bottom: 2rem;
+    }
+}
+
+.feature__link {
+    display: inline-block;
+}
+
+.feature__link:hover {
+    .link-flecha {
+        text-decoration: underline;
+    }
+    .icon {
+    
+        transform: translateX(5px);
+
     }
 }
 
@@ -55,6 +78,9 @@
 
     .link-flecha {
         color: $primary-dark;
+    }
+    .icon {
+        stroke: $primary-dark;
     }
 }
 
