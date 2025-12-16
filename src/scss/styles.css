@@ -12418,6 +12418,9 @@ a {
     max-width: 970px;
     margin: 8rem auto;
   }
+  .feature .icon {
+    width: 16px;
+  }
   .feature__heading {
     font-size: 5.7rem;
   }
