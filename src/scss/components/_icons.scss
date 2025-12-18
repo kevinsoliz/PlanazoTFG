@@ -10,7 +10,8 @@
 .icon--fill {
   width: 25px;
   height: 25px;
-  color: $ink-dark;
+  color: $ink-dark; // Antes tenía un fill aquí, junto con fill: none; en el symbol del icono, pero no funciona.
+  //fill: currentColor; en el symbol y color:... en la clase, así el color del icono es modificable.
 }
 
 .icon-container {
