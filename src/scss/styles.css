@@ -12109,6 +12109,7 @@ a {
   width: 25px;
   height: 25px;
   color: #171718;
+  flex-shrink: 0;
 }
 
 .icon-container {
@@ -12433,4 +12434,7 @@ a {
   .feature__image {
     width: 120%;
   }
+}
+.funciones {
+  max-width: 900px;
 }/*# sourceMappingURL=styles.css.map */
