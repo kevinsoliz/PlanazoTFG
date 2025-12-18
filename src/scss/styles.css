@@ -12434,4 +12434,18 @@ a {
   .feature__image {
     width: 120%;
   }
+}
+.block-funciones .grid {
+  gap: 5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .block-funciones .grid {
+    -moz-column-gap: 10rem;
+         column-gap: 10rem;
+    justify-items: center;
+  }
+  .block-funciones .grid article {
+    width: 75%;
+  }
 }/*# sourceMappingURL=styles.css.map */

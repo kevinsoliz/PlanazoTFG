@@ -1,1 +1,18 @@
 
+.block-funciones {
+    .grid {
+        gap: 5rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .block-funciones {
+        .grid {
+            column-gap: 10rem;
+            justify-items: center;
+            article {
+                width: 75%;
+            }
+        }
+    }
+}
