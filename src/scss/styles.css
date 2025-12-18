@@ -12023,7 +12023,7 @@ p {
 
 @media screen and (min-width: 1024px) {
   body {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
   h1 {
     font-size: 8rem;
@@ -12032,7 +12032,7 @@ p {
     font-size: 5.7rem;
   }
   h3 {
-    font-size: 4rem;
+    font-size: 2.8rem;
   }
 }
 /* Logo del proyecto */
@@ -12103,6 +12103,12 @@ a {
   width: 25px;
   height: 25px;
   stroke: #e0604d;
+}
+
+.icon--fill {
+  width: 25px;
+  height: 25px;
+  color: #171718;
 }
 
 .icon-container {
