@@ -1,13 +1,21 @@
 body {
-  display: flex;
-  justify-content: center;
-  margin-top: 100px;
   font-family: Arial;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-section {
+  width: 100%;
+  margin-top: 40px;
 }
 
 .wrapper {
   position: relative;
-  width: 1750px;
+  display: flex;
+  width: 1800px;
+  overflow: visible;
 }
 
 .container {
@@ -18,20 +26,23 @@ body {
   display: flex;
   transition: transform 0.4s ease;
   gap: 20px;
+  padding-left: 70px;
 }
 
 .card {
-  min-width: 300px;
-  background: whitesmoke;
-  border-radius: 10px;
-  flex-shrink: 0; 
-  transition: transform 0.3s;
-  margin: 0 10px;
+  min-width: 380px;
+  height: 500px;
+  margin: 0 20px;
+  background: lightgray;
+  color: white;
+  border-radius: 20px;
+  transition: all 0.4s ease;
+  text-align: center;
 }
 
 .card img {
   width: 250px;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px;
   text-align: center;
 }
 
@@ -43,15 +54,13 @@ body {
 .card p {
   padding: 0 10px 10px;
   font-size: 0.9rem;
+  text-align: left;
 }
 
 .card a {
   padding: 0 10px 10px;
   font-size: 0.9rem;
-}
-
-.card:hover {
-  transform: scale(1.05); /* Hace que parezca que se selecciona cada carta al pasar el raton por encima */
+  text-align: left;
 }
 
 button {
@@ -60,7 +69,12 @@ button {
   transform: translateY(-50%);
   font-size: 25px;
   cursor: pointer;
+  z-index: 10;
 }
 
-#prev { left: -50px; }
-#next { right: -50px; }
+#prev { left: 20px; }
+#next { left: 1820px; }
+
+h1 {
+  text-align: center;
+}

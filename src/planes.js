@@ -2,7 +2,7 @@ const carousel = document.getElementById("carousel");
 const next = document.getElementById("next");
 const prev = document.getElementById("prev");
 
-const step = 340;
+const step = 440;
 
 next.onclick = () => {
   carousel.style.transition = "transform 0.4s ease";
