@@ -7,7 +7,7 @@ body {
 
 .wrapper {
   position: relative;
-  width: 700px;
+  width: 1750px;
 }
 
 .container {
@@ -17,18 +17,41 @@ body {
 .carousel {
   display: flex;
   transition: transform 0.4s ease;
+  gap: 20px;
 }
 
 .card {
   min-width: 300px;
-  margin: 0 10px;
-  height: 200px;
-  background: lightgray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
+  background: whitesmoke;
   border-radius: 10px;
+  flex-shrink: 0; 
+  transition: transform 0.3s;
+  margin: 0 10px;
+}
+
+.card img {
+  width: 250px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+}
+
+.card h3 {
+  margin: 10px 0 5px;
+  text-align: center;
+}
+
+.card p {
+  padding: 0 10px 10px;
+  font-size: 0.9rem;
+}
+
+.card a {
+  padding: 0 10px 10px;
+  font-size: 0.9rem;
+}
+
+.card:hover {
+  transform: scale(1.05); /* Hace que parezca que se selecciona cada carta al pasar el raton por encima */
 }
 
 button {
