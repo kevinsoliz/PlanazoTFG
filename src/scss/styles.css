@@ -12450,27 +12450,25 @@ a {
   }
 }
 /* Card oruga */
+/* Card base */
 .card-oruga {
-  display: flex;
+  border: 1px solid #171718;
+  box-shadow: 6px 6px 0 #171718;
+  background: #fefaef;
+  border-radius: 10rem;
+  display: inline-flex;
   justify-content: center;
+  align-items: center;
+  padding: 5rem;
 }
 .card-oruga .card-oruga__image {
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   background: dodgerblue;
   border-radius: 100px;
-  box-shadow: 0 0 30px 3px black;
+  border: 1px solid black;
   margin-left: -40px;
 }
-.card-oruga .card-oruga__image:nth-child(1) {
-  z-index: 5;
-}
-.card-oruga .card-oruga__image:nth-child(2) {
-  z-index: 4;
-}
-.card-oruga .card-oruga__image:nth-child(3) {
-  z-index: 3;
-}
-.card-oruga .card-oruga__image:nth-child(4) {
-  z-index: 2;
+.card-oruga .card-oruga__image:first-child {
+  margin-left: 0;
 }/*# sourceMappingURL=styles.css.map */

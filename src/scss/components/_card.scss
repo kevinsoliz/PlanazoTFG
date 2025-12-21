@@ -1,0 +1,8 @@
+/* Card base */
+
+@mixin card-base($back-color, $border-color, $radius) {
+    border: 1px solid $border-color;
+    box-shadow: 6px 6px 0 $border-color;
+    background: $back-color;
+    border-radius: $radius;
+}
