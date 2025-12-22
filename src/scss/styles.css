@@ -12452,23 +12452,30 @@ a {
 /* Card oruga */
 /* Card base */
 .card-oruga {
-  border: 1px solid #171718;
-  box-shadow: 6px 6px 0 #171718;
+  border: 1px solid #47ceba;
+  box-shadow: 6px 6px 0 #47ceba;
   background: #fefaef;
   border-radius: 10rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 5rem;
+  padding: 2rem 3rem;
 }
 .card-oruga .card-oruga__image {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   background: dodgerblue;
   border-radius: 100px;
-  border: 1px solid black;
-  margin-left: -40px;
+  margin-left: -20px;
 }
 .card-oruga .card-oruga__image:first-child {
   margin-left: 0;
+}
+.card-oruga p {
+  margin-left: 2rem;
+  margin-block-end: 0;
+  color: #47ceba;
+}
+.card-oruga p b {
+  font-size: 2rem;
 }/*# sourceMappingURL=styles.css.map */
