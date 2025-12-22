@@ -1,0 +1,80 @@
+/* Navigation */
+@use '../abstracts/variables' as *;
+.nav {
+  background: $background-light;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  align-items: center;
+}
+
+
+.nav .logo {
+  font-size: 4rem;
+  color:$secondary-middle;
+  margin: 0;
+}
+
+
+.nav__list {
+  width: 100%;
+  margin: 0;
+}
+
+
+.nav__item {
+  margin-left: 0.5rem;
+  margin-top: 1rem
+}
+
+
+.nav__item > a {
+  color: $secondary-middle;
+  transition: color 0.3s;
+  padding: 0.5rem 0;
+  font-weight: bold;
+}
+.nav__item > a:hover {
+  color: $primary-middle;
+}
+
+
+.nav__toggler {
+  cursor: pointer;
+}
+
+.nav__toggler:hover {
+  stroke: $primary-middle;
+}
+
+.nav > a:last-of-type {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .nav {
+    padding: 0 2rem;
+  }
+
+
+  .nav__list {
+    width: auto;
+    display: flex;
+    font-size: 1.6rem;
+    max-height: 100%;
+    opacity: 1;
+  }
+
+  .nav__item {
+    margin-left: 5rem;
+  }
+
+  .nav > a:last-of-type {
+    display: inline;
+  }
+
+  .nav__icons {
+    display: none;
+  }
+}

@@ -1,0 +1,31 @@
+/* Icons */
+@use '../abstracts/variables' as *; 
+
+.icon {
+  width: 25px;
+  height: 25px;
+  stroke: $primary-dark;
+}
+
+.icon--fill {
+  width: 25px;
+  height: 25px;
+  color: $ink-dark; // Antes tenía un fill aquí, junto con fill: none; en el symbol del icono, pero no funciona.
+  //fill: currentColor; en el symbol y color:... en la clase, así el color del icono es modificable.
+ flex-shrink: 0; // Previene que el SVG se redimensione en flex containers (flex-shrink por defecto es 1)
+}
+
+.icon-container {
+  background: $primary-light;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Skins */
+.icon--nav {
+  stroke: $secondary-middle;
+}

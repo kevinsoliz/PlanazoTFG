@@ -1,0 +1,17 @@
+/* Links */
+a {
+  text-decoration: none;
+}
+
+.link-flecha {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 1024px) {
+  .link-flecha {
+    font-size: 2rem;
+  }
+}
+
+

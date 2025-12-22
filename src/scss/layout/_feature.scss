@@ -1,0 +1,107 @@
+@use '../abstracts/variables' as *;
+
+.feature {
+    background: $background-light;
+    margin: 4rem 4rem;
+    padding: 5rem 2rem;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid $ink-dark;
+    box-shadow: 6px 6px 0 $ink-dark;
+    gap: 4rem;
+    place-items: center;
+
+    .link-flecha {
+        color: $ink-dark;
+        // Por alguna razón el margin-top no funciona
+         transition: color 0.15s ease;
+    }
+
+    .icon {
+        stroke: black;
+        width: 13px;
+        transition: transform 0.15s ease, stroke 0.15s ease;
+    }
+    
+    p {
+        margin-bottom: 2rem;
+    }
+}
+
+.feature__link {
+    display: inline-block;
+}
+
+.feature__link:hover {
+    .link-flecha {
+        text-decoration: underline;
+    }
+    .icon {
+    
+        transform: translateX(5px);
+
+    }
+}
+
+
+.feature__image {
+    width: 80%;
+}
+
+.feature__heading {
+    font-weight: bold;
+}
+
+/* Skins */
+
+.feature--secondary-middle {
+    background: $secondary-middle;
+}
+
+.feature--primary-light {
+    background: $primary-light;
+}
+
+.feature--accent-main {
+    background: $accent-main;
+}
+
+.feature--dark{
+    background: $ink-dark;
+    color: $primary-dark;
+    border: 1px solid $primary-dark;
+    box-shadow: 6px 6px 0 $primary-dark;
+    
+    .feature__heading {
+        color: $primary-dark;
+    }
+
+    .link-flecha {
+        color: $primary-dark;
+    }
+    .icon {
+        stroke: $primary-dark;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .feature {
+        text-align: left;
+        padding: 7rem 8rem;
+        max-width: 970px;
+        margin: 8rem auto;
+
+        .icon {
+            width: 16px;
+        }
+    }
+    .feature__heading {
+        font-size: 5.7rem;
+    }
+
+    .feature__image {
+        width: 120%;
+    }
+}
+
+

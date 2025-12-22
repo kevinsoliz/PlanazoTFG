@@ -1,0 +1,65 @@
+/* Footer */
+@use '../abstracts/variables' as *;
+
+.footer {
+   background: $ink-dark;
+}
+
+.footer a {
+    color: $primary-dark;
+    
+    &:hover {
+        color: white;
+    }
+}
+
+.footer__heading {
+    font-weight: 600;
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: $primary-dark;
+}
+
+
+.footer__brand {
+    color: $primary-dark;
+    padding: 1rem;
+    margin-top: 2rem;
+    .logo {
+        color: $primary-dark;
+        margin-bottom: 0;
+        font-size: 4.2rem;
+    }
+}
+
+.footer__copyright {
+    font-size: 1.5rem;
+   
+}
+
+@media screen and (min-width: 768px) {
+    
+    .footer__sections {
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    }
+
+    .footer__section {
+        padding: 2rem;
+    }
+    .footer__brand {
+        order: -1;
+    }
+
+    .footer {
+        .collapsible__chevron {
+            display: none;
+        }
+
+        .collapsible__content {
+            opacity: 1;
+            max-height: 100%;
+        }
+    }
+
+
+}
