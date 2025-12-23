@@ -1,0 +1,40 @@
+/* Card oruga */
+@use '../components/card' as *;
+@use '../abstracts/variables' as *;
+
+
+.card-oruga {
+    @include card-base($background-light, $accent-main, 10rem);
+    width: fit-content; 
+    // Antes usaba display: inline-block para que la card se ajustara al contenido,
+    // pero eso cambiaba su comportamiento de layout y chocaba con el container de Bootstrap, la card no se centraba aunque le pusiese el margin: 0 auto.
+    // Con width: fit-content el elemento sigue siendo block, pero encoge al tamaño
+    // de su contenido, permitiendo que el container lo centre correctamente.
+
+    .grid {
+        gap: 1rem;
+        padding: 2rem 3rem;
+        place-items: center;
+    }
+
+    p {
+        margin: 0;
+
+        b {
+            color: $secondary-dark;
+        }
+    }
+}
+
+.card-oruga__image {
+    width: 50px;
+    height: 50px;
+    background: dodgerblue;
+    border-radius: 100px;
+    // border: 3px solid $primary-middle;
+    margin-left: -20px;
+}
+
+.card-oruga__image:first-child {
+    margin-left: 0;
+}
