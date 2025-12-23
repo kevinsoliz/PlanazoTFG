@@ -12448,4 +12448,37 @@ a {
   .block-funciones .grid article {
     width: 75%;
   }
+}
+/* Card oruga */
+/* Card base */
+.card-oruga {
+  border: 1px solid #47ceba;
+  box-shadow: 6px 6px 0 #47ceba;
+  background: #fefaef;
+  border-radius: 10rem;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.card-oruga .grid {
+  gap: 1rem;
+  padding: 2rem 3rem;
+  place-items: center;
+}
+.card-oruga p {
+  margin: 0;
+}
+.card-oruga p b {
+  color: #566be1;
+}
+
+.card-oruga__image {
+  width: 50px;
+  height: 50px;
+  background: dodgerblue;
+  border-radius: 100px;
+  margin-left: -20px;
+}
+
+.card-oruga__image:first-child {
+  margin-left: 0;
 }/*# sourceMappingURL=styles.css.map */
