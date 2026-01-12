@@ -1,0 +1,14 @@
+@use '../components/card' as *;
+@use '../abstracts/variables' as *;
+
+.solutions {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+.solution {
+     @include card-base($background-light, $accent-main, 100%);
+     width: 100px;
+     height: 100px;
+     margin: 0 2rem;
+}
