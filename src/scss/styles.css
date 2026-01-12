@@ -12481,4 +12481,18 @@ a {
 
 .card-oruga__image:first-child {
   margin-left: 0;
+}
+
+.solutions .grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.solution {
+  border: 1px solid #47ceba;
+  box-shadow: 6px 6px 0 #47ceba;
+  background: #fefaef;
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  margin: 0 2rem;
 }/*# sourceMappingURL=styles.css.map */
