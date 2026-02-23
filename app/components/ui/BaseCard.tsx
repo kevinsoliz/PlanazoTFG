@@ -8,12 +8,12 @@ interface Props {
 const BaseCard = ({ children, bgColor, textColor = "#171718", className = "" }: Props) => {
   return (
     <div
-      className={`card border w-full max-w-3xl ${className}`}
+      className={`card w-full max-w-md mx-auto ${className}`}
       style={{
         backgroundColor: bgColor,
         color: textColor,
         borderColor: textColor,
-        borderWidth: "2px",
+        borderWidth: "1px",
         boxShadow: `6px 6px 0px ${textColor}`,
       }}
     >
