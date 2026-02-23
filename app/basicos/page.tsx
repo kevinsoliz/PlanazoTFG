@@ -106,10 +106,7 @@ const BasicosPage = () => {
         ></textarea>
       </section>
 
-      <FeatureCard
-        titulo="Planes que encajan contigo"
-        descripcion="Descubre planes y personas según tus intereses."
-      />
+     
     </div>
   )
 }
