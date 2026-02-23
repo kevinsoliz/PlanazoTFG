@@ -107,10 +107,8 @@ export default function Home() {
       </section>
 
       <FeatureCard
-        bgColor="var(--color-neutral)"
-        textColor="#E0604D"
-        titulo={"Planes que encajan contigo"}
-        descripcion={"Descubre planes y personas según tus intereses."}
+        titulo="Planes que encajan contigo"
+        descripcion="Descubre planes y personas según tus intereses."
       />
     </div>
   );
