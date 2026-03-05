@@ -1,9 +1,10 @@
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden; 
 }
 
 .carousel-section {
@@ -14,30 +15,41 @@ body {
 .wrapper {
   position: relative;
   display: flex;
-  width: 1800px;
-  overflow: visible;
+  width: 100%;
+  max-width: 1550px; 
+  margin: 0 auto;    
+  overflow: hidden;  
 }
 
 .container {
-  overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .carousel {
   display: flex;
   transition: transform 0.4s ease;
-  gap: 20px;
-  padding-left: 70px;
+  align-items: center;
+  padding: 80px 0;
 }
 
 .card {
-  min-width: 380px;
+  width: 300px; 
   height: 500px;
-  margin: 0 20px;
+  margin: 0 15px; 
   background: lightgray;
   color: white;
   border-radius: 20px;
-  transition: all 0.4s ease;
   text-align: center;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0; 
+  backface-visibility: hidden; 
 }
 
 .card img {
@@ -51,13 +63,7 @@ body {
   text-align: center;
 }
 
-.card p {
-  padding: 0 10px 10px;
-  font-size: 0.9rem;
-  text-align: left;
-}
-
-.card a {
+.card p, .card a {
   padding: 0 10px 10px;
   font-size: 0.9rem;
   text-align: left;
@@ -69,11 +75,19 @@ button {
   transform: translateY(-50%);
   font-size: 25px;
   cursor: pointer;
-  z-index: 10;
+  z-index: 20;
+  background: rgba(0,0,0,0.1); 
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
 }
 
-#prev { left: 20px; }
-#next { left: 1820px; }
+button:hover {
+  background: rgba(0,0,0,0.3);
+}
+
+#prev { left: 10px; }
+#next { right: 10px; left: auto; } 
 
 h1 {
   text-align: center;
