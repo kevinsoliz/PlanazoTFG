@@ -19,7 +19,14 @@ Planazo es una aplicación web que permite a cualquier usuario **crear y unirse 
 
 El usuario puede publicar una actividad (un concierto, una ruta, una partida de ajedrez) y otras personas cercanas con el mismo interés pueden apuntarse. La conexión se produce a través del plan, no a través del perfil.
 
-Stack técnico: **Next.js + TypeScript + Tailwind CSS + DaisyUI + Supabase (PostgreSQL + Auth)**
+Stack técnico:
+- **Frontend**: Next.js + TypeScript + Tailwind CSS + DaisyUI
+- **Backend**: Express + TypeScript
+- **Base de datos**: PostgreSQL (SQL directo con pg)
+- **Autenticación**: Sesiones de Express con almacenamiento en PostgreSQL
+- **Contenedores**: Docker + Docker Compose
+- **Despliegue**: Railway
+- **Estructura**: Monorepo (frontend/ + backend/)
 
 ---
 
@@ -29,7 +36,7 @@ Funcionalidades mínimas para validar la propuesta de valor:
 
 ### Autenticación
 - Registro e inicio de sesión con email/contraseña
-- Autenticación con Google (OAuth via Supabase)
+- Sesiones gestionadas con Express y almacenadas en PostgreSQL
 
 ### Perfil de usuario
 - Nombre, foto y descripción breve
@@ -37,7 +44,7 @@ Funcionalidades mínimas para validar la propuesta de valor:
 
 ### Planes
 - Crear un plan (título, categoría, descripción, fecha, ubicación, aforo máximo)
-- Listar planes disponibles con filtro por categoría y proximidad
+- Listar planes disponibles con filtro por categoría
 - Ver el detalle de un plan
 - Apuntarse / desapuntarse de un plan
 - Límite de 3 planes activos por usuario (cuenta gratuita)
@@ -45,6 +52,7 @@ Funcionalidades mínimas para validar la propuesta de valor:
 ### Seguridad básica
 - Perfiles verificados (email confirmado)
 - Restricción de contenido inapropiado mediante validación de campos
+- Protección contra inyección SQL (queries parametrizadas)
 
 ---
 
