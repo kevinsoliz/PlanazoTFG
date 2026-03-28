@@ -3,6 +3,7 @@ import cors from "cors";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import pool from "./db";
+import authRoutes from "./routes/auth";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -18,6 +19,8 @@ app.use(
 
 //json es un metodo estático de express que es una función y objeto a la vez.
 app.use(express.json()); //convierte los json a objetos
+
+  // TODO: agregar helmet (cabeceras de seguridad) y morgan (logs de   peticiones)
 
 app.use(
   session({
@@ -37,6 +40,8 @@ app.use(
     },
   }),
 );
+
+app.use("/api/auth", authRoutes);
 
 app.get("/api/health", (req, res) => {
   // ruta para comprobar el estado del servidor

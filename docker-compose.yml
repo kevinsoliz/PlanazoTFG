@@ -10,6 +10,7 @@ services:
       POSTGRES_DB: planazo
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
     build: ./backend
