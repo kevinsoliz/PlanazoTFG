@@ -1,6 +1,7 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import pool from "../db";
+import { requireAuth } from "../middleware/auth";
 
 declare module "express-session" {
   interface SessionData {
@@ -81,7 +82,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Logout
-router.post("/logout", (req, res) => {
+router.post("/logout", requireAuth, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).json({ error: "Error al cerrar sesion" });
@@ -93,7 +94,7 @@ router.post("/logout", (req, res) => {
 });
 
 // Me (quien soy)
-router.get("/me", async (req, res) => {
+router.get("/me", requireAuth, async (req, res) => {
   if (!req.session.userId) {
     res.status(401).json({ error: "No autenticado" });
     return;
