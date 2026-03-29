@@ -8,8 +8,8 @@ const PublicLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => 
             {children}
         </div>
         <div className="hidden lg:flex flex-1 bg-primary items-center justify-center">
-          <p className="text-2xl">hola mundo</p>
-            <img src="src/images/auth/amigos12.png" alt="" />
+        
+            <img src="/images/auth/amigos12.png" alt="" />
         </div>
     </div>
     </>
