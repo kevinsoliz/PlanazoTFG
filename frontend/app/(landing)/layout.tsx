@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 
-const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const LandingLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <>
       <Navbar />
@@ -12,4 +12,4 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   );
 };
 
-export default layout;
+export default LandingLayout;
