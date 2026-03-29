@@ -15,7 +15,7 @@ const CTASection = () => {
           Empezar ahora
         </Link>
       </div>
-      <img src="/images/amigosCTA.png" alt="" className="w-full block mt-10" />
+      <img src="/images/landing/amigosCTA.png" alt="" className="w-full block mt-10" />
     </section>
   );
 };

@@ -12,14 +12,14 @@ const FeaturesSection = () => {
             titulo="Planes que encajan contigo"
             descripcion="Descubre planes y personas según tus intereses. Menos buscar, más disfrutar."
             bgColor="#928EF5"
-            imagen="/images/amigo1.png"
+            imagen="/images/landing/amigo1.png"
           />
 
           <FeatureCard
             titulo="Únete en un click"
             descripcion="Ver un plan que te mola y unirte es así de fácil. Sin formularios, sin complicaciones."
             bgColor="#FCD665"
-            imagen="/images/amigo2.png"
+            imagen="/images/landing/amigo2.png"
             invertido
           />
 
@@ -27,7 +27,7 @@ const FeaturesSection = () => {
             titulo="Crea tu propio plan"
             descripcion="¿Tienes una idea? Compártela con la comunidad y encuentra gente con ganas de vivir lo mismo."
             bgColor="#47CEBA"
-            imagen="/images/amigo3.png"
+            imagen="/images/landing/amigo3.png"
             invertido
           />
           <FeatureCard
@@ -35,7 +35,7 @@ const FeaturesSection = () => {
             descripcion="Filtra planes por categoría, fecha o ubicación. Encuentra exactamente lo que buscas sin perder tiempo."
             bgColor="#171718"
             textColor="#E0604D"
-            imagen="/images/amigo4.png"
+            imagen="/images/landing/amigo4.png"
             invertido
           />
         </div>

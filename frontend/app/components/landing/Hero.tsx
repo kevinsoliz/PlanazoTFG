@@ -23,7 +23,7 @@ const Hero = () => {
         </div>
         {/* Imagen placeholder */}
         <img
-          src="/images/amigos.png"
+          src="/images/landing/amigos.png"
           alt="Hero"
           className="w-full h-auto max-w-xl"
         />
