@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Bagel_Fat_One } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -27,10 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" data-theme="planazo">
-      <body className={`${spaceGrotesk.variable} ${bagelFatOne.variable} antialiased`}>
-        <Navbar/>
+      <body
+        className={`${spaceGrotesk.variable} ${bagelFatOne.variable} antialiased`}
+      >
         {children}
-        <Footer/>
       </body>
     </html>
   );
