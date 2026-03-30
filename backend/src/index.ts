@@ -12,7 +12,7 @@ const PGStore = connectPgSimple(session);
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", process.env.FRONTEND_URL || ""].filter(Boolean),
     credentials: true, //permite que las peticiones incluyan cookies
   }),
 );
@@ -20,7 +20,7 @@ app.use(
 //json es un metodo estático de express que es una función y objeto a la vez.
 app.use(express.json()); //convierte los json a objetos
 
-  // TODO: agregar helmet (cabeceras de seguridad) y morgan (logs de   peticiones)
+// TODO: agregar helmet (cabeceras de seguridad) y morgan (logs de   peticiones)
 
 app.use(
   session({
