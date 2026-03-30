@@ -2,9 +2,8 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-const Registro = () => {
-  const [newUser, setNewUser] = useState({
-    nombre: "",
+const Login = () => {
+  const [user, setUser] = useState({
     email: "",
     password: "",
   });
@@ -13,15 +12,15 @@ const Registro = () => {
 
   const router = useRouter();
 
-  const handleRegistro = async (event: FormEvent) => {
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4000/api/auth/registro", {
+      const response = await fetch("http://localhost:4000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(newUser),
+        body: JSON.stringify(user),
       });
 
       const data = await response.json();
@@ -38,27 +37,17 @@ const Registro = () => {
   };
 
   return (
-    <form onSubmit={handleRegistro} className="w-3/5">
+    <form onSubmit={handleLogin} className="w-3/5">
       <fieldset className="fieldset">
         <div className="pb-10">
-          <legend className="text-4xl pb-2">Bienvenido</legend>
-          <p>Crea tu cuenta y únete a Planazo</p>
+          <legend className="text-4xl pb-2">Hola de nuevo</legend>
+          <p>Tu próximo plan te espera</p>
         </div>
-        <label className="label">
-          <input
-            onChange={(event) =>
-              setNewUser({ ...newUser, nombre: event.target.value })
-            }
-            type="text"
-            className="input w-full"
-            placeholder="Tu nombre"
-          />
-        </label>
-
+        
         <label className="label">Email</label>
         <input
           onChange={(event) =>
-            setNewUser({ ...newUser, email: event.target.value })
+            setUser({ ...user, email: event.target.value })
           }
           type="email"
           className="input w-full"
@@ -68,7 +57,7 @@ const Registro = () => {
         <label className="label">Password</label>
         <input
           onChange={(event) =>
-            setNewUser({ ...newUser, password: event.target.value })
+            setUser({ ...user, password: event.target.value })
           }
           type="password"
           className="input w-full"
@@ -76,10 +65,10 @@ const Registro = () => {
         />
 
         {error && <p className="text-error text-center">{error}</p>}
-        <button className="btn btn-neutral mt-4">Registrarse</button>
+        <button className="btn btn-neutral mt-4">Login</button>
       </fieldset>
     </form>
   );
 };
 
-export default Registro;
+export default Login;
