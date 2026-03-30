@@ -17,7 +17,7 @@ const Registro = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/registro`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
