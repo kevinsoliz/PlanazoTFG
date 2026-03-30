@@ -11,7 +11,7 @@ const CTASection = () => {
           Crea tu plan, compártelo y encuentra gente con tus mismos gustos.
           Siempre hay alguien con ganas de lo mismo que tú.
         </p>
-        <Link href="/login" className="btn btn-neutral btn-lg">
+        <Link href="/registro" className="btn btn-neutral btn-lg">
           Empezar ahora
         </Link>
       </div>
