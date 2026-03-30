@@ -27,7 +27,7 @@ router.post("/registro", async (req, res) => {
     );
 
     if (resultado.rows.length > 0) {
-      res.status(409).json({ error: "El email ya esta registrado" });
+      res.status(409).json({ error: "El email ya está registrado" });
       return;
     }
 
