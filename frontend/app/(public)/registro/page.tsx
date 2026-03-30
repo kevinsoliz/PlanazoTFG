@@ -42,7 +42,7 @@ const Registro = () => {
       <fieldset className="fieldset">
         <div className="pb-10">
           <legend className="text-4xl pb-2">Bienvenido</legend>
-          <p>Crea tu cuenta y únete a Planazo</p>
+          <p className="text-sm text-neutral/70">Crea tu cuenta y únete a Planazo</p>
         </div>
         <label className="label">
           <input

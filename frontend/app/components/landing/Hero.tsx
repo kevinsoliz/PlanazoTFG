@@ -16,7 +16,7 @@ const Hero = () => {
             hoy y descubre lo que te espera.
           </p>
           <div>
-            <Link href="/planes" className="btn btn-primary btn-lg mt-5">
+            <Link href="/registro" className="btn btn-primary btn-lg mt-5">
               Me apunto
             </Link>
           </div>
