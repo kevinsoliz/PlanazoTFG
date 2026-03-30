@@ -69,6 +69,10 @@ Funcionalidades identificadas para iteraciones posteriores:
 - Geolocalización en tiempo real para sugerencias hiperlocales
 - Búsqueda con filtros combinados (fecha, distancia, categoría, aforo)
 
+### Autenticación avanzada
+- Recuperación de contraseña por email (token temporal + servicio de email)
+- Autenticación con Google (OAuth)
+
 ### Comunicación
 - Chat integrado por plan entre los participantes
 - Sistema de confirmación de asistencia (RSVP) con notificaciones
