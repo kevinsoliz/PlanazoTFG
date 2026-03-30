@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -41,7 +42,7 @@ const Login = () => {
       <fieldset className="fieldset">
         <div className="pb-10">
           <legend className="text-4xl pb-2">Hola de nuevo</legend>
-          <p>Tu próximo plan te espera</p>
+          <p className="text-sm text-neutral/70">Tu próximo plan te espera</p>
         </div>
         
         <label className="label">Email</label>
@@ -65,7 +66,12 @@ const Login = () => {
         />
 
         {error && <p className="text-error text-center">{error}</p>}
-        <button className="btn btn-neutral mt-4">Login</button>
+        <button className="btn btn-neutral mt-4 mb-8">Login</button>
+        <span>
+            <p className="text-center text-sm text-neutral/70">No tienes una cuenta? { }
+            <Link href="/registro" className="link link-neutral hover:text-neutral/70">Apúntate</Link>
+            </p>
+        </span>
       </fieldset>
     </form>
   );
