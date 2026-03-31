@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "../components/ui/Logo";
 
 const PublicLayout = ({
   children,
@@ -7,7 +8,7 @@ const PublicLayout = ({
     <>
       <div className="min-h-screen flex">
         <div className="flex-1 flex flex-col p-8">
-          <p className="text-2xl">LOGO</p>
+          <Logo/>
           <div className="flex-1 flex items-center justify-center">
             {children}
           </div>
