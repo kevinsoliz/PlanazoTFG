@@ -5,7 +5,7 @@ import Sidebar from "../components/layout/Sidebar";
 const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="min-h-screen flex p-4">
-      <div className=" flex flex-col w-65">
+      <div className=" flex flex-col w-75">
         <Logo />
         <Sidebar/>
       </div>
