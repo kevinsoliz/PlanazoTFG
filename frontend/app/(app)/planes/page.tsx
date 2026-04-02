@@ -4,7 +4,7 @@ import { FaMessage } from "react-icons/fa6";
 
 const Planes = () => {
   return (
-    <section className="py-5 px-8 flex flex-col gap-8">
+    <section className="border py-5 px-8 flex flex-col h-full gap-8">
       <article className="flex justify-between gap-5">
         <label className="input rounded-full">
           <CiSearch className="text-neutral/40" />
@@ -149,9 +149,9 @@ const Planes = () => {
           </section>
         </div>
       </article>
-      <section>
+      <section className="flex-1 flex flex-col overflow-hidden">
         <p className="text-2xl font-bold mb-4">Feed</p>
-        <article className="grid grid-cols-4 gap-6">
+        <article className="border  xl:columns-4 overflow-y-auto gap-6">
           <div className="card bg-base-100 shadow-sm">
             <figure>
               <img
