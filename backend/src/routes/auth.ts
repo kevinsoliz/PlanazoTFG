@@ -85,11 +85,11 @@ router.post("/login", async (req, res) => {
 router.post("/logout", requireAuth, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(500).json({ error: "Error al cerrar sesion" });
+      res.status(500).json({ error: "Error al cerrar sesión" });
       return;
     }
     res.clearCookie("session_id");
-    res.json({ message: "Sesion cerrada" });
+    res.json({ message: "Sesión cerrada" });
   });
 });
 
