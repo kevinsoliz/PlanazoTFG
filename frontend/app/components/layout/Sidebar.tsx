@@ -1,6 +1,7 @@
 import { TiHome } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
+import LogoutBtn from "../features/LogoutBtn";
 
 const Sidebar = () => {
   return (
@@ -82,8 +83,7 @@ const Sidebar = () => {
           <p className="font-bold">Settings</p>
         </div>
         <div className="  flex items-center gap-2 mt-auto">
-          <FiLogOut size={22} />
-          <p className="font-bold">Logout</p>
+          <LogoutBtn/>
         </div>
       </article>
     </section>
