@@ -31,7 +31,7 @@ const Login = () => {
         return;
       }
 
-      router.push("/planes");
+      router.push("/home");
     } catch {
       setError("Error de conexión con el servidor");
     }
