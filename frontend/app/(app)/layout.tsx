@@ -9,7 +9,7 @@ const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         <Logo />
         <Sidebar/>
       </div>
-      <div className="flex-2 bg-base-100 rounded-xl border-2">
+      <div className="flex-2 bg-amber-700/5 rounded-4xl ">
         {children}
       </div>
     </div>
