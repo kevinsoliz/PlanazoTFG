@@ -57,3 +57,11 @@ body {
   --font-sans: var(--font-space-grotesk);
   --font-display: var(--font-bagel-fat-one);
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -20,7 +20,7 @@ const Planes = () => {
 
       <article className=" w-full">
         <legend className="text-2xl font-bold mb-4">Stories</legend>
-        <div className="flex justify-between flex-wrap">
+        <div className="rounded-t-4xl flex w-0 min-w-full overflow-x-auto scrollbar-hide gap-6">
           <section className="flex flex-col items-center">
             <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
               K
@@ -38,6 +38,84 @@ const Planes = () => {
               K
             </div>
             <p className="text-center text-xs mt-1">Palabr</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
           </section>
           <section className="flex flex-col items-center">
             <div className="w-17 h-17 rounded-full bg-neutral/80 flex justify-center items-center text-neutral-content">
