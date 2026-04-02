@@ -39,7 +39,7 @@ const Sidebar = () => {
       </article>
       <article className=" w-full">
         <legend className="text-sm font-bold mb-1">Story Higlights</legend>
-        <div className="flex justify-between flex-wrap">
+        <div className="flex max-w-full overflow-x-auto scrollbar-hide gap-3">
           <section className="flex flex-col items-center">
             <div className="w-12 h-12 rounded-full bg-neutral/80 flex justify-center items-center mt-2 text-neutral-content">
               K
@@ -57,6 +57,12 @@ const Sidebar = () => {
               K
             </div>
             <p className="text-center text-xs mt-1">Palabr</p>
+          </section>
+          <section className="flex flex-col items-center">
+            <div className="w-12 h-12 rounded-full bg-neutral/80 flex justify-center items-center mt-2 text-neutral-content">
+              K
+            </div>
+            <p className="text-center text-xs mt-1">Palabra</p>
           </section>
           <section className="flex flex-col items-center">
             <div className="w-12 h-12 rounded-full bg-neutral/80 flex justify-center items-center mt-2 text-neutral-content">
