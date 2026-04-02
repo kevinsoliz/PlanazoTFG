@@ -149,7 +149,7 @@ const Planes = () => {
           </section>
         </div>
       </article>
-      <section className="inset-shadow-sm flex-1 flex flex-col overflow-hidden overflow-y-auto rounded-xl">
+      <section className="inset-shadow-sm flex-1 flex flex-col overflow-y-auto rounded-xl">
    
           <article className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
           
