@@ -20,15 +20,27 @@ router.post("/registro", async (req, res) => {
     return;
   }
 
+  
   try {
     const resultado = await pool.query(
       "SELECT id FROM users WHERE email = $1",
       [email],
     );
-
+    
     if (resultado.rows.length > 0) {
       res.status(409).json({ error: "El email ya está registrado" });
       return;
+    }
+    
+    //lógica para generar un @username a partir del nombre:
+    const baseUsername = nombre.toLowerCase().replace(/\s+/g, "");
+    let username = baseUsername;
+  
+    let existe = await pool.query("SELECT id FROM perfiles WHERE username = $1", [username]);
+  
+    while (existe.rows.length > 0) {
+      username = baseUsername + Math.floor(Math.random() * 100);
+      existe = await pool.query("SELECT id FROM perfiles WHERE username = $1", [username]);
     }
 
     const hash = await bcrypt.hash(password, 10); // el segundo arg son rondas de sal, cuantas mas rondas mas seguro
@@ -37,6 +49,11 @@ router.post("/registro", async (req, res) => {
       "INSERT INTO users (nombre, email, password_hash) VALUES ($1, $2, $3) RETURNING id, nombre, email",
       [nombre, email, hash], //la contrasena nunca va a la base de datos
     );
+
+    await pool.query(
+      "INSERT INTO perfiles (user_id, nombre, username) VALUES ($1, $2, $3)",
+      [nuevo.rows[0].id, nombre, username]
+    )
 
     req.session.userId = nuevo.rows[0].id;
 
