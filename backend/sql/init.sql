@@ -25,3 +25,24 @@ CREATE TABLE IF NOT EXISTS users (
     categorias VARCHAR(200),
     created_at TIMESTAMP DEFAULT NOW()
   );
+
+  --Tabla planes
+  CREATE TABLE IF NOT EXISTS planes (
+    id SERIAL PRIMARY KEY,
+    creator_id INTEGER NOT NULL REFERENCES users(id),
+    titulo VARCHAR(200) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    descripcion TEXT,
+    fecha TIMESTAMP NOT NULL,
+    ubicacion VARCHAR(200),
+    aforo_max INTEGER NOT NULL CHECK (aforo_max >= 2), 
+    created_at TIMESTAMP DEFAULT NOW()
+  );
+
+-- Tabla intermedia: En esta tabla tenemos clave primaria compuesta porque un usuario no puede unirse al mismo plan dos veces.
+  CREATE TABLE IF NOT EXISTS plan_participants (
+    plan_id INTEGER NOT NULL REFERENCES planes(id),
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    joined_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (plan_id, user_id)
+  );
