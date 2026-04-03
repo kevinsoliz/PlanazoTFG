@@ -31,7 +31,7 @@ router.post("/registro", async (req, res) => {
       res.status(409).json({ error: "El email ya está registrado" });
       return;
     }
-    
+
     //lógica para generar un @username a partir del nombre:
     const baseUsername = nombre.toLowerCase().replace(/\s+/g, "");
     let username = baseUsername;
@@ -59,6 +59,7 @@ router.post("/registro", async (req, res) => {
 
     res.status(201).json({ user: nuevo.rows[0] });
   } catch (error) {
+    console.log("Aqui esta el error:", error);
     res.status(500).json({ error: "Error del servidor" });
   }
 });

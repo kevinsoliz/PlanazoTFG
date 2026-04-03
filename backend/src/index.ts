@@ -4,6 +4,7 @@ import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import pool from "./db";
 import authRoutes from "./routes/auth";
+import perfilRoutes from "./routes/perfiles";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -42,6 +43,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api", perfilRoutes);
 
 app.get("/api/health", (req, res) => {
   // ruta para comprobar el estado del servidor
