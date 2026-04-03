@@ -13,3 +13,15 @@ CREATE TABLE IF NOT EXISTS users (
   );
 
   CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+
+  -- Tabla de perfiles:
+  CREATE TABLE IF NOT EXISTS perfiles (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE NOT NULL REFERENCES users(id),
+    nombre VARCHAR(100) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    avatar_url VARCHAR(500),
+    descripcion VARCHAR(500),
+    categorias VARCHAR(200),
+    created_at TIMESTAMP DEFAULT NOW()
+  );
