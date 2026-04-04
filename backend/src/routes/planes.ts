@@ -62,7 +62,7 @@ router.get("/", async (req, res) => {
 
     if (categoria) {
       resultado = await pool.query(
-        "SELECT p.*, (SELECT COUNT(*) FROM plan_participants WHERE plan_id = p.id) AS participants FROM planes p WHERE p.categoria = $1 AND p.fech > NOW() ORDER BY p.fecha ASC",
+        "SELECT p.*, (SELECT COUNT(*) FROM plan_participants WHERE plan_id = p.id) AS participants FROM planes p WHERE p.categoria = $1 AND p.fecha > NOW() ORDER BY p.fecha ASC",
         [categoria],
       );
     } else {
@@ -142,7 +142,6 @@ router.post("/:id/join", requireAuth, async (req, res) => {
     );
 
     res.json({ message: "Te has unido al plan" });
-
   } catch (error: any) {
     if (error.code === "23505") {
       res.status(400).json({ error: "Ya estás apuntado a este plan" });
@@ -155,23 +154,112 @@ router.post("/:id/join", requireAuth, async (req, res) => {
 
 // desapuntarse del plan
 router.delete("/:id/join", requireAuth, async (req, res) => {
-    try {
-      const resultado = await pool.query(
-        "DELETE FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
-        [req.params.id, req.session.userId]
-      );
- 
-      if (resultado.rowCount === 0) {
-        res.status(400).json({ error: "No estabas en este plan" });
-        return;
-      }
- 
-      res.json({ message: "Has salido del plan" });
-
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Error del servidor" });
+  try {
+    const plan = await pool.query(
+      "SELECT creator_id FROM planes WHERE id = $1",
+      [req.params.id],
+    );
+    if (
+      plan.rows.length > 0 &&
+      plan.rows[0].creator_id === req.session.userId
+    ) {
+      res.status(400).json({ error: "No puedes salir de tu propio plan" });
+      return;
     }
+
+    const resultado = await pool.query(
+      "DELETE FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
+      [req.params.id, req.session.userId],
+    );
+
+    if (resultado.rowCount === 0) {
+      res.status(400).json({ error: "No estabas en este plan" });
+      return;
+    }
+
+    res.json({ message: "Has salido del plan" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
 });
 
+// borrar plan (solo el creador)
+router.delete("/:id", requireAuth, async (req, res) => {
+  try {
+    const plan = await pool.query(
+      "SELECT creator_id FROM planes WHERE id = $1",
+      [req.params.id],
+    );
+
+    if (plan.rows.length === 0) {
+      res.status(404).json({ error: "Plan no encontrado" });
+      return;
+    }
+
+    if (plan.rows[0].creator_id !== req.session.userId) {
+      res.status(403).json({ error: "Solo el creador puede borrar el plan" });
+      return;
+    }
+
+    await pool.query("DELETE FROM plan_participants WHERE plan_id = $1", [
+      req.params.id,
+    ]);
+    await pool.query("DELETE FROM planes WHERE id = $1", [req.params.id]);
+
+    res.json({ message: "Plan eliminado" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
+});
+
+// editar plan (solo el creador)
+router.put("/:id", requireAuth, async (req, res) => {
+  try {
+    const plan = await pool.query(
+      "SELECT creator_id FROM planes WHERE id = $1",
+      [req.params.id],
+    );
+
+    if (plan.rows.length === 0) {
+      res.status(404).json({ error: "Plan no encontrado" });
+      return;
+    }
+
+    if (plan.rows[0].creator_id !== req.session.userId) {
+      res.status(403).json({ error: "Solo el creador puede editar el plan" });
+      return;
+    }
+
+    const { titulo, categoria, descripcion, fecha, ubicacion, aforo_max } =
+      req.body;
+
+    const resultado = await pool.query(
+      `UPDATE planes 
+        SET titulo = $1, 
+            categoria = $2, 
+            descripcion = $3, 
+            fecha = $4, 
+            ubicacion = $5, 
+            aforo_max = $6 
+        WHERE id = $7 
+        RETURNING *`,
+      [
+        titulo,
+        categoria,
+        descripcion,
+        fecha,
+        ubicacion,
+        aforo_max,
+        req.params.id,
+      ],
+    );
+
+    res.json({ plan: resultado.rows[0] });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
+});
 export default router;
