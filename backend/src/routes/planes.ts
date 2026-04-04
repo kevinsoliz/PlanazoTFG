@@ -109,4 +109,69 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// unirse al plan
+router.post("/:id/join", requireAuth, async (req, res) => {
+  try {
+    const plan = await pool.query("SELECT * FROM planes WHERE id = $1", [
+      req.params.id,
+    ]);
+
+    if (plan.rows.length === 0) {
+      res.status(404).json({ error: "Plan no encontrado" });
+      return;
+    }
+
+    if (plan.rows[0].creator_id === req.session.userId) {
+      res.status(400).json({ error: "No puedes unirte a tu propio plan" });
+      return;
+    }
+
+    const participantes = await pool.query(
+      "SELECT COUNT(*) FROM plan_participants WHERE plan_id = $1",
+      [req.params.id],
+    );
+
+    if (parseInt(participantes.rows[0].count) >= plan.rows[0].aforo_max) {
+      res.status(400).json({ error: "El plan está completo" });
+      return;
+    }
+
+    await pool.query(
+      "INSERT INTO plan_participants (plan_id, user_id) VALUES ($1, $2)",
+      [req.params.id, req.session.userId],
+    );
+
+    res.json({ message: "Te has unido al plan" });
+
+  } catch (error: any) {
+    if (error.code === "23505") {
+      res.status(400).json({ error: "Ya estás apuntado a este plan" });
+      return;
+    }
+    console.log(error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
+});
+
+// desapuntarse del plan
+router.delete("/:id/join", requireAuth, async (req, res) => {
+    try {
+      const resultado = await pool.query(
+        "DELETE FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
+        [req.params.id, req.session.userId]
+      );
+ 
+      if (resultado.rowCount === 0) {
+        res.status(400).json({ error: "No estabas en este plan" });
+        return;
+      }
+ 
+      res.json({ message: "Has salido del plan" });
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Error del servidor" });
+    }
+});
+
 export default router;
