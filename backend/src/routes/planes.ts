@@ -62,7 +62,12 @@ router.get("/", async (req, res) => {
 
     if (categoria) {
       resultado = await pool.query(
-        "SELECT p.*, (SELECT COUNT(*) FROM plan_participants WHERE plan_id = p.id) AS participants FROM planes p WHERE p.categoria = $1 AND p.fecha > NOW() ORDER BY p.fecha ASC",
+        `SELECT p.*, 
+        (SELECT COUNT(*) FROM plan_participants 
+        WHERE plan_id = p.id) AS participants FROM planes p 
+        WHERE p.categoria = $1 AND p.fecha > NOW() 
+        ORDER BY p.fecha 
+        ASC`,
         [categoria],
       );
     } else {
