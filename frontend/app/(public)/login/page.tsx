@@ -1,10 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import axios, { AxiosError } from "axios";
-import apiClient from "../../services/api-client";
-import authService from "@/app/services/auth-service";
 import useLogin from "@/app/hooks/useLogin";
 
 const Login = () => {
