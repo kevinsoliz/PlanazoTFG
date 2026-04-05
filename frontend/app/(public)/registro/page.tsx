@@ -1,4 +1,5 @@
 "use client";
+import useRegistro from "@/app/hooks/useRegistro";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -9,32 +10,11 @@ const Registro = () => {
     password: "",
   });
 
-  const [error, setError] = useState("");
-
-  const router = useRouter();
+ const {registrar, error} = useRegistro();
 
   const handleRegistro = async (event: FormEvent) => {
     event.preventDefault();
-
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/registro`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(newUser),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error);
-        return;
-      }
-
-      router.push("/home");
-    } catch {
-      setError("Error de conexión con el servidor");
-    }
+    registrar(newUser);
   };
 
   return (
