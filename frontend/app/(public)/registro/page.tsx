@@ -1,6 +1,5 @@
 "use client";
 import useRegistro from "@/app/hooks/useRegistro";
-import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 const Registro = () => {
