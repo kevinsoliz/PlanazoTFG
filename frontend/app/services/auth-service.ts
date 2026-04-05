@@ -1,22 +1,23 @@
 
+import { AuthUser } from "../types/user";
 import apiClient from "./api-client";
-import create from "./http-service";
+
 
 class AuthService {
     login(user: { email: string, password: string }) {
-        return apiClient.post("/auth/login", user);
+        return apiClient.post<{user: AuthUser}>("/auth/login", user);
     }
 
     registro(user: { nombre: string, email: string, password: string }) {
-        return apiClient.post("/auth/registro", user);
+        return apiClient.post<{user: AuthUser}>("/auth/registro", user);
     }
 
     logout() {
-        return apiClient.post("/auth/logout");
+        return apiClient.post<{user: AuthUser}>("/auth/logout");
     }
 
     me() {
-        return apiClient.get("/auth/me")
+        return apiClient.get<{user: AuthUser}>("/auth/me")
     }
 }
 

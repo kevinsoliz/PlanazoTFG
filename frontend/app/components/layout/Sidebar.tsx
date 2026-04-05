@@ -1,9 +1,13 @@
 import { TiHome } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
-import { FiLogOut } from "react-icons/fi";
 import LogoutBtn from "../features/LogoutBtn";
+import { UserProfile } from "@/app/types/user";
 
-const Sidebar = () => {
+interface Props {
+  perfil: UserProfile | null
+}
+
+const Sidebar = ({ perfil }: Props) => {
   return (
     <section className="flex-1 flex flex-col items-center py-4 pl-5 pr-9 gap-7">
       <header className=" flex flex-col items-center gap-1">
