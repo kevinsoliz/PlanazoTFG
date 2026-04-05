@@ -4,39 +4,18 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import apiClient from "../../services/api-client";
-
-interface User {
-  id: number;
-  nombre: string;
-  email: string;
-}
+import authService from "@/app/services/auth-service";
+import useLogin from "@/app/hooks/useLogin";
 
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-
-  const [error, setError] = useState("");
-
-  const router = useRouter();
-
+  const {login, error} = useLogin()
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
-
-    apiClient
-      .post(`/auth/login`, user)
-      .then((res) => {
-        console.log("Este es el response:", res.data.user);
-        router.push("/home");
-      })
-      .catch((err) => {
-        if (axios.isAxiosError(err)) {
-          setError(err.response?.data?.error ?? "Error desconocido");
-        } else {
-          setError("Error de conexión con el servidor");
-        }
-      });
+    login(user);
   };
 
   return (
