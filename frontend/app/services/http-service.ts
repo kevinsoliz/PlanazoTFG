@@ -5,8 +5,8 @@ interface Entity {
 class HttpService {
     endpoint: string;
 
-    constructor(endopoint: string) {
-        this.endpoint = endopoint;
+    constructor(endpoint: string) {
+        this.endpoint = endpoint;
     }
 
     getAll<T>() {

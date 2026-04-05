@@ -8,7 +8,7 @@ const useLogin = () => {
   const [error, setError] = useState("");
 
   const login = (user: { email: string; password: string }) => authService
-    .create(user)
+    .login(user)
     .then((res) => {
       console.log("Este es el response:", res.data.user);
       router.push("/home");
