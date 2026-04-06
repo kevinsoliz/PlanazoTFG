@@ -34,7 +34,10 @@ router.patch("/perfiles/:id", requireAuth, async (req, res) => {
   try {
     const resultado = await pool.query(
       `UPDATE perfiles 
-            SET nombre = $1, username = COALESCE($2, username), descripcion = $3, categorias = $4 
+            SET nombre = COALESCE($1, nombre),
+                username = COALESCE($2, username), 
+                descripcion = COALESCE($3, descripcion), 
+                categorias = COALESCE($4, categorias) 
             WHERE user_id = $5 
             RETURNING *`,
       [nombre, username, descripcion, categorias, req.params.id],
