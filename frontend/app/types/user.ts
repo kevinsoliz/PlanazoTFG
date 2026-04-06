@@ -12,5 +12,5 @@ export interface UserProfile {
     avatar_url: string | null,
     descripcion: string | null,
     categorias: string | null,
-    created_at: string
+    created_at: string 
 }
