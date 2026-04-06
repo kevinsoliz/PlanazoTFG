@@ -2,12 +2,14 @@ import { TiHome } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
 import LogoutBtn from "../features/LogoutBtn";
 import { UserProfile } from "@/app/types/user";
+import { CATEGORIAS } from "@/app/constants/categorias";
 
 interface Props {
   perfil: UserProfile;
 }
 
 const Sidebar = ({ perfil }: Props) => {
+  const userCategorias = perfil.categorias ? perfil.categorias.split(",") : [];
   return (
     <section className="flex-1 flex flex-col items-center py-4 pl-5 pr-9 gap-7">
       <header className=" flex flex-col items-center gap-1">
@@ -21,16 +23,18 @@ const Sidebar = ({ perfil }: Props) => {
       </header>
 
       <article className=" flex flex-wrap justify-center w-full gap-3">
-        <span className="badge badge-sm badge-primary">Aventura</span>
-        <span className="badge badge-sm badge-secondary">Cultura</span>
-        <span className="badge badge-sm badge-accent">Deporte</span>
-        <span className="badge badge-sm badge-neutral">Música</span>
-        <span className="badge badge-sm badge-outline">Gastronomía</span>
+        {CATEGORIAS
+        .filter((cat) => userCategorias.includes(cat.name))
+        .map(
+          (cat) => (
+            <span key={cat.name} className={`badge badge-sm ${cat.badge}`}>
+              {cat.name}
+            </span>
+          ),
+        )}
       </article>
       <article className="flex w-full">
-        <p className="text-sm">
-          {perfil.descripcion}
-        </p>
+        <p className="text-sm">{perfil.descripcion}</p>
       </article>
 
       <article className=" flex-1 flex flex-col gap-3 self-start">
