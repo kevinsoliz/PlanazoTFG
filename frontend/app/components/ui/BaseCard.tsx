@@ -3,9 +3,10 @@ interface Props {
   bgColor?: string;
   textColor?: string;
   className?: string;
+  boxShadow?: string;
 }
 
-const BaseCard = ({ children, bgColor, textColor = "#171718", className = "" }: Props) => {
+const BaseCard = ({ children, bgColor, textColor = "#171718", boxShadow = "6px 6px 0px", className = "" }: Props) => {
   return (
     <div
       className={`card w-full max-w-md mx-auto ${className}`}
@@ -14,7 +15,7 @@ const BaseCard = ({ children, bgColor, textColor = "#171718", className = "" }: 
         color: textColor,
         borderColor: textColor,
         borderWidth: "1px",
-        boxShadow: `6px 6px 0px ${textColor}`,
+        boxShadow: `${boxShadow} ${textColor}`,
       }}
     >
       {children}

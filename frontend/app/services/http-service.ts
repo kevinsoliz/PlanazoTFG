@@ -10,7 +10,7 @@ class HttpService {
     }
 
     getAll<T>() {
-        return apiClient.get<T[]>(this.endpoint)
+        return apiClient.get<T>(this.endpoint)
     }
 
     get<T>(id: number) {
