@@ -4,7 +4,7 @@ import LogoutBtn from "../features/LogoutBtn";
 import { UserProfile } from "@/app/types/user";
 
 interface Props {
-  perfil: UserProfile | null;
+  perfil: UserProfile;
 }
 
 const Sidebar = ({ perfil }: Props) => {
@@ -15,8 +15,8 @@ const Sidebar = ({ perfil }: Props) => {
           K
         </div>
         <span>
-          <p className="text-md text-center font-bold">Kevin Soliz</p>
-          <p className="text-xs text-center text-neutral/50">@kevin_soliz</p>
+          <p className="text-md text-center font-bold">{perfil.nombre}</p>
+          <p className="text-xs text-center text-neutral/50">{`@${perfil.username}`}</p>
         </span>
       </header>
 
@@ -29,9 +29,7 @@ const Sidebar = ({ perfil }: Props) => {
       </article>
       <article className="flex w-full">
         <p className="text-sm">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-          molestias assumenda sequi ipsam nisi accusamus doloremque, earum est
-          veritatis repellendus fugit iure eum molestiae, numquam quasi.
+          {perfil.descripcion}
         </p>
       </article>
 

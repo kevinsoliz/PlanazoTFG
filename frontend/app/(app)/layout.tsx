@@ -36,7 +36,7 @@ const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     <div className="h-screen flex p-4">
       <div className=" flex flex-col w-75">
         <Logo />
-        <Sidebar perfil={perfil}/>
+        {!loading && perfil && <Sidebar perfil={perfil}/>}
       </div>
       <div className="flex-2 flex bg-amber-600/15 rounded-4xl">{children}</div>
     </div>
