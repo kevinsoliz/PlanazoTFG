@@ -30,7 +30,7 @@ PlanazoTFG/
 - [Docker](https://www.docker.com/) y Docker Compose
 - [Node.js](https://nodejs.org/) v20+
 
-## Instalacion y desarrollo
+## Instalación y desarrollo
 
 1. Clonar el repositorio:
 
