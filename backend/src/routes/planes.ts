@@ -55,11 +55,13 @@ router.post("/", requireAuth, async (req, res) => {
 
 // listar planes
 router.get("/", async (req, res) => {
+  // comprueba si en la url viene un filtro de categoria
   const { categoria } = req.query;
 
   try {
     let resultado;
 
+    // si el usuario pide una categoria concreta:
     if (categoria) {
       resultado = await pool.query(
         `SELECT p.*, 
@@ -71,11 +73,18 @@ router.get("/", async (req, res) => {
         [categoria],
       );
     } else {
+      // si no hay categoria:
       resultado = await pool.query(
-        "SELECT p.*, (SELECT COUNT(*) FROM plan_participants WHERE plan_id = p.id) AS participants FROM planes p WHERE p.fecha > NOW() ORDER BY p.fecha ASC",
+        `SELECT p.*, 
+        (SELECT COUNT(*) FROM plan_participants 
+        WHERE plan_id = p.id) AS participants FROM planes p 
+        WHERE p.fecha > NOW() 
+        ORDER BY p.fecha 
+        ASC`,
       );
     }
 
+    // devuelve los planes (rows) como json
     res.json({ planes: resultado.rows });
   } catch (error) {
     console.log("Aqui esta el error: ", error);

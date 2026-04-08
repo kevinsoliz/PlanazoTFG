@@ -7,5 +7,6 @@ export interface Plan {
     fecha: string,
     ubicacion: string | null,
     aforo_max: number,
+    participants: number,
     created_at: string
 }

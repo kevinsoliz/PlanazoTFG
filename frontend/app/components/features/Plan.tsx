@@ -7,13 +7,24 @@ interface Props {
 }
 
 const Plan = ({ plan }: Props) => {
+
+    const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    })
+    const hora = new Date(plan.fecha).toLocaleTimeString("es-ES", {
+        hour: "2-digit",
+        minute: "2-digit"
+    })
+    
   return (
     <div className="card bg-base-100 shadow-sm break-inside-avoid mb-6">
       <BaseCard boxShadow="0">
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70">{plan.descripcion}</p>
-          <div className="flex gap-2 mt-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             {CATEGORIAS.filter((cat) => plan.categoria === cat.name).map(
               (cat) => (
                 <span key={cat.name} className={`badge badge-sm ${cat.badge}`}>
@@ -22,7 +33,8 @@ const Plan = ({ plan }: Props) => {
               ),
             )}
 
-            <span className="badge badge-outline">4 plazas</span>
+            <span className="badge badge-sm badge-outline">{`${plan.aforo_max - plan.participants} plazas`}</span>
+            <p className="text-xs">{`El ${fecha} a las ${hora} en ${plan.ubicacion}`}</p>
           </div>
           <div className="card-actions mt-4">
             <button className="btn btn-primary btn-sm w-full">Unirme</button>
