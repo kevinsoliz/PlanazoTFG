@@ -1,8 +1,8 @@
 # Planazo
 
-Aplicacion web para crear y unirse a planes presenciales entre personas con intereses compartidos.
+Aplicación web para crear y unirse a planes presenciales entre personas con intereses compartidos.
 
-Planazo nace de un problema real: las redes sociales priorizan la interaccion virtual sobre el encuentro real. Esta plataforma permite a cualquier usuario publicar una actividad (una ruta, un concierto, una partida de ajedrez) y que otras personas con el mismo interes puedan apuntarse.
+Planazo nace de un problema real: las redes sociales priorizan la interacción virtual sobre el encuentro real. Esta plataforma permite a cualquier usuario publicar una actividad (una ruta, un concierto, una partida de ajedrez) y que otras personas con el mismo interes puedan apuntarse.
 
 ## Stack tecnico
 
@@ -67,10 +67,10 @@ docker compose up --build
 
 ## Funcionalidades principales
 
-- **Autenticacion**: Registro e inicio de sesion con email y contraseña
+- **Autenticacion**: Registro e inicio de sesión con email y contraseña
 - **Perfil de usuario**: Nombre, avatar, descripcion y categorias de interes
 - **Planes**: Crear, listar, filtrar por categoria, ver detalle, apuntarse y desapuntarse
-- **Limite de planes**: Maximo 3 planes activos por usuario
+- **Limite de planes**: Máximo 3 planes activos por usuario
 - **Seguridad**: Queries parametrizadas, passwords hasheados con bcrypt
 
 ## Scripts utiles
@@ -88,7 +88,7 @@ docker logs -f planazo-backend
 
 ## Despliegue
 
-La aplicacion esta desplegada en [Railway](https://railway.app/) con servicios separados para frontend, backend y base de datos.
+La aplicación esta desplegada en [Railway](https://getplanazo.es/) con servicios separados para frontend, backend y base de datos.
 
 ## Licencia
 
