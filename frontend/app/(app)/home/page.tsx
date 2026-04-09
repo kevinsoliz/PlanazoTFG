@@ -1,26 +1,10 @@
 import PlanCard from "@/app/components/features/Plan";
-import type { Plan } from "@/app/types/plan";
 import { CiSearch } from "react-icons/ci";
 import { FaBell } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
-import { cookies } from "next/headers"
+import { getPlanes } from "@/app/services/planes.server";
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
-async function getPlanes(): Promise<Plan[]> {
-  const cookieStore = await cookies();
-  const backendUrl = process.env.BACKEND_URL || "http://backend:4000";
-
-  const res = await fetch(`${backendUrl}/api/planes`, {
-    headers: {
-      Cookie: cookieStore.toString() // puesto que este componente se ejecuta en el servidor las cookies no se envian automáticamente, hay que leerlas con cookies() y reenviarlas manualmente a express
-    }
-  });
-
-  if (!res.ok) return [];
-
-  const data = await res.json();
-  return data.planes;
-}
 
 const Planes = async () => {
   const planes = await getPlanes();
