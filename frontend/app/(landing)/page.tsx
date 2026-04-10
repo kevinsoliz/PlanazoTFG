@@ -6,17 +6,18 @@ import Hero from "../components/landing/Hero";
 import Oruga from "../components/landing/Oruga";
 
 export const metadata: Metadata = {
-  description: "Descubre planes de deporte, cultura y ocio organizados por personas con tus mismos intereses."
-}
+  title: "Planazo - Encuentra planes y amigos con los mismos gustos",
+  description: "Descubre planes de deporte, cultura y ocio organizados por amigos con tus mismos gustos.",
+};
 
 export default function Home() {
   return (
     <main>
       <Hero />
-      <Oruga/>
-      <CategoryBadges/>
-      <Features/>
-      <CTASection/>
+      <Oruga />
+      <CategoryBadges />
+      <Features />
+      <CTASection />
     </main>
   );
 }
