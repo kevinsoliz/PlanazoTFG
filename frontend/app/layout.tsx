@@ -14,8 +14,34 @@ const bagelFatOne = Bagel_Fat_One({
 });
 
 export const metadata: Metadata = {
-  title: "Planazo",
-  description: "Planes sencillos, gente cercana.",
+  metadataBase: new URL("https://getplanazo.es"),
+  title: {
+    default: "Planazo",
+    template: "%s | Planazo",
+  },
+  description: "Crea y únete a planes con personas que comparten tus intereses.",
+  openGraph: {
+    title: "Planazo",
+    description: "Planes sencillos, gente cercana",
+    url: "https://getplanazo.es",
+    siteName: "Planazo",
+    locale: "es_ES",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Planazo"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Planazo",
+    description: "Planes sencillos, gente cercana."
+  }
+  
 };
 
 export default function RootLayout({
