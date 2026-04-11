@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://getplanazo.es"),
   title: {
     default: "Planazo - Encuentra planes y gente con tus mismos gustos",
-    template: "%s | Planazo",
+    template: "%s",
   },
   description: "Encuentra planes y amigos con tus mismos gustos. Deporte, cultura, videojuegos, quedadas y lo que se te ocurra. Crea el tuyo o únete en segundos.",
   openGraph: {
