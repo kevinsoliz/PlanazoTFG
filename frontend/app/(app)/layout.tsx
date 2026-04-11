@@ -11,7 +11,7 @@ const perfil = await getPerfil();
         <Logo color="text-amber-500" />
         {perfil && <Sidebar perfil={perfil}/>}
       </div>
-      <div className="flex-2 flex bg-indigo-900 rounded-4xl">{children}</div>
+      <div className="flex-2 flex bg-base-100 rounded-xl">{children}</div>
     </div>
   );
 };
