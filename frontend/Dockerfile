@@ -15,4 +15,4 @@ ENV BACKEND_URL=$BACKEND_URL
 
 RUN npm run build
 
-CMD ["npm", "start"]
+CMD ["npm", "start"] 

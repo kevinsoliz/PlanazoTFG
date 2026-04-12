@@ -14,8 +14,7 @@ const LogoutBtn = () => {
   };
   return (
     <>
-      <FiLogOut size={22} className="text-base-100"/>
-      <button className="font-bold hover:cursor-pointer text-base-100" onClick={handleLogout}>
+      <button className="font-bold hover:cursor-pointer" onClick={handleLogout}>
         Logout
       </button>
     </>
