@@ -3,6 +3,7 @@ import { CiSearch } from "react-icons/ci";
 import { FaBell } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
 import { getPlanes } from "@/app/services/planes.server";
+import CreaPlanBtn from "@/app/components/features/CreaPlanBtn";
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
 
@@ -22,7 +23,7 @@ const Planes = async () => {
         <div className="flex items-center gap-6">
           <FaBell size={20} className="text-primary cursor-pointer" />
           <FaMessage size={20} className="text-primary cursor-pointer" />
-          <button className="btn btn-primary btn-outline">Crear plan</button>
+          <CreaPlanBtn/>
         </div>
       </article>
 
