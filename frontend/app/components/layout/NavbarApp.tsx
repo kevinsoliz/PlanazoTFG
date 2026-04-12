@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const NavbarApp = () => {
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-10">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -29,7 +29,7 @@ const NavbarApp = () => {
           </div>
           <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li>
-              <a>Homepage</a>
+              <Link href='/home'>Planes</Link>
             </li>
             <li>
               <a>Portfolio</a>
@@ -68,10 +68,10 @@ const NavbarApp = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
-                  Profile
+                <Link href="/perfil" className="justify-between">
+                  Perfil
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Settings</a>
