@@ -5,7 +5,7 @@ import pool from "../db";
 const router = Router();
 
 //crear plan
-router.post("/", requireAuth, async (req, res) => {
+router.patch("/", requireAuth, async (req, res) => {
   const { titulo, categoria, descripcion, fecha, ubicacion, aforo_max } =
     req.body;
 
@@ -20,7 +20,7 @@ router.post("/", requireAuth, async (req, res) => {
       [req.session.userId],
     );
 
-    if (parseInt(planesActivos.rows[0].count) >= 3) {
+    if (parseInt(planesActivos.rows[0].count) >= 10) {
       res
         .status(400)
         .json({ error: "Has alcanzado el límite de 3 planes activos" });

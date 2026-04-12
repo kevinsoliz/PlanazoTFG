@@ -22,7 +22,7 @@ class HttpService {
     }
 
     create<T>(entity: T) {
-        return apiClient.post(this.endpoint, entity);
+        return apiClient.patch(this.endpoint, entity);
     }
 
     update<T extends Entity>(entity: T) {
