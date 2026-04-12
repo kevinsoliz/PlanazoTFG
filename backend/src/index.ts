@@ -21,7 +21,7 @@ app.use(
 
 //json es un metodo estático de express que es una función y objeto a la vez.
 app.use(express.json()); //convierte los json a objetos
-
+app.set("trust proxy", 1);
 // TODO: agregar helmet (cabeceras de seguridad) y morgan (logs de   peticiones)
 
 app.use(

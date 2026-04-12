@@ -11,7 +11,7 @@ const Hero = () => {
             Planes sencillos gente cercana
           </h1>
           <p className="text-md text-base-content/70">
-            Encuentra personas con tus mismos intereses y comparte experiencias
+            Encuentra personas con tus mismos gustos y comparte experiencias
             únicas. Crear un plan es sencillo, unirte a uno todavía más. Empieza
             hoy y descubre lo que te espera.
           </p>

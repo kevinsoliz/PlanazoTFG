@@ -42,6 +42,8 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:3000/api # es lo que usa Axios desde el navegador.
       BACKEND_URL: http://backend:4000 # url interna que usa el rewrite del servidor de next.js. No lleva nex_public para que no se exponga al navegador
+      WATCHPACK_POLLING: "true"   
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - backend
 
