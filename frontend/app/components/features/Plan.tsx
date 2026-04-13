@@ -19,7 +19,7 @@ const Plan = ({ plan }: Props) => {
     })
     
   return (
-    <div className="card bg-base-100 shadow-sm break-inside-avoid mb-6">
+    <div className="card bg-base-100 shadow-md break-inside-avoid mb-6">
       <BaseCard boxShadow="0">
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>

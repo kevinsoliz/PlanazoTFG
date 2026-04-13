@@ -11,7 +11,7 @@ const Planes = async () => {
   const planes = await getPlanes();
 
   return (
-    <section className="inset-shadow-sm flex-1 flex flex-col overflow-y-auto rounded-xl p-4">
+    <section className=" flex-1 flex flex-col overflow-y-auto rounded-xl pt-4">
       <article className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan} />
