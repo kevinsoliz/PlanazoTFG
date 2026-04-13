@@ -65,7 +65,7 @@ const NavbarApp = () => {
         </div>
         {/* Login */}
         <div className="navbar-end">
-          <Link href="/plan" className="btn btn-neutral">
+          <Link href="/crear-plan" className="btn btn-neutral">
             Crear plan
           </Link>
           <div className="dropdown dropdown-end">

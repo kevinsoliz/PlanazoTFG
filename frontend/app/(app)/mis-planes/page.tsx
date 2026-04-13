@@ -1,4 +1,5 @@
 "use client";
+import PlanCard from "@/app/components/features/PlanCard";
 import apiClient from "@/app/services/api-client";
 import { Plan } from "@/app/types/plan";
 import axios from "axios";
@@ -33,13 +34,21 @@ const MisPlanes = () => {
   return (
     <>
       <div className="flex">
-        <div>
+        <div className="flex-1 ">
           <h1>Planes creados:</h1>
-          <pre>{JSON.stringify(creados, null, 2)}</pre>
+          {creados.map((plan) => (
+          <PlanCard key={plan.id} plan={plan} >
+            <button className="btn btn-error btn-outline btn-sm">Borrar</button>
+            <button className="btn btn-success btn-outline btn-sm">Editar</button>
+          </PlanCard>
+        ))}
         </div>
-        <div>
+        <div className="flex-1 ">
           <h1>Planes apuntados:</h1>
-          <pre>{JSON.stringify(apuntados, null, 2)}</pre>
+         {apuntados.map((plan) => (
+          <PlanCard key={plan.id} plan={plan} >
+            <button className="btn btn-secondary btn-outline btn-sm">Anular</button>
+          </PlanCard>))}
         </div>
       </div>
     </>

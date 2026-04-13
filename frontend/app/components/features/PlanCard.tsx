@@ -1,12 +1,14 @@
 import type { Plan } from "@/app/types/plan";
 import BaseCard from "../ui/BaseCard";
 import { CATEGORIAS } from "../../constants/categorias";
+import { ReactNode } from "react";
 
 interface Props {
   plan: Plan;
+  children: ReactNode
 }
 
-const Plan = ({ plan }: Props) => {
+const Plan = ({ plan, children }: Props) => {
 
     const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
         day: "numeric",
@@ -19,8 +21,8 @@ const Plan = ({ plan }: Props) => {
     })
     
   return (
-    <div className="card bg-base-100 shadow-md break-inside-avoid mb-6">
-      <BaseCard boxShadow="0">
+
+      <BaseCard boxShadow="0" bgColor="#ffff">
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70">{plan.descripcion}</p>
@@ -36,12 +38,14 @@ const Plan = ({ plan }: Props) => {
             <span className="badge badge-sm badge-outline">{`${plan.aforo_max - plan.participants} plazas`}</span>
             <p className="text-xs">{`El ${fecha} a las ${hora} en ${plan.ubicacion}`}</p>
           </div>
-          <div className="card-actions mt-4">
-            <button className="btn btn-primary btn-sm w-full">Unirme</button>
+          {/* Botones */}
+          <div className="flex place-content-end gap-3">
+            {children}
           </div>
+          
         </div>
       </BaseCard>
-    </div>
+
   );
 };
 
