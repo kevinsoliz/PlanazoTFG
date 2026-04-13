@@ -1,3 +1,4 @@
+import JoinBtn from "@/app/components/features/JoinBtn";
 import PlanCard from "@/app/components/features/PlanCard";
 import { getPlanes } from "@/app/services/planes.server";
 
@@ -12,7 +13,7 @@ const Planes = async () => {
       <article className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 ">
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan}>
-            <button className="btn btn-primary btn-outline btn-sm">Unirme</button>
+            <JoinBtn plan_id={plan.id}/>
           </PlanCard>
         ))}
       </article>

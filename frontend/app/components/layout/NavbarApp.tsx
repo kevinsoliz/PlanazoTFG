@@ -1,15 +1,12 @@
-import React from "react";
 import Logo from "../ui/Logo";
 import LogoutBtn from "../features/LogoutBtn";
-import { FaBell } from "react-icons/fa";
-import { FaMessage } from "react-icons/fa6";
 import Link from "next/link";
 
 const NavbarApp = () => {
   return (
-    <div className="navbar bg-base-100 border-b border-neutral">
+    <div className="navbar bg-base-100 border-b border-neutral sticky top-0 z-10 shadow-md">
       <div className=" w-full flex">
-        {/* Logo */}
+
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
@@ -33,33 +30,31 @@ const NavbarApp = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral"
             >
               <li>
-                <Link href="/planes">Planes</Link>
+                <Link href="/home">Planes</Link>
               </li>
               <li>
-                <Link href="/about">About</Link>
+                <Link href="/mis-planes">Mis planes</Link>
               </li>
               <li>
                 <Link href="/contacto">Contacto</Link>
               </li>
             </ul>
           </div>
-          <Link
-            href="/home"
-          >
-           <Logo/>
+          <Link href="/home">
+            <Logo />
           </Link>
         </div>
         {/* Links centro */}
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1 gap-3">
             <li>
-              <Link href="/home" >Planes</Link>
+              <Link href="/home">Planes</Link>
             </li>
             <li>
-              <Link href="/mis-planes" >Mis planes</Link>
+              <Link href="/mis-planes">Mis planes</Link>
             </li>
             <li>
-              <Link href="/contacto" >Contacto</Link>
+              <Link href="/contacto">Contacto</Link>
             </li>
           </ul>
         </div>
@@ -68,7 +63,7 @@ const NavbarApp = () => {
           <Link href="/crear-plan" className="btn btn-neutral">
             Crear plan
           </Link>
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end ">
             <div
               tabIndex={0}
               role="button"
@@ -83,19 +78,19 @@ const NavbarApp = () => {
             </div>
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow border border-outline"
             >
               <li>
-                <a className="justify-between">
+                <Link href="/perfil" className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <LogoutBtn />
               </li>
             </ul>
           </div>
