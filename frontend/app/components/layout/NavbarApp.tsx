@@ -7,49 +7,67 @@ import Link from "next/link";
 
 const NavbarApp = () => {
   return (
-    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-10">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <div className="navbar bg-base-100 border-b border-neutral">
+      <div className=" w-full flex">
+        {/* Logo */}
+        <div className="navbar-start">
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </div>
+            <ul
+              tabIndex={-1}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral"
             >
-              {" "}
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h7"
-              />{" "}
-            </svg>
+              <li>
+                <Link href="/planes">Planes</Link>
+              </li>
+              <li>
+                <Link href="/about">About</Link>
+              </li>
+              <li>
+                <Link href="/contacto">Contacto</Link>
+              </li>
+            </ul>
           </div>
-          <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          <Link
+            href="/home"
+          >
+           <Logo/>
+          </Link>
+        </div>
+        {/* Links centro */}
+        <div className="navbar-center hidden md:flex">
+          <ul className="menu menu-horizontal px-1 gap-3">
             <li>
-              <Link href='/home'>Planes</Link>
+              <Link href="/home" >Planes</Link>
             </li>
             <li>
-              <a>Portfolio</a>
+              <Link href="/mis-planes" >Mis planes</Link>
             </li>
             <li>
-              <a>About</a>
+              <Link href="/contacto" >Contacto</Link>
             </li>
           </ul>
         </div>
-      </div>
-      <div className="navbar-center">
-        <Logo />
-      </div>
-
-      <div className="navbar-end">
-        <div className="flex items-center   place-content-between w-60">
-          <FaBell size={20} className="text-neutral cursor-pointer" />
-          <FaMessage size={20} className="text-neutral cursor-pointer" />
-        
-
+        {/* Login */}
+        <div className="navbar-end">
+          <Link href="/plan" className="btn btn-neutral">
+            Crear plan
+          </Link>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -68,22 +86,19 @@ const NavbarApp = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <Link href="/perfil" className="justify-between">
-                  Perfil
+                <a className="justify-between">
+                  Profile
                   <span className="badge">New</span>
-                </Link>
+                </a>
               </li>
               <li>
                 <a>Settings</a>
               </li>
               <li>
-                <LogoutBtn />
+                <a>Logout</a>
               </li>
             </ul>
           </div>
-            <Link href="/plan" className="btn btn-neutral">
-            Crear Plan
-          </Link>
         </div>
       </div>
     </div>

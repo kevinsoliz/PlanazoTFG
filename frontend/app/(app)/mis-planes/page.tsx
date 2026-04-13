@@ -5,31 +5,43 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const MisPlanes = () => {
-  const [planes, setPlanes] = useState<Plan[]>([]);
-  const [error, setError] = useState("");
+  const [creados, setCreados] = useState<Plan[]>([]);
+  const [apuntados, setApuntados] = useState<Plan[]>([]);
+  const [errCreados, setErrCreados] = useState("");
+  const [errApuntados, setErrApuntados] = useState("");
 
   useEffect(() => {
     apiClient
       .get("/planes/creados")
-      .then((res) => setPlanes(res.data.planes))
+      .then((res) => setCreados(res.data.planes))
       .catch((err) => {
-        if (axios.isAxiosError(error))
-          setError(err.respose?.data?.error ?? "Error desconocido");
-        else setError("Error de conexión con el servidor");
+        if (axios.isAxiosError(err))
+          setErrCreados(err.response?.data?.error ?? "Error desconocido");
+        else setErrCreados("Error de conexión con el servidor");
+      });
+
+    apiClient
+      .get("/planes/apuntado")
+      .then((res) => setApuntados(res.data.planes))
+      .catch((err) => {
+        if (axios.isAxiosError(err))
+          setErrApuntados(err.response?.data?.error ?? "Error desconocido");
+        else setErrApuntados("Error de conexión con el servidor");
       });
   });
 
   return (
     <>
-      <div className="">
-        {planes.map((plan) => (
-          <>
-          <p>{plan.titulo}</p>
-          <p>{plan.aforo_max}</p>
-          </>
-        ))}
+      <div className="flex">
+        <div>
+          <h1>Planes creados:</h1>
+          <pre>{JSON.stringify(creados, null, 2)}</pre>
+        </div>
+        <div>
+          <h1>Planes apuntados:</h1>
+          <pre>{JSON.stringify(apuntados, null, 2)}</pre>
+        </div>
       </div>
-      <pre>{JSON.stringify(planes, null, 2)}</pre>
     </>
   );
 };
