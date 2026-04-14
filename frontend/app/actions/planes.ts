@@ -20,6 +20,7 @@ export async function borrarPlan(planId: number) {
 
     if (!res.ok) return { error: res.data?.error ?? "Error al borrar el plan"}
 
+    // esta function invalida la caché de datos y fuerza la re-ejecución de los server componentes de esa ruta.
     revalidatePath("/mis-planes");
 
     return {ok: true}
