@@ -13,10 +13,7 @@ const DeleteBtn = ({ plan_id }: { plan_id: number }) => {
     if (resultado?.error) {
       setToast({ mensaje: resultado.error, tipo: "error" });
       setTimeout(() => setToast(null), 2000);
-    } else {
-      setToast({ mensaje: "Plan borrado :(", tipo: "warning" });
-      setTimeout(() => setToast(null), 2000);
-    }
+    } 
   };
 
   return (
