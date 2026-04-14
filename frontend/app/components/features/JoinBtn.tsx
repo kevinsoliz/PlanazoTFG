@@ -1,21 +1,43 @@
 "use client";
 
 import { unirseAPlan } from "@/app/actions/planes";
+import { useState } from "react";
 
 const JoinBtn = ({ plan_id }: { plan_id: number }) => {
-  const handleClick = () => {
-    console.log("Este es el id del plan: ", plan_id);
-    unirseAPlan(plan_id);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
+    null,
+  );
+
+  const handleClick = async () => {
+
+    setLoading(true);
+    const resultado = await unirseAPlan(plan_id);
+    setLoading(false);
+
+    if (resultado?.error) {
+      setToast({ mensaje: resultado.error, tipo: "error" });
+      setTimeout(() => setToast(null), 2000);
+    } else {
+      setToast({ mensaje: "Te has unido al plan!", tipo: "success" });
+      setTimeout(() => setToast(null), 2000);
+    }
   };
   return (
     <>
-    <button
-      onClick={handleClick}
-      className="btn btn-primary btn-outline btn-sm"
-    >
-      Unirme
-    </button>
-    
+      {toast && (
+        <div className="toast toast-top toast-center z-50 mt-15">
+          <div className={`alert alert-${toast.tipo}`}>
+            <span>{toast.mensaje}</span>
+          </div>
+        </div>
+      )}
+      <button
+        onClick={handleClick}
+        className="btn btn-primary btn-outline btn-sm"
+      >
+        {loading ? "Uniéndome..." : "Unirme"}
+      </button>
     </>
   );
 };
