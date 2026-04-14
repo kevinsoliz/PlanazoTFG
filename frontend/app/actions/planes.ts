@@ -25,3 +25,28 @@ export async function borrarPlan(planId: number) {
 
     return {ok: true}
 }
+
+type PlanInput = {
+    titulo: string,
+    categoria: string,
+    descripcion: string,
+    fecha: string,
+    ubicacion: string,
+    aforo_max: string
+}
+
+export async function crearPlan(datos: PlanInput) {
+    const res = await fetchServer("/api/planes", {
+        method: "PATCH",
+        body: datos
+    });
+
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al crear el plan"};
+    }
+
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+
+    return { ok: true };
+}
