@@ -5,7 +5,7 @@ import pool from "../db";
 const router = Router();
 
 //crear plan
-router.patch("/", requireAuth, async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   const { titulo, categoria, descripcion, fecha, ubicacion, aforo_max } =
     req.body;
 

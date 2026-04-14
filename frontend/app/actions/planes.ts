@@ -37,7 +37,7 @@ type PlanInput = {
 
 export async function crearPlan(datos: PlanInput) {
     const res = await fetchServer("/api/planes", {
-        method: "PATCH",
+        method: "POST",
         body: datos
     });
 
