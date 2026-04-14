@@ -1,4 +1,5 @@
 "use client";
+import DeleteBtn from "@/app/components/features/DeleteBtn";
 import PlanCard from "@/app/components/features/PlanCard";
 import apiClient from "@/app/services/api-client";
 import { Plan } from "@/app/types/plan";
@@ -29,7 +30,7 @@ const MisPlanes = () => {
           setErrApuntados(err.response?.data?.error ?? "Error desconocido");
         else setErrApuntados("Error de conexión con el servidor");
       });
-  });
+  }, []);
 
   return (
     <>
@@ -38,7 +39,7 @@ const MisPlanes = () => {
           <h1>Planes creados:</h1>
           {creados.map((plan) => (
           <PlanCard key={plan.id} plan={plan} >
-            <button className="btn btn-error btn-outline btn-sm">Borrar</button>
+            <DeleteBtn plan_id={plan.id}/>
             <button className="btn btn-success btn-outline btn-sm">Editar</button>
           </PlanCard>
         ))}

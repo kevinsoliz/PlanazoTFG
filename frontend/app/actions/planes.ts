@@ -14,3 +14,13 @@ export async function unirseAPlan(planId: number) {
     
     return { ok: true };
 }
+
+export async function borrarPlan(planId: number) {
+    const res = await fetchServer(`/api/planes/${planId}`, { method: "DELETE"});
+
+    if (!res.ok) return { error: res.data?.error ?? "Error al borrar el plan"}
+
+    revalidatePath("/mis-planes");
+
+    return {ok: true}
+}
