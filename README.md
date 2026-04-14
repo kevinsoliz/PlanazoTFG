@@ -39,19 +39,7 @@ git clone https://github.com/kevinsoliz/PlanazoTFG.git
 cd PlanazoTFG
 ```
 
-2. Crear el fichero `.env` en `backend/` con las variables necesarias:
-
-```env
-PORT=4000
-DATABASE_URL=postgresql://postgres:postgres@db:5432/planazo
-SESSION_SECRET=tu_secreto_aqui
-FRONTEND_URL=http://localhost:3000
-```
-
-3. Crear el fichero `.env.local` en `frontend/`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:4000/api
+2. Abrir Docker
 ```
 
 3. Levantar los servicios con Docker Compose:
