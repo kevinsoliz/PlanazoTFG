@@ -1,36 +1,11 @@
-"use client";
 import DeleteBtn from "@/app/components/features/DeleteBtn";
 import PlanCard from "@/app/components/features/PlanCard";
-import apiClient from "@/app/services/api-client";
-import { Plan } from "@/app/types/plan";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes.server";
 
-const MisPlanes = () => {
-  const [creados, setCreados] = useState<Plan[]>([]);
-  const [apuntados, setApuntados] = useState<Plan[]>([]);
-  const [errCreados, setErrCreados] = useState("");
-  const [errApuntados, setErrApuntados] = useState("");
 
-  useEffect(() => {
-    apiClient
-      .get("/planes/creados")
-      .then((res) => setCreados(res.data.planes))
-      .catch((err) => {
-        if (axios.isAxiosError(err))
-          setErrCreados(err.response?.data?.error ?? "Error desconocido");
-        else setErrCreados("Error de conexión con el servidor");
-      });
-
-    apiClient
-      .get("/planes/apuntado")
-      .then((res) => setApuntados(res.data.planes))
-      .catch((err) => {
-        if (axios.isAxiosError(err))
-          setErrApuntados(err.response?.data?.error ?? "Error desconocido");
-        else setErrApuntados("Error de conexión con el servidor");
-      });
-  }, []);
+const MisPlanes = async () => {
+const creados = await getPlanesCreados();
+const apuntados = await getPlanesApuntados();
 
   return (
     <>

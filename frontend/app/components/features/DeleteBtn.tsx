@@ -1,3 +1,4 @@
+'use client';
 import { borrarPlan } from "@/app/actions/planes";
 import React, { useState } from "react";
 
