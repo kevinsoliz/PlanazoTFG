@@ -12,7 +12,7 @@ const Sidebar = ({ perfil }: Props) => {
 
   return (
     <section className="flex-1 flex flex-col items-center py-4  pr-5 gap-7">
-      <Perfil perfil={perfil}/>
+      <Perfil/>
       <article className=" flex-1 flex flex-col gap-3 self-start">
         <div className=" flex items-center gap-2">
           <TiHome size={22} className="text-base-100"/>
