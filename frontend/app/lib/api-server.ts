@@ -1,17 +1,29 @@
-import { cookies } from 'next/headers';
+import { cookies } from "next/headers";
 
-export async function fetchServer(path: string) {
-    const cookieStore = await cookies();
+type Options = {
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  body?: unknown;
+};
 
-    const backendUrl = process.env.Backend_URL || "http://backend:4000";
+export async function fetchServer(path: string, options: Options = {}) {
+  const cookieStore = await cookies();
 
-    const res = await fetch(`${backendUrl}${path}`, {
-        headers: { Cookie: cookieStore.toString() } // puesto que este componente se ejecuta en el servidor las cookies no se envian automáticamente, hay que leerlas con cookies() y reenviarlas manualmente a express
-    });
+  const backendUrl = process.env.BACKEND_URL || "http://backend:4000";
 
+  // la petición que por lo general va inline:
+  const req = new Request(`${backendUrl}${path}`, {
+    method: options.method ?? "GET", // Get por defecto
+    headers: {
+      Cookie: cookieStore.toString(),
+      "Content-Type": "application/json",
+    }, // puesto que este componente se ejecuta en el servidor las cookies no se envian automáticamente, hay que leerlas con cookies() y reenviarlas manualmente a express
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
 
-    if(!res.ok) return null;
+  const res = await fetch(req);
 
-    return res.json();
+  const data = await res.json().catch(() => null);
+  return { ok: res.ok, status: res.status, data };
 
+  return res.json();
 }
