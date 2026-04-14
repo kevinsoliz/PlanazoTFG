@@ -1,6 +1,6 @@
 
 import { AuthUser } from "../types/user";
-import apiClient from "./api-client";
+import apiClient from "../lib/api-client";
 
 
 class AuthService {
