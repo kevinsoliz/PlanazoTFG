@@ -50,3 +50,17 @@ export async function crearPlan(datos: PlanInput) {
 
     return { ok: true };
 }
+
+export async function editarPlan(planId: number, datos: PlanInput) {
+    const res = await fetchServer(`/api/planes/${planId}`, {
+        method: "PUT",
+        body: datos
+    })
+
+    if (!res.ok) {error: res.dat?.error ?? "Error al editar el plan"};
+
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+
+    return { ok: true };
+}

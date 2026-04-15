@@ -1,9 +1,22 @@
-import { fetchServer } from '@/app/lib/api-server'
-import { getPerfil } from '../services/auth.server';
+'use client'
+import { editarPlan } from '../actions/planes';
 
-export default async function TestPage() {
-    const data = await getPerfil();
-    console.log("Perfil en la data:", data);
+export default function TestPage() {
 
-    return <pre>{JSON.stringify(data, null, 2)}</pre>
+    const handleEditar = async () => {
+
+        const data = await editarPlan(24, {
+            titulo: "Fuckkkkkkkkk",
+          categoria: "Deportes",
+          descripcion: "Nueva descripción",
+          fecha: "2026-05-01",
+          ubicacion: "Nueva ubicación",
+          aforo_max: "21",
+        })
+
+        console.log(data)
+
+    }
+
+    return <button onClick={handleEditar}>Editar</button>
 }
