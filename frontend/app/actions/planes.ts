@@ -29,10 +29,10 @@ export async function borrarPlan(planId: number) {
 type PlanInput = {
     titulo: string,
     categoria: string,
-    descripcion: string,
+    descripcion: string | null,
     fecha: string,
-    ubicacion: string,
-    aforo_max: string
+    ubicacion: string | null,
+    aforo_max: number
 }
 
 export async function crearPlan(datos: PlanInput) {

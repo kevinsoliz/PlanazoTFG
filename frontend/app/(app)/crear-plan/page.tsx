@@ -10,7 +10,7 @@ const PlanPage = () => {
     descripcion: "",
     fecha: "",
     ubicacion: "",
-    aforo_max: "",
+    aforo_max: 0,
   });
 
   const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
@@ -42,7 +42,7 @@ const PlanPage = () => {
         descripcion: "",
         fecha: "",
         ubicacion: "",
-        aforo_max: "",
+        aforo_max: 0,
       });
     }, 100)
   };
@@ -90,11 +90,11 @@ const PlanPage = () => {
         />
         <legend className="fieldset-legend">Aforo maximo</legend>
         <input
-          type="text"
+          type="number"
           className="input"
           value={plan.aforo_max}
           onChange={(event) =>
-            setPlan({ ...plan, aforo_max: event.target.value })
+            setPlan({ ...plan, aforo_max: Number(event.target.value) })
           }
         />
         <legend className="fieldset-legend">Ubicacion</legend>
