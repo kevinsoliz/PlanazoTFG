@@ -1,6 +1,5 @@
 "use client";
 import { crearPlan } from "@/app/actions/planes";
-import { CATEGORIAS } from "@/app/constants/categorias";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
