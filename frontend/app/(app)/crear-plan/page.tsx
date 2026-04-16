@@ -7,7 +7,7 @@ import { FormEvent, useState } from "react";
 const PlanPage = () => {
   const [plan, setPlan] = useState({
     titulo: "",
-    categoria: CATEGORIAS[0].name,
+    categoria: "",
     descripcion: "",
     fecha: "",
     ubicacion: "",
@@ -37,7 +37,6 @@ const PlanPage = () => {
 
     //vacio el form
     setTimeout(() => {
-
       setPlan({
         titulo: "",
         categoria: "",
@@ -46,7 +45,7 @@ const PlanPage = () => {
         ubicacion: "",
         aforo_max: 0,
       });
-    }, 100)
+    }, 100);
   };
   return (
     <div>
@@ -74,10 +73,22 @@ const PlanPage = () => {
             setPlan({ ...plan, categoria: event.target.value })
           }
         /> */}
-        <select value={plan.categoria} onChange={(event) => setPlan({ ...plan, categoria: event.target.value })}>
-          {CATEGORIAS.map(cat => 
-            (<option key={cat.name} value={cat.name}>{cat.name}</option>)
-          )}
+        <select
+          value={plan.categoria}
+          onChange={(event) =>
+            setPlan({ ...plan, categoria: event.target.value })
+          }
+        >
+          <option value="Aventura">Aventura</option>
+          <option value="Cultura">Cultura</option>
+          <option value="Deporte">Deporte</option>
+          <option value="Música">Música</option>
+          <option value="Gastronomía">Gastronomía</option>
+          <option value="Naturaleza">Naturaleza</option>
+          <option value="Tecnología">Tecnología</option>
+          <option value="Arte">Arte</option>
+          <option value="Cine">Cine</option>
+          <option value="Social">Social</option>
         </select>
         <legend className="fieldset-legend">Descripcion</legend>
         <input
