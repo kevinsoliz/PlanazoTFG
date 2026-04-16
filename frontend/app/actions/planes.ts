@@ -14,6 +14,18 @@ export async function unirseAPlan(planId: number) {
     
     return { ok: true };
 }
+export async function anularPlan(planId: number) {
+
+    const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE"});
+    
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al unirse al plan"}
+    }
+
+    revalidatePath("/home");
+    
+    return { ok: true };
+}
 
 export async function borrarPlan(planId: number) {
     const res = await fetchServer(`/api/planes/${planId}`, { method: "DELETE"});
