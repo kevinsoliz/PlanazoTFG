@@ -69,7 +69,7 @@ export async function editarPlan(planId: number, datos: PlanInput) {
         body: datos
     })
 
-    if (!res.ok) {error: res.dat?.error ?? "Error al editar el plan"};
+    if (!res.ok) return {error: res.data?.error ?? "Error al editar el plan"};
 
     revalidatePath("/home");
     revalidatePath("/mis-planes");
