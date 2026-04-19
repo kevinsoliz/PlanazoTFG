@@ -21,7 +21,7 @@ export async function anularPlan(planId: number) {
     const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE"});
     
     if (!res.ok) {
-        return { error: res.data?.error ?? "Error al unirse al plan"}
+        return { error: res.data?.error ?? "Error al anular el plan"}
     }
 
     revalidatePath("/home");

@@ -1,3 +1,4 @@
+import AnularBtn from "@/app/components/features/AnularBtn";
 import DeleteBtn from "@/app/components/features/DeleteBtn";
 import EditBtn from "@/app/components/features/EditBtn";
 import PlanCard from "@/app/components/features/PlanCard";
@@ -24,7 +25,7 @@ const apuntados = await getPlanesApuntados();
           <h1>Planes apuntados:</h1>
          {apuntados.map((plan) => (
           <PlanCard key={plan.id} plan={plan} >
-            <button className="btn btn-secondary btn-outline btn-sm">Anular</button>
+           <AnularBtn plan_id={plan.id}/>
           </PlanCard>))}
         </div>
       </div>
