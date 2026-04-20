@@ -113,7 +113,7 @@ router.get("/creados", requireAuth, async (req, res) => {
 
 // listar planes a los el usuario se ha unido sin contar los suyos
 
-router.get("/apuntado", requireAuth, async (req, res) => {
+router.get("/apuntado", requireAuth, async (req, res) => { 
   try {
     const resultado = await pool.query(
       `SELECT planes.*,
@@ -121,7 +121,7 @@ router.get("/apuntado", requireAuth, async (req, res) => {
       WHERE plan_participants.plan_id = planes.id) AS participants
       FROM planes
       JOIN plan_participants ON plan_participants.plan_id = planes.id
-      WHERE plan_participants.user_id != $1
+      WHERE plan_participants.user_id = $1
       AND planes.creator_id != $1
       ORDER BY planes.fecha ASC`,
       [req.session.userId],
