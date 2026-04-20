@@ -17,8 +17,10 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
     restart: always
+    command: npx nodemon --watch src --ext ts --exec "node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts"
     ports:
       - "4000:4000"
+      - "9230:9229"
     volumes:
       - ./backend:/app
       - /app/node_modules
