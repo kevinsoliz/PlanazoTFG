@@ -24,7 +24,7 @@ export async function anularPlan(planId: number) {
         return { error: res.data?.error ?? "Error al anular el plan"}
     }
 
-    revalidatePath("/home");
+    revalidatePath("/mis-planes");
     
     return { ok: true };
 }
