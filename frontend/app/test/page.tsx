@@ -1,20 +1,19 @@
 'use client'
 import { editarPlan } from '../actions/planes';
+import { editarPerfil } from '../services/auth.server';
 
 export default function TestPage() {
 
     const handleEditar = async () => {
-
-        const data = await editarPlan(24, {
-            titulo: "Fuckkkkkkkkk",
-          categoria: "Deportes",
-          descripcion: "Nueva descripción",
-          fecha: "2026-05-01",
-          ubicacion: "Nueva ubicación",
-          aforo_max: "21",
+        debugger;
+        const resultado = await editarPerfil({
+            nombre: "Pericoooo",
+            username: "juuuan",
+            descripcion: "HOLA QUE ASE",
+            categorias: "Aventura, Música, Cine"
         })
 
-        console.log(data)
+        console.log(resultado)
 
     }
 

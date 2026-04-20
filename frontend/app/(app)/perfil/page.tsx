@@ -1,3 +1,4 @@
+import EditProfileBtn from "@/app/components/features/EditProfileBtn";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { getPerfil } from "@/app/services/auth.server";
 
@@ -33,7 +34,9 @@ const PerfilPage = async() => {
           </article>
         </div>
           {/*Planes propios */}
-        <div className="flex-2 bg-amber-600"></div>
+        <div className="flex-2 bg-base-200">
+          <EditProfileBtn/>
+        </div>
       </div>
     </>
   );
