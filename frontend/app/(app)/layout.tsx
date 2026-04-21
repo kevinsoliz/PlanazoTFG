@@ -1,10 +1,10 @@
-import { getPerfil } from "../services/auth.server";
+/* import { getPerfil } from "../services/auth.server";
 import NavbarApp from "../components/layout/NavbarApp";
 
 const AppLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
 
 
-  return (
+  //return (
     <>
     <NavbarApp/>
     <div className="px-4">
@@ -15,3 +15,4 @@ const AppLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) 
 };
 
 export default AppLayout;
+*/

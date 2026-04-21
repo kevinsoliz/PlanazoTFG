@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Bagel_Fat_One } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "./context/ToastContext"; 
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -42,7 +43,6 @@ export const metadata: Metadata = {
     description: "Encuentra planes y amigos con tus mismos gustos. Deporte, cultura, videojuegos, quedadas y lo que se te ocurra. Crea el tuyo o únete en segundos.",
     images: ["/og-image.png"]
   }
-  
 };
 
 export default function RootLayout({
@@ -55,7 +55,9 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${bagelFatOne.variable} antialiased`}
       >
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );
