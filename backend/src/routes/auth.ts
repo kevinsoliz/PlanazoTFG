@@ -2,6 +2,8 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import pool from "../db";
 import { requireAuth } from "../middleware/auth";
+import { RegistroSchema, LoginSchema } from "../schemas/authSchema";
+import { validateRequest } from "../middleware/validate";
 
 declare module "express-session" {
   interface SessionData {
@@ -11,8 +13,8 @@ declare module "express-session" {
 
 const router = Router();
 
-// Registro
-router.post("/registro", async (req, res) => {
+// Registro con validación de datos usando Zod
+router.post("/registro", validateRequest(RegistroSchema), async (req, res) => {
   const { nombre, email, password } = req.body;
 
   if (!nombre || !email || !password) {
@@ -64,8 +66,8 @@ router.post("/registro", async (req, res) => {
   }
 });
 
-// Login
-router.post("/login", async (req, res) => {
+// Login con validación de datos usando Zod
+router.post("/login", validateRequest(LoginSchema), async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
