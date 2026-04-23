@@ -1,6 +1,7 @@
 import DeleteBtn from "@/app/components/features/DeleteBtn";
 import EditBtn from "@/app/components/features/EditBtn";
 import PlanCard from "@/app/components/features/PlanCard";
+import UnJoinBtn from "@/app/components/features/UnJoinBtn";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes.server";
 
 
@@ -24,7 +25,7 @@ const apuntados = await getPlanesApuntados();
           <h1>Planes apuntados:</h1>
          {apuntados.map((plan) => (
           <PlanCard key={plan.id} plan={plan} >
-            <button className="btn btn-secondary btn-outline btn-sm">Anular</button>
+            <UnJoinBtn plan_id={plan.id} />
           </PlanCard>))}
         </div>
       </div>

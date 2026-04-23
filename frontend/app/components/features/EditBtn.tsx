@@ -3,8 +3,12 @@
 import { editarPlan } from "@/app/actions/planes";
 import { Plan } from "@/app/types/plan";
 import { useRef, useState } from "react";
+import { useToast } from "@/app/context/ToastContext"; 
 
 const EditBtn = ({ plan }: { plan: Plan }) => {
+  const { showToast } = useToast(); 
+  
+  // Estado local para manejar los campos del formulario
   const [currentPlan, setCurrentPlan] = useState({
     titulo: plan.titulo,
     categoria: plan.categoria,
@@ -18,17 +22,24 @@ const EditBtn = ({ plan }: { plan: Plan }) => {
 
   const handleClick = () => {
     dialogRef.current?.showModal();
-
-    console.log("plan actual:", plan);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Evita el refresco de página
+
     const resultado = await editarPlan(plan.id, currentPlan);
-    console.log(resultado);
-  }
+    
+    if (!resultado?.ok) {
+      showToast("Hubo un error al actualizar el plan", "error");
+    } 
+    else {
+      showToast("Plan actualizado correctamente", "success");
+      dialogRef.current?.close(); // Cierre automático del modal
+    }
+  };
+
   return (
     <>
-      {/* (You can open the modal using document.getElementById('ID').showModal() method) -> de DaisyUI, para no tener que usar el document usamos useRef que persiste la referencia al elemento html dialog*/}
       <button
         className="btn btn-success btn-sm btn-outline"
         onClick={handleClick}
@@ -37,71 +48,81 @@ const EditBtn = ({ plan }: { plan: Plan }) => {
       </button>
       <dialog ref={dialogRef} className="modal">
         <div className="modal-box">
+          {/* Formulario de edición con inputs vinculados al estado */}
           <button
+            type="button"
             onClick={() => dialogRef.current?.close()}
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           >
             ✕
           </button>
 
-          <form onSubmit={handleSubmit} className="fieldset w-xs">
+          <form onSubmit={handleSubmit} className="fieldset w-full">
             <legend className="fieldset-legend">Titulo</legend>
             <input
               type="text"
-              className="input"
+              className="input w-full"
               value={currentPlan.titulo}
               onChange={(event) =>
                 setCurrentPlan({ ...currentPlan, titulo: event.target.value })
               }
             />
+            
             <legend className="fieldset-legend">Categoria</legend>
             <input
               type="text"
-              className="input"
+              className="input w-full"
               value={currentPlan.categoria}
               onChange={(event) =>
                 setCurrentPlan({ ...currentPlan, categoria: event.target.value })
               }
             />
+            
             <legend className="fieldset-legend">Descripcion</legend>
             <input
               type="text"
-              className="input"
+              className="input w-full"
               value={currentPlan.descripcion ?? ""}
               onChange={(event) =>
                 setCurrentPlan({ ...currentPlan, descripcion: event.target.value })
               }
             />
+            
             <legend className="fieldset-legend">Fecha</legend>
             <input
               type="datetime-local"
-              className="input"
+              className="input w-full"
               value={currentPlan.fecha}
               onChange={(event) =>
                 setCurrentPlan({ ...currentPlan, fecha: event.target.value })
               }
             />
+            
             <legend className="fieldset-legend">Aforo maximo</legend>
             <input
-              type="text"
-              className="input"
+              type="number"
+              className="input w-full"
               value={currentPlan.aforo_max}
               onChange={(event) =>
                 setCurrentPlan({ ...currentPlan, aforo_max: Number(event.target.value) })
               }
             />
+            
             <legend className="fieldset-legend">Ubicacion</legend>
             <input
               type="text"
-              className="input"
+              className="input w-full"
               value={currentPlan.ubicacion ?? ""}
               onChange={(event) =>
                 setCurrentPlan({ ...currentPlan, ubicacion: event.target.value })
               }
             />
-            <button type="submit" className="btn btn-neutral ">
-              Editar
-            </button>
+            
+            <div className="mt-4">
+              <button type="submit" className="btn btn-neutral w-full">
+                Guardar cambios
+              </button>
+            </div>
           </form>
         </div>
       </dialog>

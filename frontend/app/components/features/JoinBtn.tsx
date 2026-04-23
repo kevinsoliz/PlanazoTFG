@@ -2,43 +2,32 @@
 
 import { unirseAPlan } from "@/app/actions/planes";
 import { useState } from "react";
+import { useToast } from "@/app/context/ToastContext"; 
 
 const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
-    null,
-  );
+  const { showToast } = useToast(); 
 
   const handleClick = async () => {
-
-    setLoading(true);
+    setLoading(true); // Bloquea el botón para evitar doble click
     const resultado = await unirseAPlan(plan_id);
     setLoading(false);
 
     if (resultado?.error) {
-      setToast({ mensaje: resultado.error, tipo: "error" });
-      setTimeout(() => setToast(null), 2000);
+      showToast(resultado.error, "error");
     } else {
-      setToast({ mensaje: "Te has unido al plan!", tipo: "success" });
-      setTimeout(() => setToast(null), 2000);
+      showToast("Te has unido al plan correctamente", "success");
     }
   };
+
   return (
-    <>
-      {toast && (
-        <div className="toast toast-top toast-center z-50 mt-15">
-          <div className={`alert alert-${toast.tipo}`}>
-            <span>{toast.mensaje}</span>
-          </div>
-        </div>
-      )}
-      <button
-        onClick={handleClick}
-        className="btn btn-primary btn-outline btn-sm"
-      >
-        {loading ? "Uniéndome..." : "Unirme"}
-      </button>
-    </>
+    <button
+      onClick={handleClick}
+      className="btn btn-primary btn-outline btn-sm"
+      disabled={loading} // Desactivamos el botón mientras carga
+    >
+      {loading ? "Uniéndome..." : "Unirme"}
+    </button>
   );
 };
 

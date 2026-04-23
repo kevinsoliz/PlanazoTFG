@@ -57,10 +57,25 @@ export async function editarPlan(planId: number, datos: PlanInput) {
         body: datos
     })
 
-    if (!res.ok) {error: res.dat?.error ?? "Error al editar el plan"};
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al editar el plan" };
+    }
 
     revalidatePath("/home");
     revalidatePath("/mis-planes");
 
+    return { ok: true };
+}
+
+export async function abandonarPlan(planId: number) {
+    const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE" });
+    
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al abandonar el plan" }
+    }
+
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+    
     return { ok: true };
 }

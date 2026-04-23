@@ -2,22 +2,27 @@
 
 import authService from "@/app/services/auth-service";
 import { useRouter } from "next/navigation";
-import { FiLogOut } from "react-icons/fi";
+import { useToast } from "@/app/context/ToastContext"; 
 
 const LogoutBtn = () => {
   const router = useRouter();
-  const handleLogout = () => {
-    authService
-      .logout()
-      .then(() => router.push("/"))
-      .catch(() => router.push("/"));
+  const { showToast } = useToast(); 
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      showToast("Sesión cerrada correctamente", "success");
+      router.push("/"); // Redirección tras éxito
+    } catch  {
+      showToast("Error al cerrar sesión", "error");
+      router.push("/");
+    }
   };
+
   return (
-    <>
-      <button className="font-bold hover:cursor-pointer" onClick={handleLogout}>
-        Logout
-      </button>
-    </>
+    <button className="font-bold hover:cursor-pointer text-error" onClick={handleLogout}>
+      Logout
+    </button>
   );
 };
 
