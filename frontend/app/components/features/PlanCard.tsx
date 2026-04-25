@@ -25,7 +25,7 @@ const Plan = ({ plan, children }: Props) => {
       <BaseCard boxShadow="0" bgColor="#ffff">
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>
-          <p className="text-sm text-base-content/70">{plan.descripcion}</p>
+          <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>
           <div className="flex flex-wrap gap-2 mt-2">
             {CATEGORIAS.filter((cat) => plan.categoria === cat.name).map(
               (cat) => (
@@ -36,7 +36,7 @@ const Plan = ({ plan, children }: Props) => {
             )}
 
             <span className="badge badge-sm badge-outline">{`${plan.aforo_max - plan.participants} plazas`}</span>
-            <p className="text-xs">{`El ${fecha} a las ${hora} en ${plan.ubicacion}`}</p>
+            <p className="text-xs wrap-break-word">{`El ${fecha} a las ${hora} en ${plan.ubicacion}`}</p>
           </div>
           {/* Botones */}
           <div className="flex place-content-end gap-3">
@@ -50,3 +50,8 @@ const Plan = ({ plan, children }: Props) => {
 };
 
 export default Plan;
+
+/*
+Datos: la clase wrap-break-word es para cortar palabras largas. TODO: Se podría validar ese aspecto en la descripción:
+No permitir la entrada de palabras largas y sin sentido.
+*/

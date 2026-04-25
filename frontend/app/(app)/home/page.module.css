@@ -5,6 +5,13 @@
     border: 3px solid red;
 }
 
+.planesContainer{
+    border: 3px solid pink;
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+}
+
 .stack {
     height: 100vh;
     width: 500px;

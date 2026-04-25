@@ -11,9 +11,10 @@ const Planes = async () => {
 
   return (
     <div className={`${styles.home}`}>
+
      
        
-          <article className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3 ">
+          <article className={`${styles.planesContainer}`}>
             {planes.map((plan) => (
               <PlanCard key={plan.id} plan={plan}>
                 <JoinBtn plan_id={plan.id} />
