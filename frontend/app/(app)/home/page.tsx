@@ -11,7 +11,7 @@ const Planes = async () => {
 
   return (
     <div className="flex-1 w-full h-100 flex p-4 gap-4">
-      <article className="flex-1 overflow-y-auto  rounded-sm bg-indigo-800/30 p-3  grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 ">
+      <article className="flex-1 overflow-y-auto  rounded-sm bg-base-100 p-3  grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 ">
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan}>
             <JoinBtn plan_id={plan.id} />

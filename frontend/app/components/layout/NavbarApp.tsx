@@ -4,9 +4,8 @@ import Link from "next/link";
 
 const NavbarApp = () => {
   return (
-    <div className= "navbar bg-neutral border-b border-neutral fixed top-0  z-10 shadow-md">
+    <div className="navbar border-b border-neutral fixed top-0  z-10 shadow-md bg-neutral">
       <div className=" w-full flex mx-3">
-
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
@@ -41,20 +40,26 @@ const NavbarApp = () => {
             </ul>
           </div>
           <Link href="/home">
-            <Logo color="text-[#f06e6e]"/>
+            <Logo color="text-[#f06e6e]" />
           </Link>
         </div>
         {/* Links centro */}
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1 gap-3">
             <li>
-              <Link href="/home" className="text-white font-bold">Planes</Link>
+              <Link href="/home" className="text-white font-bold">
+                Planes
+              </Link>
             </li>
             <li>
-              <Link href="/mis-planes" className="text-white font-bold">Mis planes</Link>
+              <Link href="/mis-planes" className="text-white font-bold">
+                Mis planes
+              </Link>
             </li>
             <li>
-              <Link href="/contacto" className="text-white font-bold">Contacto</Link>
+              <Link href="/contacto" className="text-white font-bold">
+                Contacto
+              </Link>
             </li>
           </ul>
         </div>
@@ -95,7 +100,7 @@ const NavbarApp = () => {
             </ul>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   );
 };
