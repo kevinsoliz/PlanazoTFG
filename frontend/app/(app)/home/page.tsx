@@ -10,8 +10,8 @@ const Planes = async () => {
   const planes = await getPlanes();
 
   return (
-    <div className={`${styles.home}`}>
-      <article className={`${styles.planesContainer}`}>
+    <div className="flex-1 w-full h-100 flex p-4 gap-4">
+      <article className="flex-1 overflow-y-auto  rounded-sm bg-indigo-800/30 p-3  grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 ">
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan}>
             <JoinBtn plan_id={plan.id} />
@@ -21,8 +21,8 @@ const Planes = async () => {
 
       {/* Esto es un div invisible que ocupa el mismo ancho que el aside */}
       {/* <div className="hidden lg:block w-200 shrink-0"></div> */}
-      <aside className={`${styles.stack} w-87.5 hidden lg:block`}>
-        <ul className="list bg-base-100 rounded-box shadow-md">
+      <aside className={`w-87.5 hidden lg:block overflow-y-auto  rounded-sm`}>
+        <ul className="list bg-base-100 shadow-md">
           <li className="p-4 pb-2 text-xs opacity-60 ">Tus próximos planes</li>
 
           {Array.from({ length: 20 }, (_, i) => (

@@ -1,19 +1,17 @@
 .home {
     width: 100vw;
-    background: black;
     display: flex;
-    border: 3px solid red;
 }
 
 .planesContainer{
-    border: 3px solid pink;
+    border: 1px solid black;
     flex: 1;
-    height: calc(100vh - 4rem);
+    /* height: calc(100vh - 5rem); */
     overflow-y: auto;
 }
 
 .stack {
-    height: calc(100vh - 4rem);
+    /* height: calc(100vh - 5rem); */
     overflow-y: auto;
     border: 3px solid dodgerblue;
     background: brown;

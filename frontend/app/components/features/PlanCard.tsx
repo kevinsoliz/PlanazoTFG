@@ -22,7 +22,7 @@ const Plan = ({ plan, children }: Props) => {
     
   return (
 
-      <BaseCard boxShadow="0" bgColor="#ffff">
+      <BaseCard boxShadow="3px 3px 0px"bgColor="#ffff">
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>
