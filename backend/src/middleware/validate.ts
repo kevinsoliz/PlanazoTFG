@@ -14,7 +14,6 @@ export const validateRequest = (schema: ZodObject<any>) =>
                     details: error.issues.map((e: any) => e.message)
                 });
             }
-            next(error); // Para errores inesperados, pasamos al siguiente middleware de error
             return res.status(500).json({
                 error: "Error interno del servidor"
             });
