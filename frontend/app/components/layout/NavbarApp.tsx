@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const NavbarApp = () => {
   return (
-    <div className="navbar bg-base-100 border-b border-neutral sticky top-0 z-10 shadow-md">
-      <div className=" w-full flex">
+    <div className="navbar bg-neutral border-b border-neutral sticky top-0 z-10 shadow-md">
+      <div className=" w-full flex mx-3">
 
         <div className="navbar-start">
           <div className="dropdown">
@@ -41,26 +41,26 @@ const NavbarApp = () => {
             </ul>
           </div>
           <Link href="/home">
-            <Logo />
+            <Logo color="text-[#f06e6e]"/>
           </Link>
         </div>
         {/* Links centro */}
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1 gap-3">
             <li>
-              <Link href="/home">Planes</Link>
+              <Link href="/home" className="text-white font-bold">Planes</Link>
             </li>
             <li>
-              <Link href="/mis-planes">Mis planes</Link>
+              <Link href="/mis-planes" className="text-white font-bold">Mis planes</Link>
             </li>
             <li>
-              <Link href="/contacto">Contacto</Link>
+              <Link href="/contacto" className="text-white font-bold">Contacto</Link>
             </li>
           </ul>
         </div>
         {/* Login */}
-        <div className="navbar-end">
-          <Link href="/crear-plan" className="btn btn-neutral">
+        <div className="navbar-end gap-5">
+          <Link href="/crear-plan" className="btn btn-success btn-sm">
             Crear plan
           </Link>
           <div className="dropdown dropdown-end ">
@@ -95,7 +95,7 @@ const NavbarApp = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   );
 };

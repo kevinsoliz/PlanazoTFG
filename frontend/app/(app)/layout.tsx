@@ -7,7 +7,7 @@ const AppLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) 
   return (
     <>
     <NavbarApp/>
-    <div className="px-4">
+    <div className="px-4 min-h-screen">
      {children}
     </div>
     </>
