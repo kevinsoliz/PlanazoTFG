@@ -1,0 +1,53 @@
+.contenedor {
+  flex: 1; /* crece para ocupar todo el espacio que sobre tras el stack en el contenedor0 */
+  background-color: lightblue; /* color de fondo, solo para visualizar el contenedor */
+  overflow-y: hidden; /* por defecto sin scroll: el contenido que sobra se recorta */
+  scrollbar-gutter: stable; /* reserva el espacio del scrollbar siempre, así al pasar a auto en hover no salta el layout */
+  display: flex;
+  flex-wrap: wrap; /* permite a los hijos saltar a una nueva fila cuando no caben */
+  gap: 2rem;
+
+}
+
+/* cuando el ratón pasa por encima del contenedor, activamos scroll vertical */
+.contenedor:hover {
+  overflow-y: auto;
+}
+
+.caja {
+  height: 150px; /* fija el alto de cada caja */
+  background-color: dodgerblue; /* color para distinguir las cajas */
+  flex: 1 1 150px; /* shorthand de flex-grow:1 / flex-shrink:1 / flex-basis:200px → arranca en 200px y crece para repartir el sobrante de la fila */
+  max-width: 200px; /* tope superior: aunque flex le diga que crezca, no pasa de 300px */
+}
+
+.contenedor0 {
+  width: 900px;
+  height: 400px;
+  background: black;
+  display: flex; /* coloca a los hijos en fila para que contenedor y stack queden lado a lado */
+  border: 3px solid red;
+  scrollbar-width: 3px; /* api estandar — barra fina en vez de la del SO */
+  scrollbar-color: brown transparent; /* api estandar — thumb gris oscuro, track invisible */
+
+
+}
+
+.stack {
+  width: 300px;
+  background-color: aqua;
+  overflow-y: hidden;
+  scrollbar-width: 10px; /* api estandar — barra fina en vez de la del SO */
+  scrollbar-color: brown transparent; /* api estandar — thumb gris oscuro, track invisible */
+}
+
+.stack:hover {
+  overflow-y: auto;
+}
+
+.stackCaja {
+  height: 100px;
+  background: #ffff;
+  margin-bottom: 1rem;
+}
+
