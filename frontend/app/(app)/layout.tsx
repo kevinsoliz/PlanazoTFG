@@ -8,6 +8,7 @@ const AppLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) 
     <>
     <NavbarApp/>
     <div className="min-h-screen">
+      <div className="h-16.5"></div> {/* div invisible para compensar el navbar fixed, con sticky daba problemas*/}
      {children}
     </div>
     </>

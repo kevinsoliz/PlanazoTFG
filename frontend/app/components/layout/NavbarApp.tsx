@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const NavbarApp = () => {
   return (
-    <div className="navbar bg-neutral border-b border-neutral sticky top-0 z-10 shadow-md">
+    <div className= "navbar bg-neutral border-b border-neutral fixed top-0  z-10 shadow-md">
       <div className=" w-full flex mx-3">
 
         <div className="navbar-start">
