@@ -1,4 +1,4 @@
-import EditProfileBtn from "@/app/components/features/EditProfileBtn";
+import EditProfileBtn from "@/app/components/features/perfiles/EditProfileBtn";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { getPerfil } from "@/app/services/perfiles";
 

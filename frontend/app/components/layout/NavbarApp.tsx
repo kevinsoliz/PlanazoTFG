@@ -1,5 +1,5 @@
 import Logo from "../ui/Logo";
-import LogoutBtn from "../features/LogoutBtn";
+import LogoutBtn from "../features/auth/LogoutBtn";
 import Link from "next/link";
 
 const NavbarApp = () => {

@@ -1,7 +1,7 @@
-import AnularBtn from "@/app/components/features/AnularBtn";
-import DeleteBtn from "@/app/components/features/DeleteBtn";
-import EditBtn from "@/app/components/features/EditBtn";
-import PlanCard from "@/app/components/features/PlanCard";
+import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
+import EditBtn from "@/app/components/features/planes/EditBtn";
+import PlanCard from "@/app/components/features/planes/PlanCard";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
 
 

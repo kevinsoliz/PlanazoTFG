@@ -1,6 +1,6 @@
-import AnularBtn from "@/app/components/features/AnularBtn";
-import JoinBtn from "@/app/components/features/JoinBtn";
-import PlanCard from "@/app/components/features/PlanCard";
+import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import JoinBtn from "@/app/components/features/planes/JoinBtn";
+import PlanCard from "@/app/components/features/planes/PlanCard";
 import { getPlanes } from "@/app/services/planes";
 import styles from "./page.module.css";
 

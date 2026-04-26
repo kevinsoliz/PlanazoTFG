@@ -1,5 +1,5 @@
 'use client'
-import FormBase from '../../../components/features/FormBase';
+import FormBase from '../../../components/ui/FormBase';
 
 
 export default function TestPage() {

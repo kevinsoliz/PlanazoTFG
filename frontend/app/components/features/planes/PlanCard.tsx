@@ -1,6 +1,6 @@
 import type { Plan } from "@/app/types/plan";
-import BaseCard from "../ui/BaseCard";
-import { CATEGORIAS } from "../../constants/categorias";
+import BaseCard from "../../ui/BaseCard";
+import { CATEGORIAS } from "../../../constants/categorias";
 import { ReactNode } from "react";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode
 }
 
-const Plan = ({ plan, children }: Props) => {
+const PlanCard = ({ plan, children }: Props) => {
 
     const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
         day: "numeric",
@@ -26,7 +26,6 @@ const Plan = ({ plan, children }: Props) => {
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>
-          <div className="flex flex-wrap gap-2 mt-2">
             {CATEGORIAS.filter((cat) => plan.categoria === cat.name).map(
               (cat) => (
                 <span key={cat.name} className={`badge badge-sm ${cat.badge}`}>
@@ -49,7 +48,7 @@ const Plan = ({ plan, children }: Props) => {
   );
 };
 
-export default Plan;
+export default PlanCard;
 
 /*
 Datos: la clase wrap-break-word es para cortar palabras largas. TODO: Se podría validar ese aspecto en la descripción:
