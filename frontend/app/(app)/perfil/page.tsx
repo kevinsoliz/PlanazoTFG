@@ -1,6 +1,6 @@
 import EditProfileBtn from "@/app/components/features/EditProfileBtn";
 import { CATEGORIAS } from "@/app/constants/categorias";
-import { getPerfil } from "@/app/services/auth.server";
+import { getPerfil } from "@/app/services/perfiles";
 
 
 
