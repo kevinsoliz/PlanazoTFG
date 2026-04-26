@@ -1,16 +1,14 @@
 import BaseCard from "./components/ui/BaseCard";
 import Link from "next/link";
-import Image from "next/image";
 
 const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="relative">
-        <Image
+        <img
           src="/images/status-code/amigo-sentado.png"
           className="hidden lg:block absolute bottom-20 -left-44  w-80 z-10"
           alt=""
-          priority={false}
         />
         <BaseCard>
           <div className="card-body items-center text-center">
