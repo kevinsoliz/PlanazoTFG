@@ -1,7 +1,7 @@
 import AnularBtn from "@/app/components/features/AnularBtn";
 import JoinBtn from "@/app/components/features/JoinBtn";
 import PlanCard from "@/app/components/features/PlanCard";
-import { getPlanes } from "@/app/services/planes.server";
+import { getPlanes } from "@/app/services/planes";
 import styles from "./page.module.css";
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
