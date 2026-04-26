@@ -26,6 +26,7 @@ const PlanCard = ({ plan, children }: Props) => {
         <div className="card-body">
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>
+          <div className="flex flex-wrap gap-2 mt-2">
             {CATEGORIAS.filter((cat) => plan.categoria === cat.name).map(
               (cat) => (
                 <span key={cat.name} className={`badge badge-sm ${cat.badge}`}>
