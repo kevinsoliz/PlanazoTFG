@@ -1,12 +1,12 @@
-import Boton1 from "../botones/Boton1";
+import BotonContador from "./BotonContador";
 
 
-const Prueba = () => {
+const Contador = () => {
   return (
     <>
-     <Boton1 nombre="kevin" edad={28}/>
+     <BotonContador nombre="kevin" edad={28}/>
     </>
   );
 };
 
-export default Prueba;
+export default Contador;

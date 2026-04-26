@@ -8,7 +8,7 @@ interface Props {
     edad?: number
 }
 
-const Boton1 = ({nombre, apellido, edad = 30}: Props) => {
+const BotonContador = ({nombre, apellido, edad = 30}: Props) => {
   const [contador, setContador] = useState(0)
   const [color, setColor] = useState("primary")
   
@@ -28,4 +28,4 @@ const Boton1 = ({nombre, apellido, edad = 30}: Props) => {
   );
 };
 
-export default Boton1;
+export default BotonContador;
