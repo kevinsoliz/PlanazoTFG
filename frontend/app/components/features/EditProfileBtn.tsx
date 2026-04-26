@@ -1,5 +1,5 @@
 'use client'
-import { editarPerfil } from '@/app/services/auth.server'
+import { editarPerfil } from '@/app/actions/perfiles'
 
 const EditProfileBtn = () => {
 
