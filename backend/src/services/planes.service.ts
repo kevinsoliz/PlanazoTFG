@@ -65,15 +65,20 @@ export async function crear(
 
 // 2. Servicio para listar planes (futuros, opcionalmente filtrados por categoría):
 
-// Solo planes con fecha futura. Incluye `participants` (count) calculado en SQL.
-// Si llega categoría, filtra por ella.
+// Solo planes con fecha futura. Incluye `participants` (count) calculado en SQL
+// y los datos del creador (nombre, username, avatar_url) traídos por JOIN —
+// así el frontend pinta avatar + @username sin pedirlo aparte por cada plan.
 export async function listar(categoria?: string): Promise<Plan[]> {
   // SUBQUERY (SELECT COUNT...) calcula los participantes de cada plan en
-  // una sola query. Alternativa: GROUP BY con LEFT JOIN, pero la subquery
-  // es más legible para nuestro tamaño de datos.
+  // una sola query. JOIN con users + perfiles para los datos del creador.
   const baseSelect = `SELECT planes.*,
-        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants
+        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        users.nombre AS creador_nombre,
+        perfiles.username AS creador_username,
+        perfiles.avatar_url AS creador_avatar_url
         FROM planes
+        JOIN users ON planes.creator_id = users.id
+        JOIN perfiles ON perfiles.user_id = users.id
         WHERE planes.fecha > NOW()`;
 
   if (categoria) {
@@ -96,8 +101,13 @@ export async function listar(categoria?: string): Promise<Plan[]> {
 export async function listarCreadosPor(userId: number): Promise<Plan[]> {
   const resultado = await pool.query(
     `SELECT planes.*,
-        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants
+        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        users.nombre AS creador_nombre,
+        perfiles.username AS creador_username,
+        perfiles.avatar_url AS creador_avatar_url
         FROM planes
+        JOIN users ON planes.creator_id = users.id
+        JOIN perfiles ON perfiles.user_id = users.id
         WHERE planes.creator_id = $1
         ORDER BY planes.fecha ASC`,
     [userId],
@@ -111,9 +121,14 @@ export async function listarCreadosPor(userId: number): Promise<Plan[]> {
 export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
   const resultado = await pool.query(
     `SELECT planes.*,
-        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants
+        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        users.nombre AS creador_nombre,
+        perfiles.username AS creador_username,
+        perfiles.avatar_url AS creador_avatar_url
         FROM planes
         JOIN plan_participants ON plan_participants.plan_id = planes.id
+        JOIN users ON planes.creator_id = users.id
+        JOIN perfiles ON perfiles.user_id = users.id
         WHERE plan_participants.user_id = $1
         AND planes.creator_id != $1
         ORDER BY planes.fecha ASC`,
@@ -125,21 +140,23 @@ export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
 
 // 5. Servicio para obtener el detalle de un plan:
 
-// Devuelve plan + nombre del creador + participantes + plazas disponibles.
-// "creador_nombre" sí es un alias DE COLUMNA (no de tabla): renombra
-// users.nombre en el resultado para no chocar con planes.titulo. Eso lo
-// mantenemos porque hace falta para distinguir.
+// Devuelve plan completo (con datos del creador) + participantes + plazas.
 type PlanDetalle = {
-  plan: Plan & { creador_nombre: string };
+  plan: Plan;
   participantes: { id: number; nombre: string }[];
   plazas_disponibles: number;
 };
 
 export async function obtenerDetalle(planId: number): Promise<PlanDetalle> {
   const plan = await pool.query(
-    `SELECT planes.*, users.nombre AS creador_nombre
+    `SELECT planes.*,
+        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        users.nombre AS creador_nombre,
+        perfiles.username AS creador_username,
+        perfiles.avatar_url AS creador_avatar_url
         FROM planes
         JOIN users ON planes.creator_id = users.id
+        JOIN perfiles ON perfiles.user_id = users.id
         WHERE planes.id = $1`,
     [planId],
   );
