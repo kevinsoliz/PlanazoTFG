@@ -11,23 +11,16 @@ eso vive en el service.
 
 import { Request, Response, NextFunction } from "express";
 import * as authService from "../services/auth.service";
-import { AppError } from "../AppError";
 
 
 // 1. Handler de registro:
 
 // POST /api/auth/registro
 // Crea un usuario nuevo y abre sesión inmediatamente (auto-login tras registro).
+// La validación del body la hizo el middleware `validate(registroSchema)` en
+// la route, así que aquí req.body ya viene parseado y con los tipos correctos.
 export async function registrar(req: Request, res: Response) {
-  // Extraemos los campos del body. Cuando entre zod, esta extracción +
-  // la validación provisional se reemplazará por un parse del schema.
   const { nombre, email, password } = req.body;
-
-  // Validación mínima provisional (zod la reemplazará).
-  // Lanzamos AppError(400) -> el errorHandler central lo traduce a 400.
-  if (!nombre || !email || !password) {
-    throw new AppError(400, "Faltan campos obligatorios");
-  }
 
   // Delegamos toda la lógica al service. Si el service lanza AppError
   // (email duplicado, etc.), Express 5 propaga la rejection al errorHandler
@@ -46,12 +39,9 @@ export async function registrar(req: Request, res: Response) {
 
 // POST /api/auth/login
 // Comprueba credenciales y abre sesión. Responde con el user.
+// req.body ya viene validado por `validate(loginSchema)` en la route.
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    throw new AppError(400, "Faltan campos obligatorios");
-  }
 
   const user = await authService.login(email, password);
 
