@@ -28,6 +28,10 @@ services:
       PORT: 4000
       DATABASE_URL: postgresql://planazo:planazo_dev_123@db:5432/planazo
       SESSION_SECRET: tu_secreto_de_sesion_aqui
+      # En Windows el bind mount no propaga eventos fs -> nodemon necesita
+      # polling para detectar cambios en los .ts. Sin esto, hay que reiniciar
+      # el contenedor a mano tras cada edición.
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - db
 
