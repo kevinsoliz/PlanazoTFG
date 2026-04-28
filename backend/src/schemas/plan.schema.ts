@@ -29,6 +29,15 @@ export const planSchema = z.object({
   // no existe en la tabla. Solo aparece en lecturas, opcional.
   participants: z.number().optional(),
   created_at: z.string(),
+  // Campos del creador, traídos por JOIN con users + perfiles en las
+  // queries de lectura. Permiten pintar avatar + @username en la PlanCard
+  // sin que el frontend tenga que hacer una petición extra por cada plan
+  // (anti N+1).
+  creador_nombre: z.string(),
+  creador_username: z.string(),
+  // nullable porque el usuario puede no haber elegido avatar todavía
+  // (cae al fallback con inicial sobre fondo gris).
+  creador_avatar_url: z.string().nullable(),
 });
 
 export type Plan = z.infer<typeof planSchema>;
