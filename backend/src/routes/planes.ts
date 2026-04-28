@@ -10,12 +10,15 @@ correcto.
 
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth";
+import { validate } from "../middleware/validate";
+import { planInputSchema } from "../schemas/plan.schema";
 import * as planesController from "../controllers/planes.controller";
 
 const router = Router();
 
 // POST /api/planes -> crear plan
-router.post("/", requireAuth, planesController.crear);
+// Cadena: requireAuth -> validate -> handler.
+router.post("/", requireAuth, validate(planInputSchema), planesController.crear);
 
 // GET /api/planes -> listar planes (público, opcional ?categoria=...)
 router.get("/", planesController.listar);
@@ -39,6 +42,11 @@ router.delete("/:id/join", requireAuth, planesController.salir);
 router.delete("/:id", requireAuth, planesController.borrar);
 
 // PUT /api/planes/:id -> actualizar plan (solo creador)
-router.put("/:id", requireAuth, planesController.actualizar);
+router.put(
+  "/:id",
+  requireAuth,
+  validate(planInputSchema),
+  planesController.actualizar,
+);
 
 export default router;
