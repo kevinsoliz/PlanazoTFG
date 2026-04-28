@@ -9,27 +9,9 @@ le invoca tiene permiso.
 
 import pool from "../db";
 import { AppError } from "../AppError";
-
-// Forma del perfil tal como vive en la BBDD.
-type Perfil = {
-  id: number;
-  user_id: number;
-  nombre: string;
-  username: string;
-  avatar_url: string | null;
-  descripcion: string | null;
-  categorias: string | null;
-  created_at: string;
-};
-
-// Datos que se pueden modificar en un PATCH. Todos opcionales:
-// si un campo no viene, se mantiene el valor anterior (COALESCE en el SQL).
-type PerfilUpdate = {
-  nombre?: string;
-  username?: string;
-  descripcion?: string;
-  categorias?: string;
-};
+// Tipos derivados de los schemas de zod -> fuente única de verdad.
+// Si el schema cambia, estos tipos cambian solos.
+import type { Perfil, PerfilUpdate } from "../schemas/perfil.schema";
 
 
 // 1. Servicio para obtener un perfil:

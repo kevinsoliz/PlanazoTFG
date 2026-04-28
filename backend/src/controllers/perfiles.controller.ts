@@ -37,6 +37,8 @@ export async function obtener(req: Request, res: Response) {
 // Solo el propio usuario puede editar su perfil. Esa autorización vive
 // AQUÍ (controller) porque conoce req.session; el service no debe saber
 // nada de sesiones.
+// La validación del body la hizo ya el middleware `validate(perfilUpdateSchema)`
+// montado en la route, así que req.body ya viene parseado y tipado.
 export async function actualizar(req: Request, res: Response) {
   const userId = Number(req.params.id);
   if (Number.isNaN(userId)) {
@@ -50,18 +52,7 @@ export async function actualizar(req: Request, res: Response) {
     throw new AppError(403, "No puedes editar el perfil de otra persona");
   }
 
-  // Extraemos solo los campos editables del body. Los demás (id, user_id,
-  // created_at...) no se aceptan aunque vengan: el service ignoraría lo
-  // que no espera, pero ser explícito previene sorpresas.
-  // Cuando entre zod, esto será un parse de PerfilUpdateSchema.
-  const { nombre, username, descripcion, categorias } = req.body;
-
-  const perfil = await perfilesService.actualizar(userId, {
-    nombre,
-    username,
-    descripcion,
-    categorias,
-  });
+  const perfil = await perfilesService.actualizar(userId, req.body);
 
   res.json({ perfil });
 }

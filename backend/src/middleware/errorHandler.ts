@@ -12,33 +12,44 @@ Cómo se activa:
     cuando llega un next(err). Por eso esa firma es obligatoria.
 
 Importante:
-  - Debe registrarse en app.ts DESPUÉS de las routes, si no, no captura nada.
+  - Debe registrarse en index.ts DESPUÉS de las routes, si no, no captura nada.
   - El parámetro `next` debe estar declarado aunque no lo usemos: Express
     distingue middleware normal de middleware de error por la cantidad de args.
 */
 
 import { Request, Response, NextFunction } from "express";
+import { z } from "zod";
 import { AppError } from "../AppError";
 
 export function errorHandler(
-  err: unknown, // unknown es más seguro que any: nos obliga a comprobar el tipo
+  err: unknown,
   req: Request,
   res: Response,
   // El "_" indica que no usamos next, pero la firma de 4 args es necesaria
   // para que Express reconozca este middleware como handler de errores.
   _next: NextFunction,
 ) {
-  // 1. Si es un error de negocio que lanzamos nosotros (AppError),
-  //    ya viene con su status HTTP semántico. Lo reenviamos tal cual.
+  // 1. Errores de validación de zod -> 400 con el detalle que zod ya da.
+  // err.issues es un array con un objeto por cada fallo:
+  // { code, path: ["nombre"], message: "..." }. Lo devolvemos tal cual.
+  if (err instanceof z.ZodError) {
+    res.status(400).json({
+      error: "Datos inválidos",
+      detalles: err.issues,
+    });
+    return;
+  }
+
+  // 2. Errores de negocio que lanzamos nosotros (AppError),
+  //    ya vienen con su status HTTP semántico. Los reenviamos tal cual.
   if (err instanceof AppError) {
     res.status(err.status).json({ error: err.message });
     return;
   }
 
-  // 2. Cualquier otro error es imprevisto (BBDD caída, bug, etc.).
+  // 3. Cualquier otro error es imprevisto (BBDD caída, bug, etc.).
   //    Loggeamos para depurar y devolvemos 500 genérico al cliente,
-  //    SIN exponer detalles internos (filtrar stack traces es un riesgo
-  //    de seguridad: revela rutas, queries, librerías, etc.).
+  //    SIN exponer detalles internos.
   console.error("Error no controlado:", err);
   res.status(500).json({ error: "Error del servidor" });
 }
