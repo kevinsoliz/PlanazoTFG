@@ -1,6 +1,7 @@
 'use server'
 import { revalidatePath } from "next/cache";
 import { fetchServer } from "../lib/api-server";
+import type { PlanInput } from "../types/plan";
 
 export async function unirseAPlan(planId: number) {
     await new Promise(resolve => setTimeout(resolve, 3))
@@ -38,15 +39,6 @@ export async function borrarPlan(planId: number) {
     revalidatePath("/mis-planes");
 
     return {ok: true}
-}
-
-type PlanInput = {
-    titulo: string,
-    categoria: string,
-    descripcion: string | null,
-    fecha: string,
-    ubicacion: string | null,
-    aforo_max: number
 }
 
 export async function crearPlan(datos: PlanInput) {
