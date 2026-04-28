@@ -14,24 +14,9 @@ import { AppError } from "../AppError";
 
 // POST /api/planes
 // Crea un plan a nombre del usuario logado. requireAuth garantiza la sesión.
+// req.body ya viene validado por `validate(planInputSchema)` en la route.
 export async function crear(req: Request, res: Response) {
-  const { titulo, categoria, descripcion, fecha, ubicacion, aforo_max } =
-    req.body;
-
-  // Validación provisional (zod la reemplazará).
-  if (!titulo || !categoria || !fecha || !aforo_max) {
-    throw new AppError(400, "Faltan campos");
-  }
-
-  const plan = await planesService.crear(req.session.userId!, {
-    titulo,
-    categoria,
-    descripcion: descripcion ?? null,
-    fecha,
-    ubicacion: ubicacion ?? null,
-    aforo_max,
-  });
-
+  const plan = await planesService.crear(req.session.userId!, req.body);
   res.status(201).json({ plan });
 }
 
@@ -137,28 +122,18 @@ export async function borrar(req: Request, res: Response) {
 // 9. Handler para actualizar un plan (solo el creador):
 
 // PUT /api/planes/:id
+// req.body ya viene validado por `validate(planInputSchema)` en la route.
 export async function actualizar(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {
     throw new AppError(400, "ID de plan inválido");
   }
 
-  const { titulo, categoria, descripcion, fecha, ubicacion, aforo_max } =
-    req.body;
-
-  // Validación provisional (zod la reemplazará).
-  if (!titulo || !categoria || !fecha || !aforo_max) {
-    throw new AppError(400, "Faltan campos");
-  }
-
-  const plan = await planesService.actualizar(planId, req.session.userId!, {
-    titulo,
-    categoria,
-    descripcion: descripcion ?? null,
-    fecha,
-    ubicacion: ubicacion ?? null,
-    aforo_max,
-  });
+  const plan = await planesService.actualizar(
+    planId,
+    req.session.userId!,
+    req.body,
+  );
 
   res.json({ plan });
 }

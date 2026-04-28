@@ -9,30 +9,8 @@ en el controller obligaría a duplicar la query.
 
 import pool from "../db";
 import { AppError } from "../AppError";
-
-// Forma de un plan tal como vive en la BBDD (más el participants calculado).
-type Plan = {
-  id: number;
-  creator_id: number;
-  titulo: string;
-  categoria: string;
-  descripcion: string | null;
-  fecha: string;
-  ubicacion: string | null;
-  aforo_max: number;
-  participants?: number;
-  created_at: string;
-};
-
-// Datos para crear/editar un plan.
-type PlanInput = {
-  titulo: string;
-  categoria: string;
-  descripcion: string | null;
-  fecha: string;
-  ubicacion: string | null;
-  aforo_max: number;
-};
+// Tipos derivados del schema de zod -> fuente única de verdad.
+import type { Plan, PlanInput } from "../schemas/plan.schema";
 
 // Límite de planes activos (con fecha futura) que un usuario puede tener
 // creados a la vez. Defensa básica contra spam.
