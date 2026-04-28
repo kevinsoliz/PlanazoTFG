@@ -1,15 +1,9 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { fetchServer } from "../lib/api-server";
+import type { ProfileUpdate } from "../types/user";
 
-type ProfileInput = {
-  nombre: string;
-  username: string;
-  descripcion: string;
-  categorias: string;
-};
-
-export async function editarPerfil(datos: ProfileInput) {
+export async function editarPerfil(datos: ProfileUpdate) {
   const me = await fetchServer("/api/auth/me");
 
   if (!me) return null;
