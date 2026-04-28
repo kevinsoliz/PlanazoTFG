@@ -6,6 +6,8 @@ import pool from "./db";
 import authRoutes from "./routes/auth";
 import perfilRoutes from "./routes/perfiles";
 import planRoutes from "./routes/planes";
+// errorHandler: middleware central de errores. Se monta DESPUÉS de las routes.
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -52,6 +54,12 @@ app.get("/api/health", (req, res) => {
   // ruta para comprobar el estado del servidor
   res.json({ status: "ok" });
 });
+
+// Middleware central de manejo de errores.
+// IMPORTANTE: debe ir AL FINAL, después de todas las routes/middlewares.
+// Si va antes, no captura los errores que se lancen aguas abajo.
+// Express lo identifica como handler de errores por su firma de 4 args.
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Servidor backend corriendo en
