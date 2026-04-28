@@ -1,3 +1,12 @@
+// types/session.ts amplía SessionData de express-session con `userId`.
+// Aunque está dentro del "include" del tsconfig, ts-node bajo Docker
+// solo procesa los ficheros que entran en el grafo de imports en runtime.
+// Si nadie lo importa, el augmentation no se aplica y todos los
+// `req.session.userId` del proyecto fallan con TS2339. Este side-effect
+// import lo mete en el grafo: no carga código (compila a JS vacío),
+// pero garantiza que TS aplica los tipos.
+import "./types/session";
+
 import express from "express";
 import cors from "cors";
 import session from "express-session";
