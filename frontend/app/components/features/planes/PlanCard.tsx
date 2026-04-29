@@ -13,11 +13,13 @@ const PlanCard = ({ plan, children }: Props) => {
     const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
         day: "numeric",
         month: "long",
-        year: "numeric"
+        year: "numeric",
+        timeZone: "Europe/Madrid"
     })
     const hora = new Date(plan.fecha).toLocaleTimeString("es-ES", {
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
+        timeZone: "Europe/Madrid"
     })
     
   return (
