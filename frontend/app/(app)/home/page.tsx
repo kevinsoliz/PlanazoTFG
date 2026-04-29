@@ -11,9 +11,9 @@ const Planes = async () => {
 
   return (
     
-    <div className="flex flex-col lg:flex-row p-4 gap-4">
-      <section className="flex-1 flex flex-col gap-6">
-        <header className="flex flex-col gap-2 border-2 rounded-md px-3 py-2 sticky top-21 z-10 backdrop-blur-md bg-base-100/40">
+    <div className="flex flex-col lg:flex-row  gap-4">
+      <section className="flex-1 flex flex-col gap-9">
+        <header className="flex flex-col gap-2 border-2 rounded-md px-3 py-2 sticky top-21 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
           <h1 className="font-(family-name:--font-bagel-fat-one) text-4xl md:text-5xl text-neutral leading-none">
             ¿Qué se cuece hoy?
           </h1>
@@ -30,8 +30,8 @@ const Planes = async () => {
         </div>
       </section>
 
-      <aside className={`w-87.5 hidden lg:block shrink-0`}>
-        <div className="sticky top-24  rounded-md border-2 overflow-hidden">
+      <aside className="w-87.5 hidden lg:block shrink-0">
+        <div className="sticky top-21  rounded-md border-2 overflow-hidden shadow-md">
           <header className="px-4 py-3 border-b-2">
             <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
               Tus próximos planes
