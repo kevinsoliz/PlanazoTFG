@@ -1,12 +1,22 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { CATEGORIAS } from "@/app/constants/categorias";
 
 const EditProfileBtn = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState<
+    string[]
+  >([]);
 
   const handleOpen = () => {
     dialogRef.current?.showModal();
+  };
+
+  const toggleCategoria = (name: string) => {
+    setCategoriasSeleccionadas((prev) =>
+      prev.includes(name) ? prev.filter((c) => c !== name) : [...prev, name],
+    );
   };
 
   return (
@@ -16,7 +26,7 @@ const EditProfileBtn = () => {
       </button>
 
       <dialog ref={dialogRef} className="modal">
-        <div className="modal-box max-w-3xl bg-primary p-8">
+        <div className="modal-box max-w-3xl bg-base-100 p-8">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -26,32 +36,46 @@ const EditProfileBtn = () => {
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="w-80 ">
               <fieldset className="fieldset">
-                <label className="label text-white">Nombre</label>
+                <label className="label ">Nombre</label>
                 <input
                   type="text"
                   className="input"
                   placeholder="Nombre"
                 />
 
-                <label className="label text-white">Username</label>
+                <label className="label ">Username</label>
                 <input
                   type="text"
                   className="input"
                   placeholder="@username"
                 />
 
-                <label className="label text-white">Descripción</label>
+                <label className="label ">Descripción</label>
                 <textarea
                   className="textarea"
                   placeholder="Cuéntanos algo sobre ti..."
                 />
 
-                <label className="label text-white">Categorías</label>
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Aventura,Cultura,Cine"
-                />
+                <label className="label ">Categorías</label>
+                <div className="flex flex-wrap gap-2">
+                  {CATEGORIAS.map((cat) => {
+                    const seleccionada = categoriasSeleccionadas.includes(
+                      cat.name,
+                    );
+                    return (
+                      <button
+                        key={cat.name}
+                        type="button"
+                        onClick={() => toggleCategoria(cat.name)}
+                        className={`badge ${cat.badge} ${
+                          seleccionada ? "" : "badge-outline opacity-60"
+                        }`}
+                      >
+                        {cat.name}
+                      </button>
+                    );
+                  })}
+                </div>
 
                 <button type="button" className="btn btn-success mt-4 w-full max-w-xs">
                   Guardar
