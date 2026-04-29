@@ -1,6 +1,7 @@
 import AnularBtn from "@/app/components/features/planes/AnularBtn";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
+import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes } from "@/app/services/planes";
 import styles from "./page.module.css";
 
@@ -13,14 +14,10 @@ const Planes = async () => {
     
     <div className="flex flex-col lg:flex-row  gap-4">
       <section className="flex-1 flex flex-col gap-9">
-        <header className="flex flex-col gap-2 border-2 rounded-md px-3 py-2 sticky top-21 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
-          <h1 className="font-(family-name:--font-bagel-fat-one) text-4xl md:text-5xl text-neutral leading-none">
-            ¿Qué se cuece hoy?
-          </h1>
-          <p className="text-neutral/70 text-base md:text-lg">
-            Descubre planes a los que apuntarte. Hay sitio para tu energía.
-          </p>
-        </header>
+        <PageHeader
+          title="¿Qué se cuece hoy?"
+          subtitle="Descubre planes a los que apuntarte. Hay sitio para tu energía."
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planes.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
