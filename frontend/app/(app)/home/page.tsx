@@ -12,7 +12,15 @@ const Planes = async () => {
   return (
     
     <div className="flex flex-col lg:flex-row p-4 gap-4">
-      <section className="flex-1">
+      <section className="flex-1 flex flex-col gap-6">
+        <header className="flex flex-col gap-2 border-2 rounded-md px-3 py-2 sticky top-21 z-10">
+          <h1 className="font-(family-name:--font-bagel-fat-one) text-4xl md:text-5xl text-neutral leading-none">
+            ¿Qué se cuece hoy?
+          </h1>
+          <p className="text-neutral/70 text-base md:text-lg">
+            Descubre planes a los que apuntarte. Hay sitio para tu energía.
+          </p>
+        </header>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planes.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
@@ -23,9 +31,13 @@ const Planes = async () => {
       </section>
 
       <aside className={`w-87.5 hidden lg:block shrink-0`}>
-        <div className="sticky top-24  rounded-sm border-2">
+        <div className="sticky top-24  rounded-md border-2 overflow-hidden">
+          <header className="px-4 py-3 border-b-2">
+            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+              Tus próximos planes
+            </h3>
+          </header>
           <ul className="list shadow-md">
-            <li className="p-4 pb-2 text-xs opacity-60 ">Tus próximos planes</li>
             {Array.from({ length: 4}, (_, i) => (
               <li key={i} className="list-row">
                 <div>
