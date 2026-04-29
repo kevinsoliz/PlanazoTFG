@@ -11,6 +11,7 @@ const bagelFatOne = Bagel_Fat_One({
   variable: "--font-bagel-fat-one",
   subsets: ["latin"],
   weight: "400",
+  preload: false,
 });
 
 export const metadata: Metadata = {
