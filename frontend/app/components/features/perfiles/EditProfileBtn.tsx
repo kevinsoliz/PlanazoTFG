@@ -24,29 +24,29 @@ const EditProfileBtn = () => {
           </form>
 
           <div className="flex flex-col lg:flex-row gap-6">
-            <div className="w-80 border">
+            <div className="w-80 ">
               <fieldset className="fieldset">
-                <label className="label">Nombre</label>
+                <label className="label text-white">Nombre</label>
                 <input
                   type="text"
                   className="input"
                   placeholder="Nombre"
                 />
 
-                <label className="label">Username</label>
+                <label className="label text-white">Username</label>
                 <input
                   type="text"
                   className="input"
                   placeholder="@username"
                 />
 
-                <label className="label">Descripción</label>
+                <label className="label text-white">Descripción</label>
                 <textarea
                   className="textarea"
                   placeholder="Cuéntanos algo sobre ti..."
                 />
 
-                <label className="label">Categorías</label>
+                <label className="label text-white">Categorías</label>
                 <input
                   type="text"
                   className="input"
