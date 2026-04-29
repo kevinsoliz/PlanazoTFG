@@ -13,7 +13,7 @@ const Planes = async () => {
     
     <div className="flex flex-col lg:flex-row p-4 gap-4">
       <section className="flex-1 flex flex-col gap-6">
-        <header className="flex flex-col gap-2 border-2 rounded-md px-3 py-2 sticky top-21 z-10">
+        <header className="flex flex-col gap-2 border-2 rounded-md px-3 py-2 sticky top-21 z-10 backdrop-blur-md bg-base-100/40">
           <h1 className="font-(family-name:--font-bagel-fat-one) text-4xl md:text-5xl text-neutral leading-none">
             ¿Qué se cuece hoy?
           </h1>
