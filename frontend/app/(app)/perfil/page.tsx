@@ -1,44 +1,91 @@
+import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
+import EditBtn from "@/app/components/features/planes/EditBtn";
+import PlanCard from "@/app/components/features/planes/PlanCard";
 import EditProfileBtn from "@/app/components/features/perfiles/EditProfileBtn";
 import { CATEGORIAS } from "@/app/constants/categorias";
+import { getPlanesCreados } from "@/app/services/planes";
 import { getPerfil } from "@/app/services/perfiles";
 
-
-
-const PerfilPage = async() => {
+const PerfilPage = async () => {
   const perfil = await getPerfil();
-  const userCategorias = perfil?.categorias ? perfil.categorias.split(",") : [];
+  const planesCreados = await getPlanesCreados();
+  const userCategorias = perfil?.categorias
+    ? perfil.categorias.split(",")
+    : [];
+
   return (
-    <>
-      <div className="flex h-screen">
-        <div className="flex-1 flex flex-col bg-base-100 rounded-lg px-5 pb-5 gap-8">
-          <header className=" flex flex-col items-center gap-1">
-            <div className="w-20 h-20 rounded-full bg-neutral/80 flex justify-center items-center mt-8 text-neutral-content">
-              K
+    <div className="flex flex-col lg:flex-row gap-4">
+      <section className="flex-1 flex flex-col gap-9">
+        {/* Hero del perfil donde en home va el PageHeader */}
+        <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md sticky top-21 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
+          <div className="w-24 h-24 shrink-0 rounded-full bg-neutral/80 flex justify-center items-center text-3xl font-bold text-neutral-content self-center sm:self-start">
+            {perfil?.nombre?.[0]?.toUpperCase() ?? "?"}
+          </div>
+
+          <div className="flex-1 flex flex-col gap-3">
+            <div>
+              <h2 className="font-bold text-xl">{perfil?.nombre}</h2>
+              <p className="text-sm text-neutral/60">{`@${perfil?.username}`}</p>
             </div>
-            <span>
-              <p className="text-md text-center font-bold">{perfil?.nombre}</p>
-              <p className="text-xs text-center text-neutral/50">{`@${perfil?.username}`}</p>
-            </span>
-          </header>
-          <article className=" flex flex-wrap justify-center w-full gap-3">
-            {CATEGORIAS.filter((cat) => userCategorias.includes(cat.name)).map(
-              (cat) => (
+
+            <p className="text-sm">{perfil?.descripcion}</p>
+
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIAS.filter((cat) =>
+                userCategorias.includes(cat.name),
+              ).map((cat) => (
                 <span key={cat.name} className={`badge badge-sm ${cat.badge}`}>
                   {cat.name}
                 </span>
-              ),
-            )}
-          </article>
-          <article className="flex w-full border rounded-md p-4">
-            <p className="text-sm">{perfil?.descripcion}</p>
-          </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="self-center sm:self-start">
+            <EditProfileBtn />
+          </div>
+        </section>
+
+        {/* Grid de planes creados */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          {planesCreados.map((plan) => (
+            <PlanCard key={plan.id} plan={plan}>
+              <EditBtn plan={plan} />
+              <DeleteBtn plan_id={plan.id} />
+            </PlanCard>
+          ))}
         </div>
-          {/*Planes propios */}
-        <div className="flex-2 bg-base-200">
-          <EditProfileBtn/>
+      </section>
+
+      {/* Aside — mismo bloque que en home */}
+      <aside className="w-87.5 hidden lg:block shrink-0">
+        <div className="sticky top-21 rounded-md border-2 overflow-hidden shadow-md">
+          <header className="px-4 py-3 border-b-2">
+            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+              Tus próximos planes
+            </h3>
+          </header>
+          <ul className="list shadow-md">
+            {Array.from({ length: 4 }, (_, i) => (
+              <li key={i} className="list-row">
+                <div>
+                  <img
+                    className="size-10 rounded-box"
+                    src="https://img.daisyui.com/images/profile/demo/1@94.webp"
+                  />
+                </div>
+                <div className="list-col-grow">
+                  <div>Dio Lupa</div>
+                  <div className="text-xs font-semibold opacity-60">
+                    Sabado 25 de Abril a las 10:00 en tal sitio bien largo
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </>
+      </aside>
+    </div>
   );
 };
 
