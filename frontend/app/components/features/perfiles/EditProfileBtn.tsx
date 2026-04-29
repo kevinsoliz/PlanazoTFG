@@ -16,7 +16,7 @@ const EditProfileBtn = () => {
       </button>
 
       <dialog ref={dialogRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box max-w-3xl bg-primary p-8">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -24,7 +24,7 @@ const EditProfileBtn = () => {
           </form>
 
           <div className="flex flex-col lg:flex-row gap-6">
-            <div>
+            <div className="w-80 border">
               <fieldset className="fieldset">
                 <label className="label">Nombre</label>
                 <input
@@ -53,18 +53,18 @@ const EditProfileBtn = () => {
                   placeholder="Aventura,Cultura,Cine"
                 />
 
-                <button type="button" className="btn btn-success mt-4">
+                <button type="button" className="btn btn-success mt-4 w-full max-w-xs">
                   Guardar
                 </button>
               </fieldset>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="flex-1 grid grid-cols-3 gap-3 border place-items-center">
               {Array.from({ length: 9 }, (_, i) => (
                 <img
                   key={i}
                   src={`/images/avatars/avatar-${i + 1}.png`}
                   alt={`Avatar ${i + 1}`}
-                  className="w-20 h-20 rounded-full object-cover"
+                  className="w-20 h-20"
                 />
               ))}
             </div>
