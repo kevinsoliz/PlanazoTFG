@@ -10,38 +10,40 @@ const Planes = async () => {
   const planes = await getPlanes();
 
   return (
-    <div className="flex-1 w-full h-100 flex p-4 gap-4">
-      <article className="flex-1 overflow-y-auto  rounded-sm bg-base-100 p-3  grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 ">
-        {planes.map((plan) => (
-          <PlanCard key={plan.id} plan={plan}>
-            <JoinBtn plan_id={plan.id} />
-          </PlanCard>
-        ))}
-      </article>
-
-      {/* Esto es un div invisible que ocupa el mismo ancho que el aside */}
-      {/* <div className="hidden lg:block w-200 shrink-0"></div> */}
-      <aside className={`w-87.5 hidden lg:block overflow-y-auto  rounded-sm`}>
-        <ul className="list bg-base-100 shadow-md">
-          <li className="p-4 pb-2 text-xs opacity-60 ">Tus próximos planes</li>
-
-          {Array.from({ length: 20 }, (_, i) => (
-            <li key={i} className="list-row">
-              <div>
-                <img
-                  className="size-10 rounded-box"
-                  src="https://img.daisyui.com/images/profile/demo/1@94.webp"
-                />
-              </div>
-              <div className="list-col-grow">
-                <div>Dio Lupa</div>
-                <div className="text-xs font-semibold opacity-60">
-                  Sabado 25 de Abril a las 10:00 en tal sitio bien largo
-                </div>
-              </div>
-            </li>
+    
+    <div className="flex flex-col lg:flex-row p-4 gap-4">
+      <section className="flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          {planes.map((plan) => (
+            <PlanCard key={plan.id} plan={plan}>
+              <JoinBtn plan_id={plan.id} />
+            </PlanCard>
           ))}
-        </ul>
+        </div>
+      </section>
+
+      <aside className={`w-87.5 hidden lg:block shrink-0`}>
+        <div className="sticky top-24  rounded-sm border-2">
+          <ul className="list shadow-md">
+            <li className="p-4 pb-2 text-xs opacity-60 ">Tus próximos planes</li>
+            {Array.from({ length: 4}, (_, i) => (
+              <li key={i} className="list-row">
+                <div>
+                  <img
+                    className="size-10 rounded-box"
+                    src="https://img.daisyui.com/images/profile/demo/1@94.webp"
+                  />
+                </div>
+                <div className="list-col-grow">
+                  <div>Dio Lupa</div>
+                  <div className="text-xs font-semibold opacity-60">
+                    Sabado 25 de Abril a las 10:00 en tal sitio bien largo
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </aside>
     </div>
   );
