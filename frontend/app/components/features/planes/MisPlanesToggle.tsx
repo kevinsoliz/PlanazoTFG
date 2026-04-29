@@ -35,7 +35,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
 
       {showCreados ? (
         <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-47 z-5 backdrop-blur-md bg-base-100/40">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-50 z-5 backdrop-blur-md bg-base-100/40 mx-3">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Has creado
             </h2>
@@ -50,7 +50,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
         </section>
       ) : (
         <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-47 z-5 backdrop-blur-md bg-base-100/40">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-50 z-5 backdrop-blur-md bg-base-100/40 mx-3">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Te has apuntado a
             </h2>
