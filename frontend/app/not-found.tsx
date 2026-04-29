@@ -9,6 +9,7 @@ const NotFound = () => {
           src="/images/status-code/amigo-sentado.png"
           className="hidden lg:block absolute bottom-20 -left-44  w-80 z-10"
           alt=""
+          loading="lazy"
         />
         <BaseCard>
           <div className="card-body items-center text-center">
