@@ -98,12 +98,8 @@ const NavbarApp = async () => {
             >
               <li>
                 <Link href="/perfil" className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                  Mi perfil
                 </Link>
-              </li>
-              <li>
-                <a>Settings</a>
               </li>
               <li>
                 <LogoutBtn />
