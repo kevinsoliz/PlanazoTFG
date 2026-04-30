@@ -1,4 +1,5 @@
 import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import CategoriaFiltro from "@/app/components/features/planes/CategoriaFiltro";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
@@ -8,8 +9,13 @@ import styles from "./page.module.css";
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
 
-const Planes = async () => {
-  const planes = await getPlanes();
+type Props = {
+  searchParams: Promise<{ categoria?: string }>;
+};
+
+const Planes = async ({ searchParams }: Props) => {
+  const { categoria } = await searchParams;
+  const planes = await getPlanes(categoria);
 
   return (
     
@@ -19,6 +25,7 @@ const Planes = async () => {
           title="¿Qué se cuece hoy?"
           subtitle="Descubre planes a los que apuntarte. Hay sitio para tu energía."
         />
+        <CategoriaFiltro />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planes.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
