@@ -23,7 +23,7 @@ const Planes = async ({ searchParams }: Props) => {
       <section className="flex-1 flex flex-col gap-9">
         <PageHeader
           title="¿Qué se cuece hoy?"
-          subtitle="Descubre planes a los que apuntarte. Hay sitio para tu energía."
+          subtitle="Apúntate al que te apetezca. O monta el tuyo."
         />
         <CategoriaFiltro />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
