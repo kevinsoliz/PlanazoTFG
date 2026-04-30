@@ -21,6 +21,22 @@ import { errorHandler } from "./middleware/errorHandler";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+//* Socket.IO
+import http from 'http';
+import { Server } from 'socket.io';
+import { registerChatHandlers } from './controllers/chat.controller';
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  connectionStateRecovery: {},
+  cors: { origin: process.env.FRONTEND_URL || "http://localhost:3000" }
+});
+
+io.on('connection', (socket) => {
+  registerChatHandlers(io, socket);
+});
+//* Fin Socket.IO
+
 const PGStore = connectPgSimple(session);
 
 app.use(
@@ -71,6 +87,13 @@ app.get("/api/health", (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
+  console.log(`Servidor backend corriendo en
+  http://localhost:${PORT}`);
+});
+
+
+// * Reemplazamos app.listen por server.listen para usar Socket.IO
+server.listen(PORT, () => {
   console.log(`Servidor backend corriendo en
   http://localhost:${PORT}`);
 });
