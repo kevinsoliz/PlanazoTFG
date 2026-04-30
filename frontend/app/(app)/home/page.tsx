@@ -1,6 +1,7 @@
 import AnularBtn from "@/app/components/features/planes/AnularBtn";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
+import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes } from "@/app/services/planes";
 import styles from "./page.module.css";
@@ -34,24 +35,7 @@ const Planes = async () => {
               Tus próximos planes
             </h3>
           </header>
-          <ul className="list shadow-md">
-            {Array.from({ length: 4}, (_, i) => (
-              <li key={i} className="list-row">
-                <div>
-                  <img
-                    className="size-10 rounded-box"
-                    src="https://img.daisyui.com/images/profile/demo/1@94.webp"
-                  />
-                </div>
-                <div className="list-col-grow">
-                  <div>Dio Lupa</div>
-                  <div className="text-xs font-semibold opacity-60">
-                    Sabado 25 de Abril a las 10:00 en tal sitio bien largo
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <PlanesApuntadosList />
         </div>
       </aside>
     </div>
