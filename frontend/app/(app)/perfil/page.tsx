@@ -18,8 +18,16 @@ const PerfilPage = async () => {
       <section className="flex-1 flex flex-col gap-9">
         {/* Hero del perfil donde en home va el PageHeader */}
         <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md sticky top-21 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
-          <div className="w-24 h-24 shrink-0 rounded-full bg-neutral/80 flex justify-center items-center text-3xl font-bold text-neutral-content self-center sm:self-start">
-            {perfil?.nombre?.[0]?.toUpperCase() ?? "?"}
+          <div className="w-24 h-24 shrink-0 rounded-full bg-neutral/80 flex justify-center items-center text-3xl font-bold text-neutral-content self-center sm:self-start overflow-hidden">
+            {perfil?.avatar_url ? (
+              <img
+                src={perfil.avatar_url}
+                alt="Avatar"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              perfil?.nombre?.[0]?.toUpperCase() ?? "?"
+            )}
           </div>
 
           <div className="flex-1 flex flex-col gap-3">
