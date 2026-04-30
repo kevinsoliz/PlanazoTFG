@@ -1,9 +1,13 @@
 import Logo from "../ui/Logo";
+import Avatar from "../ui/Avatar";
 import LogoutBtn from "../features/auth/LogoutBtn";
 import Link from "next/link";
 import { FiPlus, FiMenu, FiCalendar, FiBookmark, FiMail } from "react-icons/fi";
+import { getPerfil } from "@/app/services/perfiles";
 
-const NavbarApp = () => {
+const NavbarApp = async () => {
+  const perfil = await getPerfil();
+
   return (
     <div className="navbar border-b border-neutral fixed top-0  z-50 shadow-md  backdrop-blur-md bg-base-100">
       <div className="max-w-6xl mx-auto w-full flex">
@@ -74,12 +78,11 @@ const NavbarApp = () => {
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
-              </div>
+              <Avatar
+                nombre={perfil?.nombre ?? ""}
+                url={perfil?.avatar_url ?? null}
+                size="sm"
+              />
             </div>
             <ul
               tabIndex={-1}
