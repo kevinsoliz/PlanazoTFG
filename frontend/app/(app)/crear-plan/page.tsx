@@ -34,15 +34,21 @@ const PlanPage = () => {
 
           <label className="label">Categoría</label>
           <div className="flex flex-wrap gap-2">
-            {CATEGORIAS.map((cat) => (
-              <button
-                key={cat.name}
-                type="button"
-                className={`badge ${cat.badge} badge-outline opacity-60`}
-              >
-                {cat.name}
-              </button>
-            ))}
+            {CATEGORIAS.map((cat) => {
+              const seleccionada = categoria === cat.name;
+              return (
+                <button
+                  key={cat.name}
+                  type="button"
+                  onClick={() => setCategoria(cat.name)}
+                  className={`badge ${cat.badge} ${
+                    seleccionada ? "" : "badge-outline opacity-60"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
           </div>
 
           <label className="label">Fecha</label>
