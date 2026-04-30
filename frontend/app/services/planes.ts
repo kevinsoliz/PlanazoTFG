@@ -1,6 +1,18 @@
 import { fetchServer } from "../lib/api-server";
 import { Plan } from "../types/plan";
 
+export interface PlanDetalle {
+    plan: Plan;
+    participantes: { id: number; nombre: string }[];
+    plazas_disponibles: number;
+}
+
+export async function getPlan(id: number): Promise<PlanDetalle | null> {
+    const res = await fetchServer(`/api/planes/${id}`);
+    if (!res.ok) return null;
+    return res.data ?? null;
+}
+
 export async function getPlanes(categoria?: string): Promise<Plan[]> {
     const url = categoria
         ? `/api/planes?categoria=${encodeURIComponent(categoria)}`
