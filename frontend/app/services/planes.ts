@@ -1,8 +1,11 @@
 import { fetchServer } from "../lib/api-server";
 import { Plan } from "../types/plan";
 
-export async function getPlanes(): Promise<Plan[]> {
-    const res = await fetchServer("/api/planes");
+export async function getPlanes(categoria?: string): Promise<Plan[]> {
+    const url = categoria
+        ? `/api/planes?categoria=${encodeURIComponent(categoria)}`
+        : "/api/planes";
+    const res = await fetchServer(url);
 
     if (!res.ok) return [];
 
