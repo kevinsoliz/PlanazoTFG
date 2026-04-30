@@ -3,11 +3,11 @@ import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
 import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
 import PlanCard from "@/app/components/features/planes/PlanCard";
-import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
 import  AuthService  from "@/app/services/auth-service"; // Importar para el nombre de usuario
+import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
