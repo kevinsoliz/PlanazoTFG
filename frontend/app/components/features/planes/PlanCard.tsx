@@ -1,5 +1,6 @@
 import type { Plan } from "@/app/types/plan";
 import BaseCard from "../../ui/BaseCard";
+import Avatar from "../../ui/Avatar";
 import { CATEGORIAS } from "../../../constants/categorias";
 import { ReactNode } from "react";
 
@@ -26,6 +27,14 @@ const PlanCard = ({ plan, children }: Props) => {
 
       <BaseCard boxShadow="3px 3px 0px"bgColor="#ffff" className="max-w-85">
         <div className="card-body">
+          <div className="flex items-center gap-2">
+            <Avatar
+              nombre={plan.creador_nombre}
+              url={plan.creador_avatar_url}
+              size="sm"
+            />
+            <span className="text-sm font-medium">{`@${plan.creador_username}`}</span>
+          </div>
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>
           <div className="flex flex-wrap gap-2 mt-2">
