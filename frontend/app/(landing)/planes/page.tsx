@@ -8,8 +8,9 @@ const PlanesPublic = async () => {
   return (
     <main className="max-w-6xl mx-auto w-full px-4 py-9 flex flex-col gap-9">
       <PageHeader
-        title="¿Qué se cuece hoy?"
-        subtitle="Descubre planes que están pasando cerca de ti."
+        title="Hay planes esperándote"
+        subtitle="Regístrate y apúntate a los que te molen. O monta los tuyos."
+        top="top-0"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {planes.map((plan) => (
