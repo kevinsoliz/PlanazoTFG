@@ -1,3 +1,4 @@
+import Avatar from "@/app/components/ui/Avatar";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
@@ -18,18 +19,12 @@ const PerfilPage = async () => {
       <section className="flex-1 flex flex-col gap-9">
         {/* Hero del perfil donde en home va el PageHeader */}
         <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md sticky top-21 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
-          <div className="w-24 h-24 shrink-0 self-center sm:self-start">
-            {perfil?.avatar_url ? (
-              <img
-                src={perfil.avatar_url}
-                alt="Avatar"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full bg-neutral/80 flex justify-center items-center text-3xl font-bold text-neutral-content">
-                {perfil?.nombre?.[0]?.toUpperCase() ?? "?"}
-              </div>
-            )}
+          <div className="shrink-0 self-center sm:self-start">
+            <Avatar
+              nombre={perfil?.nombre ?? ""}
+              url={perfil?.avatar_url ?? null}
+              size="lg"
+            />
           </div>
 
           <div className="flex-1 flex flex-col gap-3">
