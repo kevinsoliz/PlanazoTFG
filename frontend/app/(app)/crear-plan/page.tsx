@@ -1,17 +1,35 @@
+"use client";
+
+import { useState } from "react";
 import { CATEGORIAS } from "@/app/constants/categorias";
 
 const PlanPage = () => {
+  const [titulo, setTitulo] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [aforoMax, setAforoMax] = useState(0);
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-9 justify-center">
       <div className="w-80">
         <fieldset className="fieldset">
           <label className="label">Título</label>
-          <input type="text" className="input" placeholder="Título del plan" />
+          <input
+            type="text"
+            className="input"
+            placeholder="Título del plan"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+          />
 
           <label className="label">Descripción</label>
           <textarea
             className="textarea"
             placeholder="Cuenta de qué va el plan..."
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
           />
 
           <label className="label">Categoría</label>
@@ -28,13 +46,30 @@ const PlanPage = () => {
           </div>
 
           <label className="label">Fecha</label>
-          <input type="datetime-local" className="input" />
+          <input
+            type="datetime-local"
+            className="input"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+          />
 
           <label className="label">Ubicación</label>
-          <input type="text" className="input" placeholder="¿Dónde?" />
+          <input
+            type="text"
+            className="input"
+            placeholder="¿Dónde?"
+            value={ubicacion}
+            onChange={(e) => setUbicacion(e.target.value)}
+          />
 
           <label className="label">Aforo máximo</label>
-          <input type="number" className="input" placeholder="Plazas" />
+          <input
+            type="number"
+            className="input"
+            placeholder="Plazas"
+            value={aforoMax}
+            onChange={(e) => setAforoMax(Number(e.target.value))}
+          />
 
           <button
             type="button"
