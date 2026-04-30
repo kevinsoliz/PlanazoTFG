@@ -6,16 +6,16 @@ import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
-import  AuthService  from "@/app/services/auth-service"; // Importar para el nombre de usuario
+import { fetchServer } from "@/app/lib/api-server"; // Función para obtener datos del usuario 
 import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
 
-// Llamada al método me() definido en tu AuthService
-  const response = await AuthService.me(); 
-  const userName = response.data.user?.nombre || "Usuario"; // Accede a la propiedad nombre
+// Obtener el nombre de usuario para el chat
+  const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
+   const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
 
   return (
     <div className="flex flex-col gap-9">
