@@ -19,8 +19,9 @@ export function useChat(planId: number, userName: string) {
   const socketRef = useRef<CustomSocket | null>(null);
 
   useEffect(() => {
-    // Inicializamos la conexión con el puerto del backend
-    socketRef.current = io('http://localhost:4000', {
+    // Conectamos al backend usando la URL definida en las variables de entorno
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000'; 
+    socketRef.current = io(backendUrl, {
       auth: { 
         serverOffset: 0, 
         planId 
