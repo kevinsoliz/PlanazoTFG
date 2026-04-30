@@ -47,7 +47,7 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
             <path d="M4.913 18.1q-.896 0-1.405-.509Q3 17.082 3 16.187V4.882q0-.896.508-1.404Q4.017 3 4.913 3h14.174q.896 0 1.405.509.509.508.509 1.404v11.305q0 .896-.509 1.405-.509.509-1.405.509H6.46l-1.547 2.107q-.36.508-.918.508-.286 0-.525-.13-.24-.13-.386-.393-.145-.264-.145-.567V18.1Z" />
           </svg>
-          <span>Chat en vivo</span>
+          <span>Chat en tiempo real</span>
         </div>
         
         {/* Indicador de conexión */}

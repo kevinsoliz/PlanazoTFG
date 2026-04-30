@@ -68,7 +68,7 @@ export default function PlanChatPage({ params }: { params: { id: string } }) {
     <div className="flex flex-col h-screen gap-4">
       {/* Header */}
       <PageHeader
-        title={`Chat - ${planTitle}`}
+        title={`PlanazoChat - ${planTitle}`}
         subtitle="Comunícate con los participantes de este plan"
       />
 

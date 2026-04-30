@@ -6,7 +6,7 @@ import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
-import AuthService from "@/app/services/auth-service";
+import { fetchServer } from "@/app/lib/api-server";
 import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn";
 
 /**
@@ -22,9 +22,9 @@ const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
 
-  // Obtener información del usuario logueado
-  const response = await AuthService.me();
-  const userName = response.data.user?.nombre || "Usuario";
+  // Obtener información del usuario logueado (SSR)
+  const response = await fetchServer("/api/auth/me");
+  const userName = response.data?.user?.nombre || "Usuario";
 
   return (
     <div className="flex flex-col gap-9">
