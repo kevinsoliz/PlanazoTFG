@@ -25,7 +25,7 @@ const Avatar = ({ nombre, url, size = "md" }: Props) => {
 
   return (
     <div
-      className={`${dimensiones} bg-neutral/80 flex justify-center items-center font-bold text-neutral-content`}
+      className={`${dimensiones} bg-secondary rounded-sm flex justify-center items-center font-bold text-secondary-content`}
     >
       {nombre[0]?.toUpperCase() ?? "?"}
     </div>
