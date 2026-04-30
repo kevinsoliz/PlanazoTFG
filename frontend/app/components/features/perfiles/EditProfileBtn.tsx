@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { CATEGORIAS } from "@/app/constants/categorias";
+import { editarPerfil } from "@/app/actions/perfiles";
 import type { UserProfile } from "@/app/types/user";
 
 type Props = {
@@ -28,6 +29,21 @@ const EditProfileBtn = ({ perfil }: Props) => {
     setCategoriasSeleccionadas((prev) =>
       prev.includes(name) ? prev.filter((c) => c !== name) : [...prev, name],
     );
+  };
+
+  const handleGuardar = async () => {
+    const result = await editarPerfil({
+      nombre,
+      username,
+      descripcion: descripcion || null,
+      categorias:
+        categoriasSeleccionadas.length > 0
+          ? categoriasSeleccionadas.join(",")
+          : null,
+    });
+    if (result && "ok" in result) {
+      dialogRef.current?.close();
+    }
   };
 
   return (
@@ -94,7 +110,11 @@ const EditProfileBtn = ({ perfil }: Props) => {
                   })}
                 </div>
 
-                <button type="button" className="btn btn-success mt-4 w-full max-w-xs">
+                <button
+                  type="button"
+                  onClick={handleGuardar}
+                  className="btn btn-success mt-4 w-full max-w-xs"
+                >
                   Guardar
                 </button>
               </fieldset>
