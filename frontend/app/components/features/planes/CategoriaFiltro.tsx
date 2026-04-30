@@ -20,8 +20,24 @@ const CategoriaFiltro = () => {
     router.push(query ? `${pathname}?${query}` : pathname);
   };
 
+  const handleTodos = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("categoria");
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
+  };
+
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="sticky top-48 z-10 backdrop-blur-md bg-base-100/40 py-3 flex flex-wrap gap-2">
+      <button
+        type="button"
+        onClick={handleTodos}
+        className={`badge ${
+          !categoriaActual ? "" : "badge-outline opacity-60"
+        }`}
+      >
+        Todos
+      </button>
       {CATEGORIAS.map((cat) => {
         const seleccionada = categoriaActual === cat.name;
         return (
