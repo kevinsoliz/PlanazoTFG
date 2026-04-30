@@ -3,13 +3,19 @@ import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
 import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
 import PlanCard from "@/app/components/features/planes/PlanCard";
+import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
+import  AuthService  from "@/app/services/auth-service"; // Importar para el nombre de usuario
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
+
+// Llamada al método me() definido en tu AuthService
+  const response = await AuthService.me(); 
+  const userName = response.data.user?.nombre || "Usuario"; // Accede a la propiedad nombre
 
   return (
     <div className="flex flex-col gap-9">
@@ -34,6 +40,7 @@ const MisPlanes = async () => {
             <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
+              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
           ))}
         </section>
@@ -48,6 +55,7 @@ const MisPlanes = async () => {
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
               <AnularBtn plan_id={plan.id} />
+              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
           ))}
         </section>
