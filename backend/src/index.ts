@@ -47,10 +47,36 @@ import { registerChatHandlers } from './controllers/chat.controller'; // Lógica
 const server = http.createServer(app);
 
 // Crear instancia de Socket.IO con configuración
+// Socket.IO maneja conexiones bidireccionales en tiempo real para el chat
 const io = new Server(server, {
-  connectionStateRecovery: {},                        // Recuperar conexiones perdidas automáticamente
-  cors: {                                             // Permitir conexiones desde el frontend
-    origin: process.env.FRONTEND_URL || "http://localhost:3000"
+  // Recuperar conexiones perdidas automáticamente (importante para chat offline)
+  connectionStateRecovery: {},
+  
+  // Configuración de CORS para permitir conexiones desde el frontend
+  // Los navegadores por defecto bloquean peticiones de diferente origen por seguridad
+  cors: {
+    // Permitir conexiones desde el frontend
+    // En desarrollo: http://localhost:3000
+    // En producción: la URL del frontend real (configurada en FRONTEND_URL)
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        "http://localhost:3000",           // Desarrollo local
+        process.env.FRONTEND_URL || "http://localhost:3000", // URL configurada
+        "http://localhost:3000/",          // Con barra final
+      ];
+      
+      // Permitir peticiones sin origen (como desde aplicaciones mobile o desarrollador local)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`Origen bloqueado por CORS: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    // Permitir que se envíen credenciales (cookies, tokens)
+    credentials: true,
+    // Métodos HTTP permitidos para Socket.IO
+    methods: ["GET", "POST"],
   }
 });
 
