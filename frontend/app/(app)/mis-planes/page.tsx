@@ -6,8 +6,11 @@ import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
+
 import  AuthService  from "@/app/services/auth-service"; // Importar para el nombre de usuario
 import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
+import  ChatPlan  from "@/app/components/features/chat/ChatPlan";
+import { useChat } from "@/app/hooks/useChat";
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
@@ -17,6 +20,7 @@ const MisPlanes = async () => {
   const response = await AuthService.me(); 
   const userName = response.data.user?.nombre || "Usuario"; // Accede a la propiedad nombre
 
+  
   return (
     <div className="flex flex-col gap-9">
       <PageHeader
