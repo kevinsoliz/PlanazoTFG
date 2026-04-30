@@ -8,6 +8,7 @@ const EditProfileBtn = () => {
   const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState<
     string[]
   >([]);
+  const [avatarSeleccionado, setAvatarSeleccionado] = useState<string | null>(null);
 
   const handleOpen = () => {
     dialogRef.current?.showModal();
@@ -83,14 +84,24 @@ const EditProfileBtn = () => {
               </fieldset>
             </div>
             <div className="flex-1 grid grid-cols-3 gap-3 border place-items-center">
-              {Array.from({ length: 9 }, (_, i) => (
-                <img
-                  key={i}
-                  src={`/images/avatars/avatar-${i + 1}.png`}
-                  alt={`Avatar ${i + 1}`}
-                  className="w-20 h-20"
-                />
-              ))}
+              {Array.from({ length: 9 }, (_, i) => {
+                const url = `/images/avatars/avatar-${i + 1}.png`;
+                const seleccionado = avatarSeleccionado === url;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setAvatarSeleccionado(url)}
+                    className={seleccionado ? "ring-2 ring-primary rounded" : "opacity-50"}
+                  >
+                    <img
+                      src={url}
+                      alt={`Avatar ${i + 1}`}
+                      className="w-20 h-20"
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
