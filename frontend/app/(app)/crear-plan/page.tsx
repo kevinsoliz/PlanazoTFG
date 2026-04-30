@@ -1,115 +1,115 @@
 "use client";
-import { crearPlan } from "@/app/actions/planes";
+
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { CATEGORIAS } from "@/app/constants/categorias";
+import { crearPlan } from "@/app/actions/planes";
 
 const PlanPage = () => {
-  const [plan, setPlan] = useState({
-    titulo: "",
-    categoria: "",
-    descripcion: "",
-    fecha: "",
-    ubicacion: "",
-    aforo_max: 0,
-  });
-
-  const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
-    null,
-  );
   const router = useRouter();
+  const [titulo, setTitulo] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [aforoMax, setAforoMax] = useState(0);
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    const resultado = await crearPlan(plan);
-
-    if (resultado?.error) {
-      setToast({ mensaje: resultado.error, tipo: "error" });
-      setTimeout(() => setToast(null), 2000);
-      return;
-    }
-    setToast({
-      mensaje: "Tu plan se ha creado correctamente",
-      tipo: "success",
+  const handleCrear = async () => {
+    const result = await crearPlan({
+      titulo,
+      categoria,
+      descripcion: descripcion || null,
+      fecha,
+      ubicacion: ubicacion || null,
+      aforo_max: aforoMax,
     });
-    setTimeout(() => setToast(null), 2000);
-
-    //vacio el form
-    setTimeout(() => {
-
-      setPlan({
-        titulo: "",
-        categoria: "",
-        descripcion: "",
-        fecha: "",
-        ubicacion: "",
-        aforo_max: 0,
-      });
-    }, 100)
+    if (result && "ok" in result) {
+      router.push("/mis-planes");
+    }
   };
+
   return (
-    <div>
-      {toast && (
-        <div className="toast toast-top toast-center z-20">
-          <div className={`alert alert-${toast.tipo}`}>
-            <span>{toast.mensaje}</span>
+    <div className="flex flex-col lg:flex-row gap-6 mt-9 justify-center">
+      <div className="w-80">
+        <fieldset className="fieldset">
+          <label className="label">Título</label>
+          <input
+            type="text"
+            className="input"
+            placeholder="Título del plan"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+          />
+
+          <label className="label">Descripción</label>
+          <textarea
+            className="textarea"
+            placeholder="Cuenta de qué va el plan..."
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+          />
+
+          <label className="label">Categoría</label>
+          <div className="flex flex-wrap gap-2">
+            {CATEGORIAS.map((cat) => {
+              const seleccionada = categoria === cat.name;
+              return (
+                <button
+                  key={cat.name}
+                  type="button"
+                  onClick={() => setCategoria(cat.name)}
+                  className={`badge ${cat.badge} ${
+                    seleccionada ? "" : "badge-outline opacity-60"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
           </div>
-        </div>
-      )}
-      <form onSubmit={handleSubmit} className="fieldset w-xs">
-        <legend className="fieldset-legend">Titulo</legend>
-        <input
-          type="text"
-          className="input"
-          value={plan.titulo}
-          onChange={(event) => setPlan({ ...plan, titulo: event.target.value })}
+
+          <label className="label">Fecha</label>
+          <input
+            type="datetime-local"
+            className="input"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+          />
+
+          <label className="label">Ubicación</label>
+          <input
+            type="text"
+            className="input"
+            placeholder="¿Dónde?"
+            value={ubicacion}
+            onChange={(e) => setUbicacion(e.target.value)}
+          />
+
+          <label className="label">Aforo máximo</label>
+          <input
+            type="number"
+            className="input"
+            placeholder="Plazas"
+            value={aforoMax}
+            onChange={(e) => setAforoMax(Number(e.target.value))}
+          />
+
+          <button
+            type="button"
+            onClick={handleCrear}
+            className="btn btn-success mt-4 w-full max-w-xs"
+          >
+            Crear plan
+          </button>
+        </fieldset>
+      </div>
+      <div className="w-80 relative">
+        <img
+          src="/images/crear-plan/amigo-lapiz.png"
+          alt="Amigo con lápiz"
+          className="absolute inset-0 m-auto max-h-full max-w-full object-contain"
         />
-        <legend className="fieldset-legend">Categoria</legend>
-        <input
-          type="text"
-          className="input"
-          value={plan.categoria}
-          onChange={(event) =>
-            setPlan({ ...plan, categoria: event.target.value })
-          }
-        />
-        <legend className="fieldset-legend">Descripcion</legend>
-        <input
-          type="text"
-          className="input"
-          value={plan.descripcion}
-          onChange={(event) =>
-            setPlan({ ...plan, descripcion: event.target.value })
-          }
-        />
-        <legend className="fieldset-legend">Fecha</legend>
-        <input
-          type="datetime-local"
-          className="input"
-          value={plan.fecha}
-          onChange={(event) => setPlan({ ...plan, fecha: event.target.value })}
-        />
-        <legend className="fieldset-legend">Aforo maximo</legend>
-        <input
-          type="number"
-          className="input"
-          value={plan.aforo_max}
-          onChange={(event) =>
-            setPlan({ ...plan, aforo_max: Number(event.target.value) })
-          }
-        />
-        <legend className="fieldset-legend">Ubicacion</legend>
-        <input
-          type="text"
-          className="input"
-          value={plan.ubicacion}
-          onChange={(event) =>
-            setPlan({ ...plan, ubicacion: event.target.value })
-          }
-        />
-        <button type="submit" className="btn btn-neutral ">
-          Crear
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

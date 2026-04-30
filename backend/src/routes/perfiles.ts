@@ -1,56 +1,29 @@
+/*
+Routes de perfiles.
+Wiring puro: cada URL/método HTTP -> handler del controller.
+Sin lógica aquí.
+*/
+
 import { Router } from "express";
-import pool from "../db";
 import { requireAuth } from "../middleware/auth";
+import { validate } from "../middleware/validate";
+import { perfilUpdateSchema } from "../schemas/perfil.schema";
+import * as perfilesController from "../controllers/perfiles.controller";
 
 const router = Router();
 
-router.get("/perfiles/:id", async (req, res) => {
-  try {
-    let perfil = await pool.query("SELECT * FROM perfiles WHERE user_id = $1", [
-      req.params.id,
-    ]);
+// GET /api/perfiles/:id -> ver perfil (público, no requiere auth)
+router.get("/perfiles/:id", perfilesController.obtener);
 
-    if (perfil.rows.length === 0) {
-      res.status(404).json({ error: "Perfil no encontrado " });
-      return;
-    }
+// PATCH /api/perfiles/:id -> editar perfil propio
+// Cadena: requireAuth -> validate(schema) -> handler.
+// El middleware validate se ejecuta antes del handler: si el body no
+// cumple el schema, nunca se llama al handler — el errorHandler responde 400.
+router.patch(
+  "/perfiles/:id",
+  requireAuth,
+  validate(perfilUpdateSchema),
+  perfilesController.actualizar,
+);
 
-    res.json({ perfil: perfil.rows[0] });
-  } catch (error) {
-    res.status(500).json({ error: "Error del servidor" });
-  }
-});
-
-router.patch("/perfiles/:id", requireAuth, async (req, res) => {
-  if (Number(req.params.id) != req.session.userId) {
-    res
-      .status(403)
-      .json({ error: "No puedes editar el perfil de otra persona." });
-    return;
-  }
-
-  const { nombre, username, descripcion, categorias } = req.body;
-
-  try {
-    const resultado = await pool.query(
-      `UPDATE perfiles 
-            SET nombre = COALESCE($1, nombre),
-                username = COALESCE($2, username), 
-                descripcion = COALESCE($3, descripcion), 
-                categorias = COALESCE($4, categorias) 
-            WHERE user_id = $5 
-            RETURNING *`,
-      [nombre, username, descripcion, categorias, req.params.id],
-    );
-
-    if (resultado.rows.length === 0) {
-      res.status(404).json({ error: "Perfil no encontrado." });
-      return;
-    }
-
-    res.json({ perfil: resultado.rows[0] });
-  } catch (error) {
-    res.status(500).json({ error: "Error del servidor." });
-  }
-});
 export default router;

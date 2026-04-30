@@ -1,16 +1,20 @@
-import { getPerfil } from "../services/auth.server";
 import NavbarApp from "../components/layout/NavbarApp";
 
-const AppLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
-
-
+const AppLayout = ({
+  children,
+}: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <>
-    <NavbarApp/>
-    <div className="px-4">
-     {children}
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle, rgba(23,23,24,0.07) 1.5px, transparent 1.5px)",
+        backgroundSize: "24px 24px",
+      }}
+    >
+      <NavbarApp />
+      <main className="max-w-7xl mx-auto w-full pt-16.5">{children}</main>
     </div>
-    </>
   );
 };
 

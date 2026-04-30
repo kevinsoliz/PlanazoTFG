@@ -9,7 +9,7 @@ const EditBtn = ({ plan }: { plan: Plan }) => {
     titulo: plan.titulo,
     categoria: plan.categoria,
     descripcion: plan.descripcion,
-    fecha: plan.fecha,
+    fecha: plan.fecha.slice(0, 16),
     ubicacion: plan.ubicacion,
     aforo_max: plan.aforo_max,
   });

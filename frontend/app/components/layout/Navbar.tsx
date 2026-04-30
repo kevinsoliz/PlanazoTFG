@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <div className="navbar bg-base-100 border-b border-neutral">
 
-      <div className="max-w-6xl mx-auto w-full flex">
+      <div className="max-w-7xl mx-auto w-full flex">
           {/* Logo */}
           <div className="navbar-start">
             <div className="dropdown">

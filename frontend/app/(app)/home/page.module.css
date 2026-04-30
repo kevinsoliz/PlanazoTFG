@@ -1,0 +1,18 @@
+.home {
+    width: 100vw;
+    display: flex;
+}
+
+.planesContainer{
+    border: 1px solid black;
+    flex: 1;
+    /* height: calc(100vh - 5rem); */
+    overflow-y: auto;
+}
+
+.stack {
+    /* height: calc(100vh - 5rem); */
+    overflow-y: auto;
+    border: 3px solid dodgerblue;
+    background: brown;
+}

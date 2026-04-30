@@ -1,6 +1,6 @@
 import { TiHome } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
-import LogoutBtn from "../features/LogoutBtn";
+import LogoutBtn from "../features/auth/LogoutBtn";
 import { UserProfile } from "@/app/types/user";
 import Perfil from "@/app/(app)/perfil/page";
 

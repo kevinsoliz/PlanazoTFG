@@ -1,33 +1,32 @@
 import Logo from "../ui/Logo";
-import LogoutBtn from "../features/LogoutBtn";
+import Avatar from "../ui/Avatar";
+import LogoutBtn from "../features/auth/LogoutBtn";
 import Link from "next/link";
+import { FiPlus, FiMenu, FiCalendar, FiBookmark, FiMail } from "react-icons/fi";
+import { getPerfil } from "@/app/services/perfiles";
+import { getPlanesCreados, getPlanesApuntados } from "@/app/services/planes";
 
-const NavbarApp = () => {
+const NavbarApp = async () => {
+  const perfil = await getPerfil();
+  const creados = await getPlanesCreados();
+  const apuntados = await getPlanesApuntados();
+  const totalMisPlanes = creados.length + apuntados.length;
+
   return (
-    <div className="navbar bg-base-100 border-b border-neutral sticky top-0 z-10 shadow-md">
-      <div className=" w-full flex">
-
+    <div className="navbar border-b border-neutral fixed top-0  z-50 shadow-md  backdrop-blur-md bg-base-100">
+      <div className="max-w-7xl mx-auto w-full flex">
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-primary btn-sm btn-outline md:hidden mr-6"
+            >
+              <FiMenu className="h-5 w-5" />
             </div>
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box  mt-3 w-52 p-2 shadow border border-neutral"
             >
               <li>
                 <Link href="/home">Planes</Link>
@@ -41,27 +40,45 @@ const NavbarApp = () => {
             </ul>
           </div>
           <Link href="/home">
-            <Logo />
+            <Logo color="text-primary" />
           </Link>
         </div>
-        {/* Links centro */}
+        {/* Links centro Desktop */}
         <div className="navbar-center hidden md:flex">
-          <ul className="menu menu-horizontal px-1 gap-3">
+          <ul className="menu bg-primary menu-horizontal rounded-box text-primary-content">
             <li>
-              <Link href="/home">Planes</Link>
+              <Link href="/home">
+                <FiCalendar className="h-5 w-5" />
+                Planes
+              </Link>
             </li>
             <li>
-              <Link href="/mis-planes">Mis planes</Link>
+              <Link href="/mis-planes">
+                <FiBookmark className="h-5 w-5" />
+                Mis planes
+                {totalMisPlanes > 0 && (
+                  <span className="badge badge-xs badge-error">
+                    {totalMisPlanes}
+                  </span>
+                )}
+              </Link>
             </li>
             <li>
-              <Link href="/contacto">Contacto</Link>
+              <Link href="/contacto">
+                <FiMail className="h-5 w-5" />
+                Contacto
+              </Link>
             </li>
           </ul>
         </div>
         {/* Login */}
-        <div className="navbar-end">
-          <Link href="/crear-plan" className="btn btn-neutral">
-            Crear plan
+        <div className="navbar-end gap-5">
+          <Link
+            href="/crear-plan"
+            className="btn btn-primary btn-outline btn-sm"
+          >
+            <span className="hidden md:inline">Crear plan</span>
+            <FiPlus className="md:hidden" />
           </Link>
           <div className="dropdown dropdown-end ">
             <div
@@ -69,25 +86,20 @@ const NavbarApp = () => {
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
-              </div>
+              <Avatar
+                nombre={perfil?.nombre ?? ""}
+                url={perfil?.avatar_url ?? null}
+                size="sm"
+              />
             </div>
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow border border-outline"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box  mt-3 w-52 p-2 shadow border border-outline"
             >
               <li>
                 <Link href="/perfil" className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                  Mi perfil
                 </Link>
-              </li>
-              <li>
-                <a>Settings</a>
               </li>
               <li>
                 <LogoutBtn />

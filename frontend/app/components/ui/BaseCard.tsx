@@ -9,7 +9,7 @@ interface Props {
 const BaseCard = ({ children, bgColor, textColor = "#171718", boxShadow = "6px 6px 0px", className = "" }: Props) => {
   return (
     <div
-      className={`card w-full max-w-md mx-auto ${className} break-inside-avoid mb-6`}
+      className={`card w-full  mx-auto ${className}`}
       style={{
         backgroundColor: bgColor,
         color: textColor,

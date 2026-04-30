@@ -1,8 +1,11 @@
 'use server'
 import { revalidatePath } from "next/cache";
 import { fetchServer } from "../lib/api-server";
+import type { PlanInput } from "../types/plan";
 
 export async function unirseAPlan(planId: number) {
+    await new Promise(resolve => setTimeout(resolve, 3))
+    console.log('[SERVER] dentro del action, args =', planId);
 
     const res = await fetchServer(`/api/planes/${planId}/join`, { method: "POST"});
     
@@ -11,6 +14,18 @@ export async function unirseAPlan(planId: number) {
     }
 
     revalidatePath("/home");
+    
+    return { ok: true };
+}
+export async function anularPlan(planId: number) {
+
+    const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE"});
+    
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al anular el plan"}
+    }
+
+    revalidatePath("/mis-planes");
     
     return { ok: true };
 }
@@ -24,15 +39,6 @@ export async function borrarPlan(planId: number) {
     revalidatePath("/mis-planes");
 
     return {ok: true}
-}
-
-type PlanInput = {
-    titulo: string,
-    categoria: string,
-    descripcion: string | null,
-    fecha: string,
-    ubicacion: string | null,
-    aforo_max: number
 }
 
 export async function crearPlan(datos: PlanInput) {
@@ -57,7 +63,7 @@ export async function editarPlan(planId: number, datos: PlanInput) {
         body: datos
     })
 
-    if (!res.ok) {error: res.dat?.error ?? "Error al editar el plan"};
+    if (!res.ok) return {error: res.data?.error ?? "Error al editar el plan"};
 
     revalidatePath("/home");
     revalidatePath("/mis-planes");
