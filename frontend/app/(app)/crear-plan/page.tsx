@@ -1,15 +1,32 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CATEGORIAS } from "@/app/constants/categorias";
+import { crearPlan } from "@/app/actions/planes";
 
 const PlanPage = () => {
+  const router = useRouter();
   const [titulo, setTitulo] = useState("");
   const [categoria, setCategoria] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [fecha, setFecha] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [aforoMax, setAforoMax] = useState(0);
+
+  const handleCrear = async () => {
+    const result = await crearPlan({
+      titulo,
+      categoria,
+      descripcion: descripcion || null,
+      fecha,
+      ubicacion: ubicacion || null,
+      aforo_max: aforoMax,
+    });
+    if (result && "ok" in result) {
+      router.push("/mis-planes");
+    }
+  };
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-9 justify-center">
@@ -79,6 +96,7 @@ const PlanPage = () => {
 
           <button
             type="button"
+            onClick={handleCrear}
             className="btn btn-success mt-4 w-full max-w-xs"
           >
             Crear plan
