@@ -35,6 +35,7 @@ const EditProfileBtn = ({ perfil }: Props) => {
     const result = await editarPerfil({
       nombre,
       username,
+      avatar_url: avatarSeleccionado,
       descripcion: descripcion || null,
       categorias:
         categoriasSeleccionadas.length > 0

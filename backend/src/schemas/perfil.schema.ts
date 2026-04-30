@@ -35,13 +35,14 @@ export type Perfil = z.infer<typeof perfilSchema>;
 
 // .pick selecciona los campos editables.
 // .partial los hace todos opcionales (PATCH parcial: solo los que vienen).
-// Cualquier campo que NO esté en la lista (id, user_id, avatar_url, created_at)
+// Cualquier campo que NO esté en la lista (id, user_id, created_at)
 // será stripeado por defecto si llega en el body — eso reemplaza la whitelist
 // manual que hacíamos en el controller con desestructuración.
 export const perfilUpdateSchema = perfilSchema
   .pick({
     nombre: true,
     username: true,
+    avatar_url: true,
     descripcion: true,
     categorias: true,
   })
