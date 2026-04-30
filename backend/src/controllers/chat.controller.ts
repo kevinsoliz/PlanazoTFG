@@ -13,7 +13,7 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
   socket.on('chat_message', async (msg: string, user: string, planId: number) => {
     try {
       const result = await chatDb.run(
-        'INSERT INTO messages (content, user_name, plan_id) VALUES (?, ?, ?)',
+        'INSERT INTO messages (content, user_name, plan_id) VALUES ($1, $2, $3)',
         [msg, user, planId]
       );
       
@@ -23,14 +23,14 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
     }
   });
 
-  // Recuperación de historial offline[cite: 3]
+  // Recuperación de historial offline
   if (!socket.recovered) {
     try {
       const lastId = socket.handshake.auth.serverOffset || 0;
       const planId = socket.handshake.auth.planId;
       if (planId) {
         const results = await chatDb.all(
-          'SELECT id, content, user_name FROM messages WHERE id > ? AND plan_id = ?',
+          'SELECT id, content, user_name FROM messages WHERE id > $1 AND plan_id = $2',
           [lastId, planId]
         );
         results.forEach(row => {
