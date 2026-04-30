@@ -12,6 +12,11 @@ derivados se actualizan automáticamente. Eso es la "fuente única".
 
 import { z } from "zod";
 
+const AVATARES_PERMITIDOS = Array.from(
+  { length: 9 },
+  (_, i) => `/images/avatars/avatar-${i + 1}.png`,
+);
+
 // 1. Schema completo (tipo + forma de la fila de BBDD)
 
 export const perfilSchema = z.object({
@@ -46,6 +51,15 @@ export const perfilUpdateSchema = perfilSchema
     descripcion: true,
     categorias: true,
   })
-  .partial();
+  .partial()
+  .extend({
+    avatar_url: z
+      .string()
+      .nullable()
+      .refine((v) => v === null || AVATARES_PERMITIDOS.includes(v), {
+        message: "Avatar no permitido",
+      })
+      .optional(),
+  });
 
 export type PerfilUpdate = z.infer<typeof perfilUpdateSchema>;
