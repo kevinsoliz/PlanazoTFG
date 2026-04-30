@@ -1,8 +1,18 @@
 "use client";
 import { useChat } from '@/app/hooks/useChat';
+import { useRef, useEffect } from 'react';
 
 export default function ChatPlan({ planId, userName }: { planId: number, userName: string }) {
   const { messages, sendMessage } = useChat(planId, userName);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,6 +43,7 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <form onSubmit={handleSubmit} className="p-4 border-t border-neutral/20 flex gap-2">
