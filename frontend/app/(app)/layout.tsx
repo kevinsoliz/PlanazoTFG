@@ -13,7 +13,7 @@ const AppLayout = ({
       }}
     >
       <NavbarApp />
-      <main className="max-w-6xl mx-auto w-full pt-16.5">{children}</main>
+      <main className="max-w-7xl mx-auto w-full pt-16.5">{children}</main>
     </div>
   );
 };

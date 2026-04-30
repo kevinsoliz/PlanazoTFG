@@ -6,7 +6,7 @@ const PlanesPublic = async () => {
   const planes = await getPlanes();
 
   return (
-    <main className="max-w-6xl mx-auto w-full px-4 py-9 flex flex-col gap-9">
+    <main className="max-w-7xl mx-auto w-full py-9 flex flex-col gap-9">
       <PageHeader
         title="Hay planes esperándote"
         subtitle="Regístrate y apúntate a los que te molen. O monta los tuyos."

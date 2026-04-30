@@ -14,7 +14,7 @@ const NavbarApp = async () => {
 
   return (
     <div className="navbar border-b border-neutral fixed top-0  z-50 shadow-md  backdrop-blur-md bg-base-100">
-      <div className="max-w-6xl mx-auto w-full flex">
+      <div className="max-w-7xl mx-auto w-full flex">
         <div className="navbar-start">
           <div className="dropdown">
             <div
