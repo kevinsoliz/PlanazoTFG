@@ -2,16 +2,23 @@
 
 import { useRef, useState } from "react";
 import { CATEGORIAS } from "@/app/constants/categorias";
+import type { UserProfile } from "@/app/types/user";
 
-const EditProfileBtn = () => {
+type Props = {
+  perfil: UserProfile | null;
+};
+
+const EditProfileBtn = ({ perfil }: Props) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState<
     string[]
-  >([]);
-  const [avatarSeleccionado, setAvatarSeleccionado] = useState<string | null>(null);
-  const [nombre, setNombre] = useState("");
-  const [username, setUsername] = useState("");
-  const [descripcion, setDescripcion] = useState("");
+  >(perfil?.categorias ? perfil.categorias.split(",") : []);
+  const [avatarSeleccionado, setAvatarSeleccionado] = useState<string | null>(
+    perfil?.avatar_url ?? null,
+  );
+  const [nombre, setNombre] = useState(perfil?.nombre ?? "");
+  const [username, setUsername] = useState(perfil?.username ?? "");
+  const [descripcion, setDescripcion] = useState(perfil?.descripcion ?? "");
 
   const handleOpen = () => {
     dialogRef.current?.showModal();

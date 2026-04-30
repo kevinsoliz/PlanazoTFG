@@ -42,7 +42,7 @@ const PerfilPage = async () => {
           </div>
 
           <div className="self-center sm:self-start">
-            <EditProfileBtn />
+            <EditProfileBtn perfil={perfil} />
           </div>
         </section>
 
