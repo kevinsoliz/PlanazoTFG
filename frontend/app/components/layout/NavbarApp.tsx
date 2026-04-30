@@ -4,9 +4,13 @@ import LogoutBtn from "../features/auth/LogoutBtn";
 import Link from "next/link";
 import { FiPlus, FiMenu, FiCalendar, FiBookmark, FiMail } from "react-icons/fi";
 import { getPerfil } from "@/app/services/perfiles";
+import { getPlanesCreados, getPlanesApuntados } from "@/app/services/planes";
 
 const NavbarApp = async () => {
   const perfil = await getPerfil();
+  const creados = await getPlanesCreados();
+  const apuntados = await getPlanesApuntados();
+  const totalMisPlanes = creados.length + apuntados.length;
 
   return (
     <div className="navbar border-b border-neutral fixed top-0  z-50 shadow-md  backdrop-blur-md bg-base-100">
@@ -52,7 +56,11 @@ const NavbarApp = async () => {
               <Link href="/mis-planes">
                 <FiBookmark className="h-5 w-5" />
                 Mis planes
-                <span className="badge badge-xs badge-error">3</span>
+                {totalMisPlanes > 0 && (
+                  <span className="badge badge-xs badge-error">
+                    {totalMisPlanes}
+                  </span>
+                )}
               </Link>
             </li>
             <li>
