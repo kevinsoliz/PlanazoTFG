@@ -9,6 +9,9 @@ const EditProfileBtn = () => {
     string[]
   >([]);
   const [avatarSeleccionado, setAvatarSeleccionado] = useState<string | null>(null);
+  const [nombre, setNombre] = useState("");
+  const [username, setUsername] = useState("");
+  const [descripcion, setDescripcion] = useState("");
 
   const handleOpen = () => {
     dialogRef.current?.showModal();
@@ -42,6 +45,8 @@ const EditProfileBtn = () => {
                   type="text"
                   className="input"
                   placeholder="Nombre"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
                 />
 
                 <label className="label ">Username</label>
@@ -49,12 +54,16 @@ const EditProfileBtn = () => {
                   type="text"
                   className="input"
                   placeholder="@username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
 
                 <label className="label ">Descripción</label>
                 <textarea
                   className="textarea"
                   placeholder="Cuéntanos algo sobre ti..."
+                  value={descripcion}
+                  onChange={(e) => setDescripcion(e.target.value)}
                 />
 
                 <label className="label ">Categorías</label>
