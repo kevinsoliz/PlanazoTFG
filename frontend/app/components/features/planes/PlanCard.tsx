@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 interface Props {
   plan: Plan;
-  children: ReactNode
+  children?: ReactNode
 }
 
 const PlanCard = ({ plan, children }: Props) => {
