@@ -3,12 +3,14 @@ import PageHeader from "@/app/components/ui/PageHeader";
 import BaseCard from "@/app/components/ui/BaseCard";
 import Avatar from "@/app/components/ui/Avatar";
 import CounterBadge from "@/app/components/ui/CounterBadge";
+import Countdown from "@/app/components/ui/Countdown";
 import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
 
 const plan = {
   titulo: "Cena italiana en La Latina",
   estado: "Próximo",
   fecha: "Sábado 15 de junio · 21:00",
+  fechaIso: "2026-06-15T21:00:00+02:00",
   ubicacion: "Trattoria Il Faro, Madrid",
   plazasOcupadas: 3,
   aforoMax: 6,
@@ -104,6 +106,11 @@ const PlanDetallePlayground = () => {
             <button className="btn btn-primary">Unirme</button>
           </div>
         </div>
+
+        {/* Countdown */}
+        <section className="flex justify-center">
+          <Countdown targetDate={plan.fechaIso} />
+        </section>
 
         <div className="flex flex-row gap-4 items-stretch">
           {/* Card del plan */}
