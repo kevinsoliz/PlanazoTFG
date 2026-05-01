@@ -22,7 +22,7 @@ const BackToTopBtn = () => {
     <button
       onClick={scrollToTop}
       aria-label="Volver arriba"
-      className="fixed bottom-6 right-6 z-50 btn btn-primary btn-circle shadow-lg"
+      className="fixed bottom-6 right-6 z-50 btn btn-primary btn-circle shadow-lg lg:hidden"
     >
       <FiArrowUp className="h-5 w-5" />
     </button>
