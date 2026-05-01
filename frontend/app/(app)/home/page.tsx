@@ -35,8 +35,8 @@ const Planes = async ({ searchParams }: Props) => {
         </div>
       </section>
 
-      <aside className="w-87.5 hidden lg:block shrink-0">
-        <div className="sticky top-21  rounded-md border-2 overflow-hidden shadow-md">
+      <aside className="w-87.5 hidden lg:block shrink-0 lg:self-start lg:sticky lg:top-24">
+        <div className="rounded-md border-2 overflow-hidden shadow-md">
           <header className="px-4 py-3 border-b-2">
             <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
               Tus próximos planes

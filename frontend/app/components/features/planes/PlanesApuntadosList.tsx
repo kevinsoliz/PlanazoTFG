@@ -13,7 +13,7 @@ const PlanesApuntadosList = async () => {
   }
 
   return (
-    <ul className="list shadow-md">
+    <ul className="list shadow-md max-h-96 overflow-y-auto scrollbar-hide cursor-grab [mask-image:linear-gradient(to_bottom,black_calc(100%-2rem),transparent)]">
       {planes.map((plan) => {
         const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
           day: "numeric",

@@ -132,7 +132,7 @@ const PlanDetallePlayground = () => {
     <>
       <NavbarApp />
       <main className="max-w-7xl mx-auto w-full pt-24 pb-12 px-6 flex flex-col gap-6">
-        <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:sticky lg:top-21 z-10">
+        <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:sticky lg:top-24 z-10">
           <div className="flex-1 min-w-0">
             <PageHeader title={plan.titulo} />
           </div>

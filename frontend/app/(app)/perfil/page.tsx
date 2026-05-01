@@ -19,7 +19,7 @@ const PerfilPage = async () => {
     <div className="flex flex-col lg:flex-row gap-4">
       <section className="flex-1 flex flex-col gap-9">
         {/* Hero del perfil donde en home va el PageHeader */}
-        <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md sticky top-21 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
+        <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md sticky top-24 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
           <div className="shrink-0 self-center sm:self-start">
             <Avatar
               nombre={perfil?.nombre ?? ""}
@@ -65,7 +65,7 @@ const PerfilPage = async () => {
 
       {/* Aside — mismo bloque que en home */}
       <aside className="w-87.5 hidden lg:block shrink-0">
-        <div className="sticky top-21 rounded-md border-2 overflow-hidden shadow-md">
+        <div className="sticky top-24 rounded-md border-2 overflow-hidden shadow-md">
           <header className="px-4 py-3 border-b-2">
             <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
               Tus próximos planes
