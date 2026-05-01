@@ -4,11 +4,38 @@ import BaseCard from "@/app/components/ui/BaseCard";
 import Avatar from "@/app/components/ui/Avatar";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import Countdown from "@/app/components/ui/Countdown";
+import { CATEGORIAS } from "@/app/constants/categorias";
 import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
+
+type EstadoPlan = "Próximo" | "Lleno" | "Pasado" | "Anulado";
+
+const ESTADOS = {
+  "Próximo": {
+    badge: "badge-success",
+    mostrarCountdown: true,
+    mensaje: "",
+  },
+  "Lleno": {
+    badge: "badge-warning",
+    mostrarCountdown: true,
+    mensaje: "",
+  },
+  "Pasado": {
+    badge: "badge-neutral",
+    mostrarCountdown: false,
+    mensaje: "Este plan ya tuvo lugar",
+  },
+  "Anulado": {
+    badge: "badge-error",
+    mostrarCountdown: false,
+    mensaje: "Este plan fue anulado",
+  },
+} as const satisfies Record<EstadoPlan, unknown>;
 
 const plan = {
   titulo: "Cena italiana en La Latina",
-  estado: "Próximo",
+  categoria: "Gastronomía",
+  estado: "Próximo" as EstadoPlan,
   fecha: "Sábado 15 de junio · 21:00",
   fechaIso: "2026-06-15T21:00:00+02:00",
   ubicacion: "Trattoria Il Faro, Madrid",
@@ -93,6 +120,9 @@ const plan = {
 };
 
 const PlanDetallePlayground = () => {
+  const categoria = CATEGORIAS.find((c) => c.name === plan.categoria);
+  const estadoConfig = ESTADOS[plan.estado];
+
   return (
     <>
       <NavbarApp />
@@ -102,14 +132,22 @@ const PlanDetallePlayground = () => {
             <PageHeader title={plan.titulo} />
           </div>
           <div className="shrink-0 flex flex-col gap-2 justify-center">
-            <span className="badge badge-success badge-lg">{plan.estado}</span>
-            <button className="btn btn-primary">Unirme</button>
+            <span className={`badge ${estadoConfig.badge} badge-lg`}>
+              {plan.estado}
+            </span>
+            <button className="btn btn-error btn-outline">Abandonar</button>
           </div>
         </div>
 
-        {/* Countdown */}
+        {/* Countdown o aviso de estado */}
         <section className="flex justify-center">
-          <Countdown targetDate={plan.fechaIso} />
+          {estadoConfig.mostrarCountdown ? (
+            <Countdown targetDate={plan.fechaIso} />
+          ) : (
+            <div className="border-2 rounded-md px-8 py-6 text-center font-(family-name:--font-bagel-fat-one) text-2xl text-neutral">
+              {estadoConfig.mensaje}
+            </div>
+          )}
         </section>
 
         <div className="flex flex-row gap-4 items-stretch">
@@ -119,7 +157,14 @@ const PlanDetallePlayground = () => {
               <div className="grid md:grid-cols-2">
                 {/* Detalles del plan */}
                 <div className="p-6 flex flex-col gap-3 border-b-2 border-dashed border-neutral md:border-b-0 md:border-r-2">
-                  <h2 className="text-lg font-semibold">Detalles</h2>
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="text-lg font-semibold">Detalles</h2>
+                    {categoria && (
+                      <span className={`badge ${categoria.badge}`}>
+                        {plan.categoria}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-3">
                     <FiCalendar className="h-5 w-5 shrink-0" />
                     <span>{plan.fecha}</span>
