@@ -22,7 +22,7 @@ const CategoriaFiltro = () => {
   };
 
   return (
-    <div className="sticky top-52 z-10 flex justify-end -mt-7">
+    <div className="lg:sticky lg:top-52 z-10 flex justify-end -mt-7">
       <select
         value={categoriaActual}
         onChange={handleChange}
