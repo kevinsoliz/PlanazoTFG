@@ -4,6 +4,7 @@ import BaseCard from "@/app/components/ui/BaseCard";
 import Avatar from "@/app/components/ui/Avatar";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import Countdown from "@/app/components/ui/Countdown";
+import BackToTopBtn from "@/app/components/ui/BackToTopBtn";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
 
@@ -119,6 +120,10 @@ const plan = {
   ],
 };
 
+type Rol = "no-participante" | "participante" | "creador";
+
+const rolActual: Rol = "participante";
+
 const PlanDetallePlayground = () => {
   const categoria = CATEGORIAS.find((c) => c.name === plan.categoria);
   const estadoConfig = ESTADOS[plan.estado];
@@ -126,16 +131,28 @@ const PlanDetallePlayground = () => {
   return (
     <>
       <NavbarApp />
-      <main className="max-w-7xl mx-auto w-full pt-24 px-6 flex flex-col gap-6">
-        <div className="flex flex-row gap-4 items-stretch sticky top-21 z-10">
+      <main className="max-w-7xl mx-auto w-full pt-24 pb-12 px-6 flex flex-col gap-6">
+        <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:sticky lg:top-21 z-10">
           <div className="flex-1 min-w-0">
             <PageHeader title={plan.titulo} />
           </div>
-          <div className="shrink-0 flex flex-col gap-2 justify-center">
+          <div className="shrink-0 flex flex-row gap-2 items-center">
             <span className={`badge ${estadoConfig.badge} badge-lg`}>
               {plan.estado}
             </span>
-            <button className="btn btn-error btn-outline">Abandonar</button>
+            {rolActual === "no-participante" && (
+              <button className="btn btn-primary btn-sm">Unirme</button>
+            )}
+            {rolActual === "participante" && (
+              <button className="btn btn-error btn-sm">Abandonar</button>
+            )}
+            {rolActual === "creador" && (
+              <>
+                <button className="btn btn-success btn-sm">Editar</button>
+                <button className="btn btn-warning btn-sm">Anular</button>
+                <button className="btn btn-error btn-sm">Borrar</button>
+              </>
+            )}
           </div>
         </div>
 
@@ -150,15 +167,17 @@ const PlanDetallePlayground = () => {
           )}
         </section>
 
-        <div className="flex flex-row gap-4 items-stretch">
+        <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch">
           {/* Card del plan */}
           <div className="flex-1 min-w-0">
-            <BaseCard bgColor="#ffff">
-              <div className="grid md:grid-cols-2">
+            <BaseCard bgColor="#ffff" className="overflow-hidden">
+              <div className="grid lg:grid-cols-[2fr_1fr]">
                 {/* Detalles del plan */}
-                <div className="p-6 flex flex-col gap-3 border-b-2 border-dashed border-neutral md:border-b-0 md:border-r-2">
+                <div className="p-6 flex flex-col gap-3 border-b-2 border-dashed border-neutral lg:border-b-0 lg:border-r-2 bg-white text-neutral">
                   <div className="flex items-center justify-between gap-2">
-                    <h2 className="text-lg font-semibold">Detalles</h2>
+                    <h2 className="font-(family-name:--font-bagel-fat-one) text-lg">
+                      Detalles
+                    </h2>
                     {categoria && (
                       <span className={`badge ${categoria.badge}`}>
                         {plan.categoria}
@@ -189,8 +208,10 @@ const PlanDetallePlayground = () => {
                 </div>
 
                 {/* Info del creador */}
-                <div className="p-6 flex flex-col gap-3">
-                  <h2 className="text-lg font-semibold">Creador</h2>
+                <div className="p-6 flex flex-col gap-3 bg-base-200">
+                  <h2 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+                    Creador
+                  </h2>
                   <div className="flex items-center gap-4">
                     <Avatar
                       nombre={plan.creador.nombre}
@@ -211,10 +232,10 @@ const PlanDetallePlayground = () => {
           </div>
 
           {/* Lista de participantes */}
-          <aside className="w-87.5 shrink-0 relative">
-            <div className="absolute inset-0 rounded-md border-2 overflow-hidden shadow-md flex flex-col">
-              <header className="px-4 py-3 border-b-2 flex items-center justify-between gap-2">
-                <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+          <aside className="w-full lg:w-87.5 lg:shrink-0 lg:relative">
+            <div className="rounded-md border-2 overflow-hidden shadow-md flex flex-col lg:absolute lg:inset-0">
+              <header className="px-4 py-3 flex items-center justify-between gap-2 bg-neutral text-[#E0604D]">
+                <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
                   Participantes
                 </h3>
                 <CounterBadge
@@ -222,7 +243,7 @@ const PlanDetallePlayground = () => {
                   accent="#FCCE09"
                 />
               </header>
-              <ul className="list shadow-md flex-1 min-h-0 overflow-y-auto scrollbar-hide cursor-grab [mask-image:linear-gradient(to_bottom,black_calc(100%-2rem),transparent)]">
+              <ul className="list shadow-md flex-1 min-h-0 overflow-y-auto scrollbar-hide cursor-grab lg:[mask-image:linear-gradient(to_bottom,black_calc(100%-2rem),transparent)]">
                 {plan.participantes.map((p) => (
                   <li key={p.username} className="list-row">
                     <Avatar
@@ -242,7 +263,20 @@ const PlanDetallePlayground = () => {
             </div>
           </aside>
         </div>
+
+        {/* Chat del plan (lo implementa el compañero) */}
+        <section className="rounded-md border-2 overflow-hidden shadow-md">
+          <header className="px-4 py-3 bg-neutral text-[#E0604D]">
+            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
+              Chat del plan
+            </h3>
+          </header>
+          <div className="min-h-96 flex items-center justify-center p-6 opacity-40">
+            <p className="text-sm">Aquí irá el chat</p>
+          </div>
+        </section>
       </main>
+      <BackToTopBtn />
     </>
   );
 };
