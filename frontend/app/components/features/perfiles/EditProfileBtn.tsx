@@ -49,7 +49,7 @@ const EditProfileBtn = ({ perfil }: Props) => {
 
   return (
     <>
-      <button onClick={handleOpen} className="btn btn-secondary btn-sm">
+      <button onClick={handleOpen} className="btn btn-secondary btn-outline btn-sm rounded-full">
         Editar
       </button>
 
