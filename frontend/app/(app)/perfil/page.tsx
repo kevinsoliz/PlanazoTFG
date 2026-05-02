@@ -19,7 +19,7 @@ const PerfilPage = async () => {
     <div className="flex flex-col lg:flex-row gap-4">
       <section className="flex-1 flex flex-col gap-9">
         {/* Hero del perfil donde en home va el PageHeader */}
-        <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md sticky top-24 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
+        <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md lg:sticky lg:top-24 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
           <div className="shrink-0 self-center sm:self-start">
             <Avatar
               nombre={perfil?.nombre ?? ""}

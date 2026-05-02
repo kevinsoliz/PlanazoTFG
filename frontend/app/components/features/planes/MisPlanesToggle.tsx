@@ -22,7 +22,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
   return (
     <div className="flex flex-col gap-6">
       {/* toggler con sus labels */}
-      <div className="flex items-center justify-center gap-3 sticky top-50 z-5 bg-primary rounded-sm py-2">
+      <div className="flex items-center justify-center gap-3 bg-primary rounded-sm py-2">
         <span className="font-bold text-white">Apuntados</span>
         <input
           type="checkbox"
@@ -35,7 +35,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
 
       {showCreados ? (
         <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-62 z-5 backdrop-blur-md bg-base-100/40 mx-3">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Has creado
             </h2>
@@ -50,7 +50,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
         </section>
       ) : (
         <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-62 z-5 backdrop-blur-md bg-base-100/40 mx-3">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Te has apuntado a
             </h2>
