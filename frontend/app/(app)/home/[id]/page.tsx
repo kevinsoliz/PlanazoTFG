@@ -1,7 +1,27 @@
 import Avatar from "@/app/components/ui/Avatar";
+import BaseCard from "@/app/components/ui/BaseCard";
+import CounterBadge from "@/app/components/ui/CounterBadge";
+import Countdown from "@/app/components/ui/Countdown";
+import PageHeader from "@/app/components/ui/PageHeader";
 import { CATEGORIAS } from "@/app/constants/categorias";
+import { getCurrentUser } from "@/app/services/auth-server";
 import { getPlan } from "@/app/services/planes";
 import { notFound } from "next/navigation";
+import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
+
+type EstadoPlan = "Próximo" | "Lleno" | "Pasado";
+
+const ESTADOS = {
+  "Próximo": { badge: "badge-success", mostrarCountdown: true, mensaje: "" },
+  "Lleno": { badge: "badge-warning", mostrarCountdown: true, mensaje: "" },
+  "Pasado": {
+    badge: "badge-neutral",
+    mostrarCountdown: false,
+    mensaje: "Este plan ya tuvo lugar",
+  },
+} as const satisfies Record<EstadoPlan, unknown>;
+
+type Rol = "no-participante" | "participante" | "creador";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -10,131 +30,182 @@ type Props = {
 const PlanDetailPage = async ({ params }: Props) => {
   const { id } = await params;
   const detalle = await getPlan(Number(id));
-
   if (!detalle) notFound();
 
-  const { plan, participantes, plazas_disponibles } = detalle;
+  const { plan, participantes } = detalle;
+  const userActual = await getCurrentUser();
 
-  const ahora = Date.now();
   const planTime = new Date(plan.fecha).getTime();
-  const diffSec = Math.max(0, Math.floor((planTime - ahora) / 1000));
-  const dias = Math.floor(diffSec / (60 * 60 * 24));
-  const horas = Math.floor((diffSec % (60 * 60 * 24)) / (60 * 60));
-  const minutos = Math.floor((diffSec % (60 * 60)) / 60);
-  const segundos = diffSec % 60;
+  const estado: EstadoPlan =
+    planTime < Date.now()
+      ? "Pasado"
+      : participantes.length >= plan.aforo_max
+        ? "Lleno"
+        : "Próximo";
+  const estadoConfig = ESTADOS[estado];
 
-  const categoria = CATEGORIAS.find((c) => c.name === plan.categoria);
+  const rolActual: Rol = !userActual
+    ? "no-participante"
+    : userActual.id === plan.creator_id
+      ? "creador"
+      : participantes.some((p) => p.id === userActual.id)
+        ? "participante"
+        : "no-participante";
 
-  const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
+  const fechaTexto = new Date(plan.fecha).toLocaleDateString("es-ES", {
     weekday: "long",
     day: "numeric",
     month: "long",
-    year: "numeric",
     timeZone: "Europe/Madrid",
   });
-  const hora = new Date(plan.fecha).toLocaleTimeString("es-ES", {
+  const horaTexto = new Date(plan.fecha).toLocaleTimeString("es-ES", {
     hour: "2-digit",
     minute: "2-digit",
     timeZone: "Europe/Madrid",
   });
+  const fechaMostrada = `${fechaTexto} · ${horaTexto}`;
+
+  const categoria = CATEGORIAS.find((c) => c.name === plan.categoria);
 
   return (
-    <main className="max-w-4xl mx-auto w-full py-9 px-6 flex flex-col gap-8">
-      <div className="flex items-center gap-3">
-        <Avatar
-          nombre={plan.creador_nombre}
-          url={plan.creador_avatar_url}
-          size="md"
-        />
-        <div>
-          <p className="text-sm opacity-70">Creado por</p>
-          <p className="font-medium">{`@${plan.creador_username}`}</p>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:sticky lg:top-24 z-10">
+        <div className="flex-1 min-w-0">
+          <PageHeader title={plan.titulo} />
         </div>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h1 className="text-4xl md:text-5xl font-(family-name:--font-bagel-fat-one) text-neutral leading-none">
-          {plan.titulo}
-        </h1>
-        {categoria && (
-          <span className={`badge ${categoria.badge} self-start`}>
-            {plan.categoria}
+        <div className="shrink-0 flex flex-row gap-2 items-center">
+          <span className={`badge ${estadoConfig.badge} badge-lg`}>
+            {estado}
           </span>
+          {rolActual === "no-participante" && (
+            <button className="btn btn-primary btn-sm">Unirme</button>
+          )}
+          {rolActual === "participante" && (
+            <button className="btn btn-error btn-sm">Abandonar</button>
+          )}
+          {rolActual === "creador" && (
+            <>
+              <button className="btn btn-success btn-sm">Editar</button>
+              <button className="btn btn-warning btn-sm">Anular</button>
+              <button className="btn btn-error btn-sm">Borrar</button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <section className="flex justify-center">
+        {estadoConfig.mostrarCountdown ? (
+          <Countdown targetDate={plan.fecha} />
+        ) : (
+          <div className="border-2 rounded-md px-8 py-6 text-center font-(family-name:--font-bagel-fat-one) text-2xl text-neutral">
+            {estadoConfig.mensaje}
+          </div>
         )}
-      </div>
+      </section>
 
-      <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold">Empieza en</h2>
-        <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-          <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
-              <span
-                style={{ "--value": dias } as React.CSSProperties}
-                aria-live="polite"
-                aria-label={`${dias} días`}
-              >
-                {dias}
-              </span>
-            </span>
-            días
-          </div>
-          <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
-              <span
-                style={{ "--value": horas } as React.CSSProperties}
-                aria-live="polite"
-                aria-label={`${horas} horas`}
-              >
-                {horas}
-              </span>
-            </span>
-            horas
-          </div>
-          <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
-              <span
-                style={{ "--value": minutos } as React.CSSProperties}
-                aria-live="polite"
-                aria-label={`${minutos} minutos`}
-              >
-                {minutos}
-              </span>
-            </span>
-            min
-          </div>
-          <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
-              <span
-                style={{ "--value": segundos } as React.CSSProperties}
-                aria-live="polite"
-                aria-label={`${segundos} segundos`}
-              >
-                {segundos}
-              </span>
-            </span>
-            seg
-          </div>
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch">
+        <div className="flex-1 min-w-0">
+          <BaseCard bgColor="#ffff" className="overflow-hidden">
+            <div className="grid lg:grid-cols-[2fr_1fr]">
+              <div className="p-6 flex flex-col gap-3 border-b-2 border-dashed border-neutral lg:border-b-0 lg:border-r-2 bg-white text-neutral">
+                <div className="flex items-center justify-between gap-2">
+                  <h2 className="font-(family-name:--font-bagel-fat-one) text-lg">
+                    Detalles
+                  </h2>
+                  {categoria && (
+                    <span className={`badge ${categoria.badge}`}>
+                      {plan.categoria}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-3">
+                  <FiCalendar className="h-5 w-5 shrink-0" />
+                  <span>{fechaMostrada}</span>
+                </div>
+                {plan.ubicacion && (
+                  <div className="flex items-center gap-3">
+                    <FiMapPin className="h-5 w-5 shrink-0" />
+                    <span>{plan.ubicacion}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-3">
+                  <FiUsers className="h-5 w-5 shrink-0" />
+                  <span>
+                    {participantes.length} de {plan.aforo_max} plazas ocupadas
+                  </span>
+                </div>
+
+                {plan.descripcion && (
+                  <div className="flex flex-col gap-2 mt-2">
+                    <h3 className="text-sm font-semibold opacity-70 uppercase tracking-wide">
+                      Sobre el plan
+                    </h3>
+                    <p className="whitespace-pre-line">{plan.descripcion}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 flex flex-col gap-3 bg-base-200">
+                <h2 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+                  Creador
+                </h2>
+                <div className="flex items-center gap-4">
+                  <Avatar
+                    nombre={plan.creador_nombre}
+                    url={plan.creador_avatar_url}
+                    size="md"
+                  />
+                  <div className="flex flex-col">
+                    <p className="font-semibold">{plan.creador_nombre}</p>
+                    <p className="text-sm opacity-70">
+                      @{plan.creador_username}
+                    </p>
+                  </div>
+                </div>
+                {plan.creador_descripcion && (
+                  <p className="text-sm">{plan.creador_descripcion}</p>
+                )}
+              </div>
+            </div>
+          </BaseCard>
         </div>
+
+        <aside className="w-full lg:w-87.5 lg:shrink-0 lg:relative">
+          <div className="rounded-md border-2 overflow-hidden shadow-md flex flex-col lg:absolute lg:inset-0">
+            <header className="px-4 py-3 flex items-center justify-between gap-2 bg-neutral text-[#E0604D]">
+              <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
+                Participantes
+              </h3>
+              <CounterBadge value={participantes.length} accent="#FCCE09" />
+            </header>
+            <ul className="list shadow-md flex-1 min-h-0 overflow-y-auto scrollbar-hide cursor-grab lg:[mask-image:linear-gradient(to_bottom,black_calc(100%-2rem),transparent)]">
+              {participantes.map((p) => (
+                <li key={p.id} className="list-row">
+                  <Avatar nombre={p.nombre} url={p.avatar_url} size="sm" />
+                  <div className="list-col-grow">
+                    <div className="font-medium">{p.nombre}</div>
+                    <div className="text-xs font-semibold opacity-60">
+                      @{p.username}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
       </div>
 
-      {plan.descripcion && (
-        <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-semibold">Sobre el plan</h2>
-          <p className="whitespace-pre-line wrap-break-word">
-            {plan.descripcion}
-          </p>
+      <section className="rounded-md border-2 overflow-hidden shadow-md">
+        <header className="px-4 py-3 bg-neutral text-[#E0604D]">
+          <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
+            Chat del plan
+          </h3>
+        </header>
+        <div className="min-h-96 flex items-center justify-center p-6 opacity-40">
+          <p className="text-sm">Aquí irá el chat</p>
         </div>
-      )}
-
-      <div className="flex flex-col gap-2 border-t-2 pt-4">
-        <p>{fecha} a las {hora}</p>
-        {plan.ubicacion && <p>{plan.ubicacion}</p>}
-        <p>
-          {participantes.length} / {plan.aforo_max} plazas
-          {plazas_disponibles > 0 && ` (${plazas_disponibles} libres)`}
-        </p>
-      </div>
-    </main>
+      </section>
+    </div>
   );
 };
 
