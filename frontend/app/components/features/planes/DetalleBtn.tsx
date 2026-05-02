@@ -6,7 +6,7 @@ type Props = {
 
 const DetalleBtn = ({ plan_id }: Props) => {
   return (
-    <Link href={`/planes/${plan_id}`} className="btn btn-outline btn-secondary btn-sm">
+    <Link href={`/home/${plan_id}`} className="btn btn-outline btn-secondary btn-sm">
       Detalle
     </Link>
   );
