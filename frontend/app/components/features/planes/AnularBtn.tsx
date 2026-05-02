@@ -13,7 +13,7 @@ const AnularBtn = ({plan_id}: {plan_id: number}) => {
     }
 
   return (
-<button onClick={handleClick} className="btn btn-warning btn-sm">Anular</button>
+<button onClick={handleClick} className="btn btn-warning btn-xs">Anular</button>
   )
 }
 

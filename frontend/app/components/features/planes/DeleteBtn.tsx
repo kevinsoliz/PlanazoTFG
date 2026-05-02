@@ -25,7 +25,7 @@ const DeleteBtn = ({ plan_id }: { plan_id: number }) => {
           </div>
         </div>
       )}
-    <button className="btn btn-outline btn-error btn-sm" onClick={handleClick}>
+    <button className="btn btn-outline btn-error btn-xs" onClick={handleClick}>
       Borrar
     </button>
     </>

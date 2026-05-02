@@ -32,9 +32,12 @@ const PlanCard = ({ plan, children }: Props) => {
             <Avatar
               nombre={plan.creador_nombre}
               url={plan.creador_avatar_url}
-              size="sm"
+              size="md"
             />
-            <span className="text-sm font-medium">{`@${plan.creador_username}`}</span>
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold">{plan.creador_nombre}</span>
+              <span className="text-xs opacity-70">{`@${plan.creador_username}`}</span>
+            </div>
           </div>
           <h2 className="card-title">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>

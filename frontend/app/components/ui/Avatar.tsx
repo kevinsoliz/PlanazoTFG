@@ -18,7 +18,7 @@ const Avatar = ({ nombre, url, size = "md" }: Props) => {
       <img
         src={url}
         alt="Avatar"
-        className={`${dimensiones} object-cover`}
+        className={`${dimensiones}`}
       />
     );
   }

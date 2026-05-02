@@ -37,7 +37,7 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
       )}
       <button
         onClick={handleClick}
-        className="btn btn-primary btn-outline btn-sm"
+        className="btn btn-primary btn-outline btn-xs"
       >
         {loading ? "Uniéndome..." : "Unirme"}
       </button>

@@ -30,7 +30,7 @@ const EditBtn = ({ plan }: { plan: Plan }) => {
     <>
       {/* (You can open the modal using document.getElementById('ID').showModal() method) -> de DaisyUI, para no tener que usar el document usamos useRef que persiste la referencia al elemento html dialog*/}
       <button
-        className="btn btn-success btn-sm btn-outline"
+        className="btn btn-success btn-xs btn-outline"
         onClick={handleClick}
       >
         Editar
