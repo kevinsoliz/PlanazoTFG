@@ -39,8 +39,8 @@ const PlanCard = ({ plan, children }: Props) => {
               <span className="text-xs opacity-70">{`@${plan.creador_username}`}</span>
             </div>
           </div>
-          <h2 className="card-title">{plan.titulo}</h2>
-          <p className="text-sm text-base-content/70 wrap-break-word">{plan.descripcion}</p>
+          <h2 className="card-title line-clamp-2">{plan.titulo}</h2>
+          <p className="text-sm text-base-content/70 wrap-break-word line-clamp-2">{plan.descripcion}</p>
           <div className="flex flex-wrap gap-2 mt-2">
             {CATEGORIAS.filter((cat) => plan.categoria === cat.name).map(
               (cat) => (
