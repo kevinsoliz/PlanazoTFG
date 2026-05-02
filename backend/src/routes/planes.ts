@@ -29,8 +29,8 @@ router.get("/creados", requireAuth, planesController.listarCreados);
 // GET /api/planes/apuntado -> planes a los que el usuario está apuntado (sin contar los suyos)
 router.get("/apuntado", requireAuth, planesController.listarApuntado);
 
-// GET /api/planes/:id -> detalle de un plan (público)
-router.get("/:id", planesController.obtenerDetalle);
+// GET /api/planes/:id -> detalle de un plan (privado)
+router.get("/:id", requireAuth, planesController.obtenerDetalle);
 
 // POST /api/planes/:id/join -> unirse a un plan
 router.post("/:id/join", requireAuth, planesController.unirse);
