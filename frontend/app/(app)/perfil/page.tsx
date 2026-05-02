@@ -28,7 +28,7 @@ const PerfilPage = async () => {
             />
           </div>
 
-          <div className="flex-1 flex flex-col gap-3">
+          <div className="flex-1 flex flex-col gap-3 items-center text-center sm:items-start sm:text-left">
             <div>
               <h2 className="font-bold text-xl">{perfil?.nombre}</h2>
               <p className="text-sm text-neutral/60">{`@${perfil?.username}`}</p>
@@ -36,7 +36,7 @@ const PerfilPage = async () => {
 
             <p className="text-sm">{perfil?.descripcion}</p>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               {CATEGORIAS.filter((cat) =>
                 userCategorias.includes(cat.name),
               ).map((cat) => (
@@ -47,7 +47,7 @@ const PerfilPage = async () => {
             </div>
           </div>
 
-          <div className="self-center sm:self-start">
+          <div className="self-center sm:self-end">
             <EditProfileBtn perfil={perfil} />
           </div>
         </section>
