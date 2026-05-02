@@ -63,8 +63,8 @@ const PerfilPage = async () => {
       {/* Aside — mismo bloque que en home */}
       <aside className="w-87.5 hidden lg:block shrink-0">
         <div className="sticky top-24 rounded-md border-2 overflow-hidden shadow-md">
-          <header className="px-4 py-3 border-b-2">
-            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+          <header className="px-4 py-3 bg-neutral text-[#E0604D]">
+            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
               Tus próximos planes
             </h3>
           </header>
