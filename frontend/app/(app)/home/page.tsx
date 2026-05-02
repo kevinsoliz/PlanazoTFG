@@ -5,8 +5,7 @@ import PlanCard from "@/app/components/features/planes/PlanCard";
 import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes } from "@/app/services/planes";
-import styles from "./page.module.css";
-import DetalleBtn from "@/app/components/features/planes/DetalleBtn";
+
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
 
@@ -31,7 +30,6 @@ const Planes = async ({ searchParams }: Props) => {
           {planes.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
               <JoinBtn plan_id={plan.id} />
-              <DetalleBtn plan_id={plan.id}/>
             </PlanCard>
           ))}
         </div>

@@ -3,6 +3,7 @@ import BaseCard from "../../ui/BaseCard";
 import Avatar from "../../ui/Avatar";
 import { CATEGORIAS } from "../../../constants/categorias";
 import { ReactNode } from "react";
+import DetalleBtn from "./DetalleBtn";
 
 interface Props {
   plan: Plan;
@@ -51,6 +52,7 @@ const PlanCard = ({ plan, children }: Props) => {
           </div>
           {/* Botones */}
           <div className="flex place-content-end gap-3">
+            <DetalleBtn plan_id={plan.id} />
             {children}
           </div>
           
