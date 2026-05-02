@@ -3,7 +3,12 @@ import { Plan } from "../types/plan";
 
 export interface PlanDetalle {
     plan: Plan;
-    participantes: { id: number; nombre: string }[];
+    participantes: {
+        id: number;
+        nombre: string;
+        username: string;
+        avatar_url: string | null;
+    }[];
     plazas_disponibles: number;
 }
 

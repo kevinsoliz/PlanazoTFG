@@ -38,6 +38,9 @@ export const planSchema = z.object({
   // nullable porque el usuario puede no haber elegido avatar todavía
   // (cae al fallback con inicial sobre fondo gris).
   creador_avatar_url: z.string().nullable(),
+  // .optional() porque solo lo seleccionamos en obtenerDetalle (no en las
+  // queries de lista, que no pintan la bio en las PlanCards).
+  creador_descripcion: z.string().nullable().optional(),
 });
 
 export type Plan = z.infer<typeof planSchema>;
