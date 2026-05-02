@@ -19,24 +19,25 @@ const PerfilPage = async () => {
     <div className="flex flex-col lg:flex-row gap-4">
       <section className="flex-1 flex flex-col gap-9">
         {/* Hero del perfil donde en home va el PageHeader */}
-        <section className="flex flex-col sm:flex-row gap-6 p-6 border-2 rounded-md lg:sticky lg:top-24 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
-          <div className="shrink-0 self-center sm:self-start">
+        <section className="flex flex-row gap-6 p-6 border-2 rounded-md lg:sticky lg:top-24 z-10 backdrop-blur-md bg-base-100/40 shadow-md">
+          <div className="flex flex-col items-center">
             <Avatar
               nombre={perfil?.nombre ?? ""}
               url={perfil?.avatar_url ?? null}
               size="lg"
             />
-          </div>
-
-          <div className="flex-1 flex flex-col gap-3 items-center text-center sm:items-start sm:text-left">
-            <div>
-              <h2 className="font-bold text-xl">{perfil?.nombre}</h2>
-              <p className="text-sm text-neutral/60">{`@${perfil?.username}`}</p>
+            <h2 className="font-bold text-xl">{perfil?.nombre}</h2>
+            <p className="text-sm text-neutral/60">{`@${perfil?.username}`}</p>
+            <div className="mt-auto">
+              <EditProfileBtn perfil={perfil} />
             </div>
-
+          </div>
+          <div className="flex-1 flex flex-col gap-3">
+            <h3 className="font-(family-name:--font-bagel-fat-one) text-2xl text-neutral">
+              Sobre mí
+            </h3>
             <p className="text-sm">{perfil?.descripcion}</p>
-
-            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+            <div className="flex flex-wrap gap-2">
               {CATEGORIAS.filter((cat) =>
                 userCategorias.includes(cat.name),
               ).map((cat) => (
@@ -45,10 +46,6 @@ const PerfilPage = async () => {
                 </span>
               ))}
             </div>
-          </div>
-
-          <div className="self-center sm:self-end">
-            <EditProfileBtn perfil={perfil} />
           </div>
         </section>
 
