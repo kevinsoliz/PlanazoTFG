@@ -134,3 +134,28 @@ SESSION_SECRET=tu_secreto_aqui
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:4000/api
 ```
+
+## Mejoras post-MVP (si da tiempo)
+
+### Ubicación con mapa interactivo en crear-plan
+Sustituir el input de texto plano de `ubicacion` por un selector de ubicación real con autocompletado y mapa.
+
+**Stack propuesta**: Leaflet + OpenStreetMap + Nominatim (autocompletado)
+- Cero coste, sin API key, sin tarjeta de crédito
+- Defendible ante el tribunal: stack 100% open source equivalente a Google Maps
+- Limitación de Nominatim: 1 petición/segundo y User-Agent obligatorio (suficiente para MVP)
+
+**Cambios en BBDD**:
+```sql
+ALTER TABLE planes ADD COLUMN latitud  NUMERIC(10, 7);
+ALTER TABLE planes ADD COLUMN longitud NUMERIC(10, 7);
+```
+Mantener `ubicacion` como texto para el nombre legible.
+
+**Flujo UX**:
+1. Input con autocompletado en crear-plan → escribes y sugiere lugares
+2. Eliges → form recibe `{ display_name, lat, lng }`
+3. Mini mapa preview con pin (opcional: arrastrable)
+4. En plan-detalle: mostrar texto + mapa centrado en las coordenadas
+
+**Alternativa**: Google Maps + Places Autocomplete. Mejor UX pero requiere tarjeta para activar billing aunque el uso sea gratis (~17k búsquedas/mes en el free tier).
