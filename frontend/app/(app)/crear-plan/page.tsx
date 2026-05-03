@@ -154,6 +154,10 @@ const PlanPage = () => {
             {fieldErrors.ubicacion && (
               <p className="text-error text-xs mt-1">{fieldErrors.ubicacion}</p>
             )}
+            <p className="text-xs text-neutral/60 mt-1 flex items-center gap-2">
+              * Pronto podrás elegir la ubicación directamente desde un mapa.
+              <span className="badge badge-xs badge-neutral">Próximamente</span>
+            </p>
           </fieldset>
 
           <fieldset className="fieldset">
@@ -170,7 +174,7 @@ const PlanPage = () => {
               className="range range-sm w-full"
             />
             <p className="text-xs text-neutral/60 mt-1 flex items-center gap-2">
-              * Con el plan Premium tendrás aforo ilimitado
+              * Con el plan Premium tendrás aforo ilimitado.
               <span className="badge badge-xs badge-neutral">Próximamente</span>
             </p>
           </fieldset>
