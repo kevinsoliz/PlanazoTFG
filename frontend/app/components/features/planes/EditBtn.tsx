@@ -18,13 +18,10 @@ const EditBtn = ({ plan }: { plan: Plan }) => {
 
   const handleClick = () => {
     dialogRef.current?.showModal();
-
-    console.log("plan actual:", plan);
   };
 
   const handleSubmit = async () => {
-    const resultado = await editarPlan(plan.id, currentPlan);
-    console.log(resultado);
+    await editarPlan(plan.id, currentPlan);
   }
   return (
     <>

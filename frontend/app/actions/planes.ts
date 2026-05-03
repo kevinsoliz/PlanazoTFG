@@ -4,9 +4,6 @@ import { fetchServer } from "../lib/api-server";
 import type { PlanInput } from "../types/plan";
 
 export async function unirseAPlan(planId: number) {
-    await new Promise(resolve => setTimeout(resolve, 3))
-    console.log('[SERVER] dentro del action, args =', planId);
-
     const res = await fetchServer(`/api/planes/${planId}/join`, { method: "POST"});
     
     if (!res.ok) {

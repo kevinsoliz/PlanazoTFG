@@ -7,13 +7,12 @@ const DeleteBtn = ({ plan_id }: { plan_id: number }) => {
     null,
   );
   const handleClick = async () => {
-    console.log(plan_id);
     const resultado = await borrarPlan(plan_id);
 
     if (resultado?.error) {
       setToast({ mensaje: resultado.error, tipo: "error" });
       setTimeout(() => setToast(null), 2000);
-    } 
+    }
   };
 
   return (
