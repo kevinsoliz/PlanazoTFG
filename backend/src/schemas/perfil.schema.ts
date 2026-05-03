@@ -23,7 +23,7 @@ export const perfilSchema = z.object({
   id: z.number(),
   user_id: z.number(),
   // min/max razonables. Si los superan, zod rechaza con un mensaje claro.
-  nombre: z.string().min(1).max(100),
+  nombre: z.string().min(1).max(20),
   username: z.string().min(1).max(50),
   // nullable porque la columna en Postgres acepta NULL.
   avatar_url: z.string().nullable(),
