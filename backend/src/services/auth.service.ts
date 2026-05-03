@@ -20,7 +20,7 @@ type AuthUser = {
 // Sirve también como pista visual: el usuario ve algo en su perfil y se le
 // invita a editarlo.
 const DESCRIPCION_POR_DEFECTO =
-  "¡Hola! Soy nuevo en Planazo. Edita tu perfil para contar algo de ti.";
+  "¡Hola! Te damos la bienvenida a Planazo. Edita tu perfil para contar algo de ti.";
 
 // 1.Servicio de registro:
 
