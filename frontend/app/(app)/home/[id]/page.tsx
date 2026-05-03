@@ -1,4 +1,4 @@
-import Avatar from "@/app/components/ui/Avatar";
+import UsuarioMini from "@/app/components/features/perfiles/UsuarioMini";
 import BaseCard from "@/app/components/ui/BaseCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import Countdown from "@/app/components/ui/Countdown";
@@ -149,19 +149,12 @@ const PlanDetailPage = async ({ params }: Props) => {
                 <h2 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
                   Creador
                 </h2>
-                <div className="flex items-center gap-4">
-                  <Avatar
-                    nombre={plan.creador_nombre}
-                    url={plan.creador_avatar_url}
-                    size="md"
-                  />
-                  <div className="flex flex-col">
-                    <p className="font-semibold">{plan.creador_nombre}</p>
-                    <p className="text-sm opacity-70">
-                      @{plan.creador_username}
-                    </p>
-                  </div>
-                </div>
+                <UsuarioMini
+                  userId={plan.creator_id}
+                  nombre={plan.creador_nombre}
+                  username={plan.creador_username}
+                  avatar_url={plan.creador_avatar_url}
+                />
                 {plan.creador_descripcion && (
                   <p className="text-sm">{plan.creador_descripcion}</p>
                 )}
@@ -181,13 +174,13 @@ const PlanDetailPage = async ({ params }: Props) => {
             <ul className="list shadow-md flex-1 min-h-0 overflow-y-auto scrollbar-hide cursor-grab lg:[mask-image:linear-gradient(to_bottom,black_calc(100%-2rem),transparent)]">
               {participantes.map((p) => (
                 <li key={p.id} className="list-row">
-                  <Avatar nombre={p.nombre} url={p.avatar_url} size="sm" />
-                  <div className="list-col-grow">
-                    <div className="font-medium">{p.nombre}</div>
-                    <div className="text-xs font-semibold opacity-60">
-                      @{p.username}
-                    </div>
-                  </div>
+                  <UsuarioMini
+                    userId={p.id}
+                    nombre={p.nombre}
+                    username={p.username}
+                    avatar_url={p.avatar_url}
+                    size="sm"
+                  />
                 </li>
               ))}
             </ul>
