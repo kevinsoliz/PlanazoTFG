@@ -121,6 +121,16 @@ const EditProfileBtn = ({ perfil }: Props) => {
                   );
                 })}
               </div>
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="file"
+                  className="file-input file-input-sm w-full"
+                  disabled
+                />
+                <span className="badge badge-xs badge-neutral">
+                  Próximamente
+                </span>
+              </div>
             </fieldset>
 
             <fieldset className="fieldset">
