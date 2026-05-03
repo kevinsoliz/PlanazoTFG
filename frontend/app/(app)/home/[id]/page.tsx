@@ -1,4 +1,8 @@
 import UsuarioMini from "@/app/components/features/perfiles/UsuarioMini";
+import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
+import EditBtn from "@/app/components/features/planes/EditBtn";
+import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import BaseCard from "@/app/components/ui/BaseCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import Countdown from "@/app/components/ui/Countdown";
@@ -77,17 +81,12 @@ const PlanDetailPage = async ({ params }: Props) => {
           <span className={`badge ${estadoConfig.badge} badge-lg`}>
             {estado}
           </span>
-          {rolActual === "no-participante" && (
-            <button className="btn btn-primary btn-sm">Unirme</button>
-          )}
-          {rolActual === "participante" && (
-            <button className="btn btn-error btn-sm">Abandonar</button>
-          )}
+          {rolActual === "no-participante" && <JoinBtn plan_id={plan.id} />}
+          {rolActual === "participante" && <AnularBtn plan_id={plan.id} />}
           {rolActual === "creador" && (
             <>
-              <button className="btn btn-success btn-sm">Editar</button>
-              <button className="btn btn-warning btn-sm">Anular</button>
-              <button className="btn btn-error btn-sm">Borrar</button>
+              <EditBtn plan={plan} />
+              <DeleteBtn plan_id={plan.id} />
             </>
           )}
         </div>
