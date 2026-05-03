@@ -5,7 +5,7 @@ import type { Plan } from "@/app/types/plan";
 import PlanCard from "./PlanCard";
 import DeleteBtn from "./DeleteBtn";
 import EditBtn from "./EditBtn";
-import AnularBtn from "./AnularBtn";
+import AbandonarBtn from "./AbandonarBtn";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 
 interface Props {
@@ -58,7 +58,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
           </header>
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
-              <AnularBtn plan_id={plan.id} />
+              <AbandonarBtn plan_id={plan.id} />
             </PlanCard>
           ))}
         </section>

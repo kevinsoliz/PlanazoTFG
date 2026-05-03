@@ -1,4 +1,3 @@
-import AnularBtn from "@/app/components/features/planes/AnularBtn";
 import CategoriaFiltro from "@/app/components/features/planes/CategoriaFiltro";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";

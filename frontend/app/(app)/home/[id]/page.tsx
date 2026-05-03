@@ -1,5 +1,5 @@
 import UsuarioMini from "@/app/components/features/perfiles/UsuarioMini";
-import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import AbandonarBtn from "@/app/components/features/planes/AbandonarBtn";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
@@ -82,7 +82,7 @@ const PlanDetailPage = async ({ params }: Props) => {
             {estado}
           </span>
           {rolActual === "no-participante" && <JoinBtn plan_id={plan.id} />}
-          {rolActual === "participante" && <AnularBtn plan_id={plan.id} />}
+          {rolActual === "participante" && <AbandonarBtn plan_id={plan.id} />}
           {rolActual === "creador" && (
             <>
               <EditBtn plan={plan} />

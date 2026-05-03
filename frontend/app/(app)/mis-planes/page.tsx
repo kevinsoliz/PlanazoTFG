@@ -1,4 +1,4 @@
-import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import AbandonarBtn from "@/app/components/features/planes/AbandonarBtn";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
 import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
@@ -47,7 +47,7 @@ const MisPlanes = async () => {
           </header>
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
-              <AnularBtn plan_id={plan.id} />
+              <AbandonarBtn plan_id={plan.id} />
             </PlanCard>
           ))}
         </section>
