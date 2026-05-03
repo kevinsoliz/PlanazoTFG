@@ -44,3 +44,11 @@ export async function getPlanesApuntados(): Promise<Plan[]> {
 
     return res.data?.planes ?? [];
 }
+
+export async function getPlanesCreadosPor(userId: number): Promise<Plan[]> {
+    const res = await fetchServer(`/api/planes/usuario/${userId}`);
+
+    if (!res.ok) return [];
+
+    return res.data?.planes ?? [];
+}
