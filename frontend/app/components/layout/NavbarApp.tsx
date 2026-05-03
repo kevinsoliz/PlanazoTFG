@@ -35,7 +35,9 @@ const NavbarApp = async () => {
                 <Link href="/mis-planes">Mis planes</Link>
               </li>
               <li>
-                <Link href="/contacto">Contacto</Link>
+                 <span className="opacity-50 pointer-events-none">
+                  Contacto
+                </span>
               </li>
             </ul>
           </div>
