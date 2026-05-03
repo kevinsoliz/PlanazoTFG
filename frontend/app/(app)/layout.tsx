@@ -1,4 +1,5 @@
 import NavbarApp from "../components/layout/NavbarApp";
+import BackToTopBtn from "../components/ui/BackToTopBtn";
 
 const AppLayout = ({
   children,
@@ -13,7 +14,10 @@ const AppLayout = ({
       }}
     >
       <NavbarApp />
-      <main className="max-w-7xl mx-auto w-full pt-16.5">{children}</main>
+      <main className="max-w-7xl mx-auto w-full pt-24 pb-12 px-6">
+        {children}
+      </main>
+      <BackToTopBtn />
     </div>
   );
 };

@@ -1,16 +1,23 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRef } from "react";
 import { CATEGORIAS } from "@/app/constants/categorias";
+import { FiChevronDown } from "react-icons/fi";
 
 const CategoriaFiltro = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const categoriaActual = searchParams.get("categoria") ?? "";
+  // Ref al <details> para poder cerrarlo programáticamente tras seleccionar.
+  // <details> nativo se mantiene abierto hasta que se vuelve a clicar el summary;
+  // forzando removeAttribute("open") simulamos el cierre tipo dropdown.
+  const detailsRef = useRef<HTMLDetailsElement>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+  const labelActual = categoriaActual || "Todas las categorías";
+
+  const seleccionar = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value === "") {
       params.delete("categoria");
@@ -19,28 +26,31 @@ const CategoriaFiltro = () => {
     }
     const query = params.toString();
     router.push(query ? `${pathname}?${query}` : pathname);
+    detailsRef.current?.removeAttribute("open");
   };
 
   return (
-    <div className="sticky top-52 z-10 flex justify-end -mt-7">
-      <select
-        value={categoriaActual}
-        onChange={handleChange}
-        className="select select-ghost bg-primary text-white focus-within:outline-none focus:outline-none"
-      >
-        <option value="" className="bg-primary text-white">
-          Todas las categorías
-        </option>
-        {CATEGORIAS.map((cat) => (
-          <option
-            key={cat.name}
-            value={cat.name}
-            className="bg-primary text-white"
-          >
-            {cat.name}
-          </option>
-        ))}
-      </select>
+    <div className="lg:sticky lg:top-56 z-10 flex justify-end -mt-7">
+      <details ref={detailsRef} className="dropdown dropdown-end">
+        <summary className="btn bg-primary text-primary-content border-none hover:bg-primary/90 list-none flex items-center gap-2">
+          {labelActual}
+          <FiChevronDown />
+        </summary>
+        <ul className="dropdown-content menu bg-primary text-primary-content rounded-box mt-1 w-52 p-2 shadow-md">
+          <li>
+            <button onClick={() => seleccionar("")}>
+              Todas las categorías
+            </button>
+          </li>
+          {CATEGORIAS.map((cat) => (
+            <li key={cat.name}>
+              <button onClick={() => seleccionar(cat.name)}>
+                {cat.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 };

@@ -13,6 +13,7 @@ const FeaturesSection = () => {
             descripcion="Descubre planes y personas según tus intereses. Menos buscar, más disfrutar."
             bgColor="#928EF5"
             imagen="/images/landing/amigo1.png"
+            invertido
           />
 
           <FeatureCard

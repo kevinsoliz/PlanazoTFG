@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import CategoryBadges from "../components/landing/CategoryBadges";
+import ComoFunciona from "../components/landing/ComoFunciona";
 import CTASection from "../components/landing/CTASection";
 import Features from "../components/landing/Features";
 import Hero from "../components/landing/Hero";
@@ -17,6 +18,7 @@ export default function Home() {
       <Oruga />
       <CategoryBadges />
       <Features />
+      <ComoFunciona />
       <CTASection />
     </main>
   );

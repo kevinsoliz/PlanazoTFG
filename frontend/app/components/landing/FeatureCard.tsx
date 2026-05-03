@@ -26,7 +26,7 @@ const FeatureCard = ({
           <img src={imagen} alt={titulo} className="w-full h-auto" />
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
+        <div className="w-full md:flex-1 flex flex-col gap-4">
           <h3 className="card-title text-3xl">{titulo}</h3>
           <p className="text-sm opacity-70">{descripcion}</p>
           <a href="#" className="link font-semibold">

@@ -1,11 +1,10 @@
-import AnularBtn from "@/app/components/features/planes/AnularBtn";
 import CategoriaFiltro from "@/app/components/features/planes/CategoriaFiltro";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes } from "@/app/services/planes";
-import styles from "./page.module.css";
+
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
 
@@ -35,10 +34,10 @@ const Planes = async ({ searchParams }: Props) => {
         </div>
       </section>
 
-      <aside className="w-87.5 hidden lg:block shrink-0">
-        <div className="sticky top-21  rounded-md border-2 overflow-hidden shadow-md">
-          <header className="px-4 py-3 border-b-2">
-            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg text-neutral">
+      <aside className="w-87.5 hidden lg:block shrink-0 lg:self-start lg:sticky lg:top-24">
+        <div className="rounded-md border-2 overflow-hidden shadow-md">
+          <header className="px-4 py-3 bg-neutral text-[#E0604D]">
+            <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
               Tus próximos planes
             </h3>
           </header>

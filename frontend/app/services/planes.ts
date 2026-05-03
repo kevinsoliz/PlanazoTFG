@@ -3,7 +3,12 @@ import { Plan } from "../types/plan";
 
 export interface PlanDetalle {
     plan: Plan;
-    participantes: { id: number; nombre: string }[];
+    participantes: {
+        id: number;
+        nombre: string;
+        username: string;
+        avatar_url: string | null;
+    }[];
     plazas_disponibles: number;
 }
 
@@ -34,6 +39,14 @@ export async function getPlanesCreados(): Promise<Plan[]> {
 
 export async function getPlanesApuntados(): Promise<Plan[]> {
     const res = await fetchServer("/api/planes/apuntado");
+
+    if (!res.ok) return [];
+
+    return res.data?.planes ?? [];
+}
+
+export async function getPlanesCreadosPor(userId: number): Promise<Plan[]> {
+    const res = await fetchServer(`/api/planes/usuario/${userId}`);
 
     if (!res.ok) return [];
 
