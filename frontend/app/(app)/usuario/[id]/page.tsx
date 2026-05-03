@@ -33,6 +33,14 @@ const UsuarioPage = async ({ params }: Props) => {
           />
           <h2 className="font-bold text-xl">{perfil.nombre}</h2>
           <p className="text-sm text-neutral/60">{`@${perfil.username}`}</p>
+          <div className="tooltip mt-4" data-tip="Próximamente">
+            <button
+              className="btn btn-accent btn-sm rounded-full"
+              disabled
+            >
+              Seguir
+            </button>
+          </div>
         </div>
         <div className="flex-1 flex flex-col gap-3 justify-center">
           <h3 className="font-(family-name:--font-bagel-fat-one) text-2xl text-neutral">
