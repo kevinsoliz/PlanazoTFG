@@ -3,11 +3,14 @@
 import { useRef, useState } from "react";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { editarPerfil } from "@/app/actions/perfiles";
+import { perfilUpdateSchema } from "@/app/schemas/perfil.schema";
 import type { UserProfile } from "@/app/types/user";
 
 type Props = {
   perfil: UserProfile | null;
 };
+
+type Campo = "nombre" | "username" | "descripcion";
 
 const EditProfileBtn = ({ perfil }: Props) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -20,9 +23,19 @@ const EditProfileBtn = ({ perfil }: Props) => {
   const [nombre, setNombre] = useState(perfil?.nombre ?? "");
   const [username, setUsername] = useState(perfil?.username ?? "");
   const [descripcion, setDescripcion] = useState(perfil?.descripcion ?? "");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<Campo, string>>>(
+    {},
+  );
 
   const handleOpen = () => {
     dialogRef.current?.showModal();
+  };
+
+  // limpia el error de un campo cuando el usuario empieza a corregirlo
+  const limpiarError = (campo: Campo) => {
+    if (fieldErrors[campo]) {
+      setFieldErrors({ ...fieldErrors, [campo]: undefined });
+    }
   };
 
   const toggleCategoria = (name: string) => {
@@ -32,16 +45,30 @@ const EditProfileBtn = ({ perfil }: Props) => {
   };
 
   const handleGuardar = async () => {
-    const result = await editarPerfil({
+    const datos = {
       nombre,
       username,
       avatar_url: avatarSeleccionado,
-      descripcion: descripcion || null,
+      descripcion,
       categorias:
         categoriasSeleccionadas.length > 0
           ? categoriasSeleccionadas.join(",")
           : null,
-    });
+    };
+
+    const validacion = perfilUpdateSchema.safeParse(datos);
+    if (!validacion.success) {
+      const errors = validacion.error.flatten().fieldErrors;
+      setFieldErrors({
+        nombre: errors.nombre?.[0],
+        username: errors.username?.[0],
+        descripcion: errors.descripcion?.[0],
+      });
+      return;
+    }
+
+    setFieldErrors({});
+    const result = await editarPerfil(datos);
     if (result && "ok" in result) {
       dialogRef.current?.close();
     }
@@ -100,26 +127,34 @@ const EditProfileBtn = ({ perfil }: Props) => {
               <label className="label">Nombre</label>
               <input
                 type="text"
-                className="input validator w-full"
+                className="input w-full"
                 placeholder="Nombre"
                 value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                required
+                onChange={(e) => {
+                  setNombre(e.target.value);
+                  limpiarError("nombre");
+                }}
               />
-              <p className="validator-hint hidden">Obligatorio</p>
+              {fieldErrors.nombre && (
+                <p className="text-error text-xs mt-1">{fieldErrors.nombre}</p>
+              )}
             </fieldset>
 
             <fieldset className="fieldset">
               <label className="label">Username</label>
               <input
                 type="text"
-                className="input validator w-full"
+                className="input w-full"
                 placeholder="@username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  limpiarError("username");
+                }}
               />
-              <p className="validator-hint hidden">Obligatorio</p>
+              {fieldErrors.username && (
+                <p className="text-error text-xs mt-1">{fieldErrors.username}</p>
+              )}
             </fieldset>
 
             <fieldset className="fieldset">
@@ -128,8 +163,16 @@ const EditProfileBtn = ({ perfil }: Props) => {
                 className="textarea w-full"
                 placeholder="Cuéntanos algo sobre ti..."
                 value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                onChange={(e) => {
+                  setDescripcion(e.target.value);
+                  limpiarError("descripcion");
+                }}
               />
+              {fieldErrors.descripcion && (
+                <p className="text-error text-xs mt-1">
+                  {fieldErrors.descripcion}
+                </p>
+              )}
             </fieldset>
 
             <fieldset className="fieldset">

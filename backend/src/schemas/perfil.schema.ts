@@ -24,10 +24,13 @@ export const perfilSchema = z.object({
   user_id: z.number(),
   // min/max razonables. Si los superan, zod rechaza con un mensaje claro.
   nombre: z.string().min(1).max(20),
-  username: z.string().min(1).max(50),
+  username: z.string().min(1).max(20),
   // nullable porque la columna en Postgres acepta NULL.
   avatar_url: z.string().nullable(),
-  descripcion: z.string().max(500).nullable(),
+  // La columna en Postgres es nullable por compatibilidad con datos antiguos,
+  // pero a nivel de aplicación la descripción es obligatoria (min 50). Cualquier
+  // perfil existente con NULL deberá rellenarla la próxima vez que edite.
+  descripcion: z.string().min(50).max(500),
   categorias: z.string().max(200).nullable(),
   created_at: z.string(),
 });
