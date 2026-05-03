@@ -1,6 +1,9 @@
 "use client";
 import useRegistro from "@/app/hooks/useRegistro";
+import { registroSchema } from "@/app/schemas/auth.schema";
 import { FormEvent, useState } from "react";
+
+type Campo = "nombre" | "email" | "password";
 
 const Registro = () => {
   const [newUser, setNewUser] = useState({
@@ -8,11 +11,35 @@ const Registro = () => {
     email: "",
     password: "",
   });
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<Campo, string>>>({});
 
- const {registrar, error} = useRegistro();
+  const { registrar, error } = useRegistro();
+
+  const handleChange = (campo: Campo, valor: string) => {
+    setNewUser({ ...newUser, [campo]: valor });
+    // limpiamos el error del campo en cuanto el usuario empieza a corregirlo
+    if (fieldErrors[campo]) {
+      setFieldErrors({ ...fieldErrors, [campo]: undefined });
+    }
+  };
 
   const handleRegistro = async (event: FormEvent) => {
     event.preventDefault();
+
+    const result = registroSchema.safeParse(newUser);
+    if (!result.success) {
+      // flatten().fieldErrors devuelve { nombre: [...], email: [...], ... }
+      // Cogemos solo el primer mensaje de cada campo.
+      const errors = result.error.flatten().fieldErrors;
+      setFieldErrors({
+        nombre: errors.nombre?.[0],
+        email: errors.email?.[0],
+        password: errors.password?.[0],
+      });
+      return;
+    }
+
+    setFieldErrors({});
     registrar(newUser);
   };
 
@@ -21,38 +48,44 @@ const Registro = () => {
       <fieldset className="fieldset">
         <div className="pb-10">
           <legend className="text-4xl pb-2">Bienvenido</legend>
-          <p className="text-sm text-neutral/70">Crea tu cuenta y únete a Planazo</p>
+          <p className="text-sm text-neutral/70">
+            Crea tu cuenta y únete a Planazo
+          </p>
         </div>
+
         <label className="label">
           <input
-            onChange={(event) =>
-              setNewUser({ ...newUser, nombre: event.target.value })
-            }
+            onChange={(e) => handleChange("nombre", e.target.value)}
             type="text"
             className="input w-full"
             placeholder="Tu nombre"
           />
         </label>
+        {fieldErrors.nombre && (
+          <p className="text-error text-xs mt-1">{fieldErrors.nombre}</p>
+        )}
 
         <label className="label">Email</label>
         <input
-          onChange={(event) =>
-            setNewUser({ ...newUser, email: event.target.value })
-          }
+          onChange={(e) => handleChange("email", e.target.value)}
           type="email"
           className="input w-full"
           placeholder="tu@email.com"
         />
+        {fieldErrors.email && (
+          <p className="text-error text-xs mt-1">{fieldErrors.email}</p>
+        )}
 
         <label className="label">Password</label>
         <input
-          onChange={(event) =>
-            setNewUser({ ...newUser, password: event.target.value })
-          }
+          onChange={(e) => handleChange("password", e.target.value)}
           type="password"
           className="input w-full"
           placeholder="••••••••"
         />
+        {fieldErrors.password && (
+          <p className="text-error text-xs mt-1">{fieldErrors.password}</p>
+        )}
 
         {error && <p className="text-error text-center">{error}</p>}
         <button className="btn btn-neutral mt-4">Registrarse</button>
