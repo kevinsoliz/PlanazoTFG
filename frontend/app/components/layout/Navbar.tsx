@@ -14,8 +14,8 @@ const Navbar = () => {
               </div>
               <ul tabIndex={-1} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral">
                 <li><Link href="/planes">Planes</Link></li>
-                <li><Link href="/about">About</Link></li>
-                <li><Link href="/contacto">Contacto</Link></li>
+                <li><span className="opacity-50 pointer-events-none">About</span></li>
+                <li><span className="opacity-50 pointer-events-none">Contacto</span></li>
               </ul>
             </div>
             <Link href="/" className="text-4xl font-(family-name:--font-bagel-fat-one)">Planazo</Link>
@@ -24,8 +24,8 @@ const Navbar = () => {
           <div className="navbar-center hidden md:flex">
             <ul className="menu menu-horizontal px-1">
               <li><Link href="/planes">Planes</Link></li>
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/contacto">Contacto</Link></li>
+              <li><span className="opacity-50 pointer-events-none">About</span></li>
+              <li><span className="opacity-50 pointer-events-none">Contacto</span></li>
             </ul>
           </div>
           {/* Login */}
