@@ -1,29 +1,33 @@
 // Sección "Cómo funciona" — 3 mockup-phone con capturas mobile
 // que ilustran el flujo de uso de la app.
-//
-// TODO (Kevin): sustituir los placeholders por capturas reales en
-// /public/images/landing/paso-{1,2,3}.png cuando las tengas.
 
+import Image from "next/image";
 import Logo from "../ui/Logo";
 
-const PASOS = [
+type Paso = {
+  titulo: string;
+  descripcion: string;
+  imagen: string | null;
+};
+
+const PASOS: Paso[] = [
   {
     titulo: "Descubre planes",
     descripcion:
       "Mira qué se cuece cerca de ti. Filtra por categoría y encuentra lo que te apetece.",
-    imagen: "/images/landing/paso-1.png",
+    imagen: "/images/landing/como-funciona/paso1.png",
   },
   {
     titulo: "Únete o crea el tuyo",
     descripcion:
       "Apúntate a un plan con un click o monta el tuyo en menos de un minuto.",
-    imagen: "/images/landing/paso-2.png",
+    imagen: "/images/landing/como-funciona/paso2.png",
   },
   {
     titulo: "Vive el plan",
     descripcion:
       "Conecta con gente que comparte tus intereses. Lo importante pasa fuera de la pantalla.",
-    imagen: "/images/landing/paso-3.png",
+    imagen: "/images/landing/como-funciona/paso3.png",
   },
 ];
 
@@ -38,17 +42,24 @@ const ComoFunciona = () => {
           {PASOS.map((paso, i) => (
             <div
               key={i}
-              className="flex flex-col items-center gap-4 max-w-xs"
+              className="flex flex-col items-center gap-2 max-w-xs"
             >
-              <div className="mockup-phone scale-75 origin-top -mb-24">
+              <div className="mockup-phone scale-75 origin-top -mb-36">
                 <div className="mockup-phone-camera"></div>
                 <div className="mockup-phone-display bg-base-100">
-                  {/* Placeholder hasta que existan las capturas reales.
-                      Cuando estén, reemplazar este div por:
-                      <img src={paso.imagen} alt={paso.titulo} className="w-full h-full object-cover" /> */}
-                  <div className="grid place-content-center h-full text-base-content/40 text-sm">
-                    Captura {i + 1}
-                  </div>
+                  {paso.imagen ? (
+                    <Image
+                      src={paso.imagen}
+                      alt={paso.titulo}
+                      width={320}
+                      height={568}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="grid place-content-center h-full text-base-content/40 text-sm">
+                      Captura {i + 1}
+                    </div>
+                  )}
                 </div>
               </div>
               <h3 className="text-xl font-bold text-center">{paso.titulo}</h3>
