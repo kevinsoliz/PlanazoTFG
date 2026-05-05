@@ -9,7 +9,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="navbar-start">
             <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-primary btn-sm btn-outline md:hidden mr-6">
+              <div tabIndex={0} role="button" className="btn btn-neutral btn-sm btn-outline md:hidden mr-6">
                 <FiMenu className="h-5 w-5" />
               </div>
               <ul tabIndex={-1} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral">
