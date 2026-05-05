@@ -9,7 +9,7 @@ const AbandonarBtn = ({plan_id}: {plan_id: number}) => {
     }
 
   return (
-<button onClick={handleClick} className="btn btn-outline btn-warning btn-xs">Abandonar</button>
+<button onClick={handleClick} className="btn btn-outline btn-error btn-xs">Abandonar</button>
   )
 }
 
