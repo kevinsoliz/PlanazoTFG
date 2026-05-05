@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 border-b border-neutral">
+    <div className="navbar bg-base-100 border-b border-neutral relative z-50">
 
       <div className="max-w-7xl mx-auto w-full flex">
           {/* Logo */}
