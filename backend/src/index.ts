@@ -36,6 +36,7 @@ app.set("trust proxy", 1);
 
 // TODO: agregar helmet (cabeceras de seguridad) y morgan (logs de   peticiones)
 
+// session devuelve un middleware, toda la config que lleva dentro es para que la aplique el navegador
 app.use(
   session({
     store: new PGStore({

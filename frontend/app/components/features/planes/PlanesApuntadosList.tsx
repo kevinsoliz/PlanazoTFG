@@ -15,15 +15,15 @@ const PlanesApuntadosList = async () => {
   return (
     <ul className="list shadow-md max-h-96 overflow-y-auto scrollbar-hide cursor-grab [mask-image:linear-gradient(to_bottom,black_calc(100%-2rem),transparent)]">
       {planes.map((plan) => {
-        const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
+        const fecha = new Date(plan.fecha + "Z").toLocaleDateString("es-ES", {
           day: "numeric",
           month: "long",
-          timeZone: "Europe/Madrid",
+          timeZone: "UTC",
         });
-        const hora = new Date(plan.fecha).toLocaleTimeString("es-ES", {
+        const hora = new Date(plan.fecha + "Z").toLocaleTimeString("es-ES", {
           hour: "2-digit",
           minute: "2-digit",
-          timeZone: "Europe/Madrid",
+          timeZone: "UTC",
         });
         return (
           <li key={plan.id} className="list-row">

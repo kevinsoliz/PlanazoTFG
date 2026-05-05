@@ -39,9 +39,20 @@ const PlanDetailPage = async ({ params }: Props) => {
   const { plan, participantes } = detalle;
   const userActual = await getCurrentUser();
 
-  const planTime = new Date(plan.fecha).getTime();
+  const ahoraWallClock = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  })
+    .format(new Date())
+    .replace(" ", "T");
   const estado: EstadoPlan =
-    planTime < Date.now()
+    plan.fecha < ahoraWallClock
       ? "Pasado"
       : participantes.length >= plan.aforo_max
         ? "Lleno"
@@ -56,16 +67,16 @@ const PlanDetailPage = async ({ params }: Props) => {
         ? "participante"
         : "no-participante";
 
-  const fechaTexto = new Date(plan.fecha).toLocaleDateString("es-ES", {
+  const fechaTexto = new Date(plan.fecha + "Z").toLocaleDateString("es-ES", {
     weekday: "long",
     day: "numeric",
     month: "long",
-    timeZone: "Europe/Madrid",
+    timeZone: "UTC",
   });
-  const horaTexto = new Date(plan.fecha).toLocaleTimeString("es-ES", {
+  const horaTexto = new Date(plan.fecha + "Z").toLocaleTimeString("es-ES", {
     hour: "2-digit",
     minute: "2-digit",
-    timeZone: "Europe/Madrid",
+    timeZone: "UTC",
   });
   const fechaMostrada = `${fechaTexto} · ${horaTexto}`;
 

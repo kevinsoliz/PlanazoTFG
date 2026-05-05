@@ -3,7 +3,7 @@ import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
 import PageHeader from "@/app/components/ui/PageHeader";
-import { getPlanes } from "@/app/services/planes";
+import { getPlanes, getPlanesApuntados } from "@/app/services/planes";
 
 
 // server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
@@ -15,6 +15,8 @@ type Props = {
 const Planes = async ({ searchParams }: Props) => {
   const { categoria } = await searchParams;
   const planes = await getPlanes(categoria);
+  const apuntados = await getPlanesApuntados();
+  const apuntadosIds = new Set(apuntados.map((p) => p.id));
 
   return (
     
@@ -28,7 +30,11 @@ const Planes = async ({ searchParams }: Props) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planes.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
-              <JoinBtn plan_id={plan.id} />
+              {apuntadosIds.has(plan.id) ? (
+              <span className="badge badge-success badge-sm badge-dash place-self-center">Apuntado</span>
+              ) : (
+                <JoinBtn plan_id={plan.id} />
+              )}
             </PlanCard>
           ))}
         </div>

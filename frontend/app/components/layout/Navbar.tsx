@@ -1,17 +1,16 @@
 import Link from "next/link";
+import { FiMenu } from "react-icons/fi";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 border-b border-neutral">
+    <div className="navbar bg-base-100 border-b border-neutral relative z-50">
 
       <div className="max-w-7xl mx-auto w-full flex">
           {/* Logo */}
           <div className="navbar-start">
             <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-                </svg>
+              <div tabIndex={0} role="button" className="btn btn-neutral btn-sm btn-outline md:hidden mr-6">
+                <FiMenu className="h-5 w-5" />
               </div>
               <ul tabIndex={-1} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral">
                 <li><Link href="/planes">Planes</Link></li>
