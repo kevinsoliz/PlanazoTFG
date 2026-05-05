@@ -3,7 +3,7 @@ import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { getPerfilPorId } from "@/app/services/perfiles";
-import { getPlanesCreadosPor } from "@/app/services/planes";
+import { getPlanesCreadosPor, getPlanesApuntados } from "@/app/services/planes";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -19,6 +19,8 @@ const UsuarioPage = async ({ params }: Props) => {
   if (!perfil) notFound();
 
   const planes = await getPlanesCreadosPor(userId);
+  const apuntados = await getPlanesApuntados();
+  const apuntadosIds = new Set(apuntados.map((p) => p.id));
   const userCategorias = perfil.categorias ? perfil.categorias.split(",") : [];
 
   return (
@@ -63,7 +65,11 @@ const UsuarioPage = async ({ params }: Props) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan}>
-            <JoinBtn plan_id={plan.id} />
+            {apuntadosIds.has(plan.id) ? (
+              <span className="badge badge-success badge-sm">Apuntado</span>
+            ) : (
+              <JoinBtn plan_id={plan.id} />
+            )}
           </PlanCard>
         ))}
       </div>
