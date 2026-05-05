@@ -3,6 +3,7 @@ import BaseCard from "../../ui/BaseCard";
 import UsuarioMini from "../perfiles/UsuarioMini";
 import { CATEGORIAS } from "../../../constants/categorias";
 import { ReactNode } from "react";
+import { FiCalendar, FiMapPin } from "react-icons/fi";
 import DetalleBtn from "./DetalleBtn";
 
 interface Props {
@@ -12,18 +13,24 @@ interface Props {
 
 const PlanCard = ({ plan, children }: Props) => {
 
-    const fecha = new Date(plan.fecha).toLocaleDateString("es-ES", {
+    const dateObj = new Date(plan.fecha + "Z");
+
+    const fechaFormateada = dateObj.toLocaleDateString("es-ES", {
+        weekday: "short",
         day: "numeric",
-        month: "long",
+        month: "short",
         year: "numeric",
-        timeZone: "Europe/Madrid"
-    })
-    const hora = new Date(plan.fecha).toLocaleTimeString("es-ES", {
+        timeZone: "UTC"
+    });
+
+    const fechaFinal = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
+
+    const hora = dateObj.toLocaleTimeString("es-ES", {
         hour: "2-digit",
         minute: "2-digit",
-        timeZone: "Europe/Madrid"
-    })
-    
+        timeZone: "UTC"
+    });
+
   return (
 
       <BaseCard boxShadow="3px 3px 0px"bgColor="#ffff" className="max-w-85">
@@ -33,7 +40,7 @@ const PlanCard = ({ plan, children }: Props) => {
             nombre={plan.creador_nombre}
             username={plan.creador_username}
             avatar_url={plan.creador_avatar_url}
-          
+
           />
           <h2 className="card-title line-clamp-2">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word line-clamp-2">{plan.descripcion}</p>
@@ -47,14 +54,27 @@ const PlanCard = ({ plan, children }: Props) => {
             )}
 
             <span className="badge badge-sm badge-outline">{`${plan.aforo_max - plan.participants} plazas`}</span>
-            <p className="text-xs wrap-break-word">{`El ${fecha} a las ${hora} en ${plan.ubicacion}`}</p>
           </div>
+
+          <div className="mt-3 flex flex-col gap-1">
+            <p className="text-xs font-medium flex items-center gap-2">
+              <FiCalendar className="h-3.5 w-3.5 shrink-0" />
+              <span>{fechaFinal} • {hora}</span>
+            </p>
+            {plan.ubicacion && (
+              <p className="text-xs text-base-content/60 flex items-center gap-2">
+                <FiMapPin className="h-3.5 w-3.5 shrink-0" />
+                <span className="wrap-break-word">{plan.ubicacion}</span>
+              </p>
+            )}
+          </div>
+
           {/* Botones */}
           <div className="flex place-content-end gap-3">
             <DetalleBtn plan_id={plan.id} />
             {children}
           </div>
-          
+
         </div>
       </BaseCard>
 
