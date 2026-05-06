@@ -14,9 +14,15 @@ import { rateLimit } from "express-rate-limit";
 // Límite global del endpoint de registro.
 // Un ataque masivo (p. ej. 115 cuentas en 2 minutos) lo frena.
 // 50/h deja sobrado margen para uso humano normal.
+//
+// skipFailedRequests: true -> el contador SOLO suma cuando la cuenta
+// se crea (2xx/3xx). Bots que disparan el honeypot reciben 400 y NO
+// gastan cupo, así que no pueden bloquear a usuarios reales martillando
+// peticiones inválidas.
 export const registroLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   limit: 50,
+  skipFailedRequests: true,
   standardHeaders: "draft-8",
   legacyHeaders: false,
   message: {
