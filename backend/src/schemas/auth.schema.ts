@@ -18,6 +18,10 @@ export const registroSchema = z.object({
   // 8 chars mínimo es el estándar OWASP. Sin máximo: bcrypt admite
   // passwords largos sin problema.
   password: z.string().min(8),
+  // Honeypot: campo invisible para humanos pero los bots automáticos lo
+  // rellenan al ver el HTML. Si llega con cualquier contenido lo
+  // tratamos como bot y zod falla (length(0)).
+  website: z.string().length(0).optional(),
 });
 
 export type RegistroInput = z.infer<typeof registroSchema>;

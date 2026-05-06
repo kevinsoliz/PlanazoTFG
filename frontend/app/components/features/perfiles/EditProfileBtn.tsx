@@ -76,7 +76,7 @@ const EditProfileBtn = ({ perfil }: Props) => {
 
   return (
     <>
-      <button onClick={handleOpen} className="btn btn-accent btn-outline btn-sm rounded-full">
+      <button onClick={handleOpen} className="btn btn-primary btn-soft btn-sm rounded-full">
         Editar
       </button>
 
