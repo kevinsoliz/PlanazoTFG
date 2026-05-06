@@ -16,13 +16,19 @@ import { z } from "zod";
 export const planSchema = z.object({
   id: z.number(),
   creator_id: z.number(),
-  titulo: z.string().min(1).max(200),
+  titulo: z.string().min(1).max(100),
   categoria: z.string().min(1).max(50),
-  descripcion: z.string().max(2000).nullable(),
-  // fecha: string ISO. No validamos el formato exacto aquí; si llega
-  // basura, postgres lo rechaza al insertar.
-  fecha: z.string(),
-  ubicacion: z.string().max(200).nullable(),
+  // La descripción es obligatoria a nivel de aplicación. La columna en
+  // BBDD sigue siendo nullable por compatibilidad con planes antiguos,
+  // pero los nuevos deben llevar mínimo 20 caracteres.
+  descripcion: z.string().min(20).max(2000),
+  // fecha: string ISO. Solo aceptamos fechas futuras: no tiene sentido
+  // crear ni mover un plan al pasado.
+  fecha: z.string().refine((v) => new Date(v).getTime() > Date.now(), {
+    message: "La fecha debe ser futura",
+  }),
+  // Ubicación obligatoria: la PlanCard la imprime sin gestionar el null.
+  ubicacion: z.string().min(1).max(200),
   // int().min(1): al menos 1 plaza. max(1000) como cap razonable.
   aforo_max: z.number().int().min(1).max(1000),
   // participants es un campo CALCULADO por la subquery SQL,
@@ -38,6 +44,9 @@ export const planSchema = z.object({
   // nullable porque el usuario puede no haber elegido avatar todavía
   // (cae al fallback con inicial sobre fondo gris).
   creador_avatar_url: z.string().nullable(),
+  // .optional() porque solo lo seleccionamos en obtenerDetalle (no en las
+  // queries de lista, que no pintan la bio en las PlanCards).
+  creador_descripcion: z.string().nullable().optional(),
 });
 
 export type Plan = z.infer<typeof planSchema>;

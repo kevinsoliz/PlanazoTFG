@@ -143,7 +143,12 @@ export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
 // Devuelve plan completo (con datos del creador) + participantes + plazas.
 type PlanDetalle = {
   plan: Plan;
-  participantes: { id: number; nombre: string }[];
+  participantes: {
+    id: number;
+    nombre: string;
+    username: string;
+    avatar_url: string | null;
+  }[];
   plazas_disponibles: number;
 };
 
@@ -153,7 +158,8 @@ export async function obtenerDetalle(planId: number): Promise<PlanDetalle> {
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
-        perfiles.avatar_url AS creador_avatar_url
+        perfiles.avatar_url AS creador_avatar_url,
+        perfiles.descripcion AS creador_descripcion
         FROM planes
         JOIN users ON planes.creator_id = users.id
         JOIN perfiles ON perfiles.user_id = users.id
@@ -166,9 +172,10 @@ export async function obtenerDetalle(planId: number): Promise<PlanDetalle> {
   }
 
   const participantes = await pool.query(
-    `SELECT users.id, users.nombre
+    `SELECT users.id, users.nombre, perfiles.username, perfiles.avatar_url
         FROM plan_participants
         JOIN users ON plan_participants.user_id = users.id
+        JOIN perfiles ON perfiles.user_id = users.id
         WHERE plan_participants.plan_id = $1`,
     [planId],
   );

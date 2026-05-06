@@ -137,3 +137,20 @@ export async function actualizar(req: Request, res: Response) {
 
   res.json({ plan });
 }
+
+
+// 10. Handler para listar los planes creados por un usuario concreto:
+
+// GET /api/planes/usuario/:id
+// Devuelve los planes creados por el usuario indicado en la URL.
+// Reutiliza el mismo service que /creados; la diferencia es de dónde
+// sale el userId: aquí del path, allí de la sesión.
+export async function listarCreadosPorUsuario(req: Request, res: Response) {
+  const userId = Number(req.params.id);
+  if (Number.isNaN(userId)) {
+    throw new AppError(400, "ID de usuario inválido");
+  }
+
+  const planes = await planesService.listarCreadosPor(userId);
+  res.json({ planes });
+}

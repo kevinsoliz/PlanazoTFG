@@ -9,3 +9,9 @@ export async function getPerfil(): Promise<UserProfile | null> {
   const data = await fetchServer(`/api/perfiles/${me.data.user.id}`);
   return data?.data?.perfil ?? null;
 }
+
+export async function getPerfilPorId(id: number): Promise<UserProfile | null> {
+  const res = await fetchServer(`/api/perfiles/${id}`);
+  if (!res.ok) return null;
+  return res.data?.perfil ?? null;
+}

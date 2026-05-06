@@ -12,12 +12,16 @@ import { z } from "zod";
 // 1. Schema para POST /api/auth/registro
 
 export const registroSchema = z.object({
-  nombre: z.string().min(1).max(100),
+  nombre: z.string().min(1).max(20),
   // z.string().email() valida que el string tenga formato email.
   email: z.string().email().max(255),
   // 8 chars mínimo es el estándar OWASP. Sin máximo: bcrypt admite
   // passwords largos sin problema.
   password: z.string().min(8),
+  // Honeypot: campo invisible para humanos pero los bots automáticos lo
+  // rellenan al ver el HTML. Si llega con cualquier contenido lo
+  // tratamos como bot y zod falla (length(0)).
+  website: z.string().length(0).optional(),
 });
 
 export type RegistroInput = z.infer<typeof registroSchema>;

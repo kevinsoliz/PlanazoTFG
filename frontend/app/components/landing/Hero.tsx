@@ -4,7 +4,7 @@ import React from "react";
 const Hero = () => {
   return (
     <section className="bg-base-100 py-20">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
         {/* Texto */}
         <div className="w-full md:w-1/2 flex flex-col gap-3 text-center md:text-left">
           <h1 className="text-5xl font-bold  capitalize">

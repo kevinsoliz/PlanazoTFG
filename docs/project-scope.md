@@ -72,6 +72,7 @@ Funcionalidades identificadas para iteraciones posteriores:
 ### Autenticación avanzada
 - Recuperación de contraseña por email (token temporal + servicio de email)
 - Autenticación con Google (OAuth)
+- Eliminación permanente de la cuenta (con borrado en cascada de planes y participaciones asociados)
 
 ### Comunicación
 - Chat integrado por plan entre los participantes

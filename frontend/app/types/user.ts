@@ -29,6 +29,7 @@ export interface UserProfile {
 export interface ProfileUpdate {
     nombre?: string;
     username?: string;
+    avatar_url?: string | null;
     descripcion?: string | null;
     categorias?: string | null;
 }

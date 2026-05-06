@@ -48,13 +48,15 @@ export async function actualizar(
     `UPDATE perfiles
         SET nombre = COALESCE($1, nombre),
             username = COALESCE($2, username),
-            descripcion = COALESCE($3, descripcion),
-            categorias = COALESCE($4, categorias)
-        WHERE user_id = $5
+            avatar_url = COALESCE($3, avatar_url),
+            descripcion = COALESCE($4, descripcion),
+            categorias = COALESCE($5, categorias)
+        WHERE user_id = $6
         RETURNING *`,
     [
       datos.nombre,
       datos.username,
+      datos.avatar_url,
       datos.descripcion,
       datos.categorias,
       userId,

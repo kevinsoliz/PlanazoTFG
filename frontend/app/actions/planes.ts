@@ -4,9 +4,6 @@ import { fetchServer } from "../lib/api-server";
 import type { PlanInput } from "../types/plan";
 
 export async function unirseAPlan(planId: number) {
-    await new Promise(resolve => setTimeout(resolve, 3))
-    console.log('[SERVER] dentro del action, args =', planId);
-
     const res = await fetchServer(`/api/planes/${planId}/join`, { method: "POST"});
     
     if (!res.ok) {
@@ -17,16 +14,16 @@ export async function unirseAPlan(planId: number) {
     
     return { ok: true };
 }
-export async function anularPlan(planId: number) {
+export async function abandonarPlan(planId: number) {
 
     const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE"});
-    
+
     if (!res.ok) {
-        return { error: res.data?.error ?? "Error al anular el plan"}
+        return { error: res.data?.error ?? "Error al abandonar el plan"}
     }
 
     revalidatePath("/mis-planes");
-    
+
     return { ok: true };
 }
 

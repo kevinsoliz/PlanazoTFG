@@ -1,4 +1,4 @@
-import AnularBtn from "@/app/components/features/planes/AnularBtn";
+import AbandonarBtn from "@/app/components/features/planes/AbandonarBtn";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
 import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
@@ -30,7 +30,7 @@ const MisPlanes = async () => {
 
       <div className="hidden lg:flex gap-6">
         <section className="flex-1 flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-47 z-5 backdrop-blur-md bg-base-100/40  mx-3">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3 lg:sticky lg:top-56 lg:z-10 lg:backdrop-blur-md lg:bg-base-100/40">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Has creado
             </h2>
@@ -46,7 +46,7 @@ const MisPlanes = async () => {
         </section>
         <div className="divider divider-horizontal"></div>
         <section className="flex-1 flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-47 z-5 backdrop-blur-md bg-base-100/40 mx-3">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3 lg:sticky lg:top-56 lg:z-10 lg:backdrop-blur-md lg:bg-base-100/40">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Te has apuntado a
             </h2>
@@ -54,8 +54,8 @@ const MisPlanes = async () => {
           </header>
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
-              <AnularBtn plan_id={plan.id} />
               <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
+              <AbandonarBtn plan_id={plan.id} />
             </PlanCard>
           ))}
         </section>

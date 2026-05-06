@@ -8,7 +8,7 @@ class AuthService {
         return apiClient.post<{user: AuthUser}>("/auth/login", user);
     }
 
-    registro(user: { nombre: string, email: string, password: string }) {
+    registro(user: { nombre: string, email: string, password: string, website: string }) {
         return apiClient.post<{user: AuthUser}>("/auth/registro", user);
     }
 
