@@ -9,6 +9,7 @@ import "./types/session";
 
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import pool from "./db";
@@ -20,6 +21,13 @@ import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+// Logger HTTP: registra cada petición (método, URL, status, tiempo).
+// 'combined' en producción añade IP y user-agent, útiles para auditoría;
+// 'dev' es corto y con colores para desarrollo local.
+app.use(
+  morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"),
+);
 
 const PGStore = connectPgSimple(session);
 
@@ -34,7 +42,7 @@ app.use(
 app.use(express.json()); //convierte los json a objetos
 app.set("trust proxy", 1);
 
-// TODO: agregar helmet (cabeceras de seguridad) y morgan (logs de   peticiones)
+// TODO: agregar helmet (cabeceras de seguridad)
 
 // session devuelve un middleware, toda la config que lleva dentro es para que la aplique el navegador
 app.use(
