@@ -99,8 +99,10 @@ const Registro = () => {
           className="input w-full"
           placeholder="••••••••"
         />
-        {fieldErrors.password && (
+        {fieldErrors.password ? (
           <p className="text-error text-xs mt-1">{fieldErrors.password}</p>
+        ) : (
+          <p className="text-neutral/70 text-xs mt-1">* Mínimo 8 caracteres</p>
         )}
 
         {error && <p className="text-error text-center">{error}</p>}
