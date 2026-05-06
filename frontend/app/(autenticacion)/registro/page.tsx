@@ -3,13 +3,18 @@ import useRegistro from "@/app/hooks/useRegistro";
 import { registroSchema } from "@/app/schemas/auth.schema";
 import { FormEvent, useState } from "react";
 
-type Campo = "nombre" | "email" | "password";
+type Campo = "nombre" | "email" | "password" | "website";
 
 const Registro = () => {
   const [newUser, setNewUser] = useState({
     nombre: "",
     email: "",
     password: "",
+    // Honeypot: campo trampa para bots. Los humanos no lo ven (lo
+    // ocultamos fuera de pantalla más abajo) pero los bots automáticos
+    // que parsean el HTML lo rellenan. El backend rechaza el registro
+    // si llega con cualquier valor distinto de "".
+    website: "",
   });
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<Campo, string>>>({});
 
@@ -64,6 +69,17 @@ const Registro = () => {
         {fieldErrors.nombre && (
           <p className="text-error text-xs mt-1">{fieldErrors.nombre}</p>
         )}
+
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={newUser.website}
+          onChange={(e) => handleChange("website", e.target.value)}
+          style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px" }}
+        />
 
         <label className="label">Email</label>
         <input

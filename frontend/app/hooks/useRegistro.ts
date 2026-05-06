@@ -11,6 +11,7 @@ const useRegistro = () => {
     nombre: string;
     email: string;
     password: string;
+    website: string;
   }) => {
     authService
       .registro(user)
@@ -19,9 +20,16 @@ const useRegistro = () => {
       })
       .catch((err) => {
         if (axios.isAxiosError(err)) {
-          setError(err.response?.data?.err ?? "Error desconocido");
+          if (err.response) {
+            // El backend respondió con un error (4xx, 5xx)
+            setError(err.response.data?.error ?? "Error desconocido");
+          } else {
+            // La petición salió pero no hubo respuesta: server caído,
+            // red sin internet, timeout, CORS bloqueado.
+            setError("Error de conexión con el servidor");
+          }
         } else {
-          setError("Error de conexión con el servidor");
+          setError("Error desconocido");
         }
       });
   };
