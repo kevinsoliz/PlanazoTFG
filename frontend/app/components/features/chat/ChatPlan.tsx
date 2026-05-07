@@ -8,11 +8,12 @@ export default function ChatPlan({ planId, userName, userId, canWrite }: { planI
 
   const formatCreatedAt = (createdAt: string) => {
     try {
+      // Aseguramos que se interprete como UTC y se convierta a hora local
+      const date = new Date(createdAt + (createdAt.includes('Z') ? '' : 'Z'));
       return new Intl.DateTimeFormat('es-ES', {
         dateStyle: 'short',
-        timeStyle: 'short',
-        timeZone: 'Europe/Madrid'
-      }).format(new Date(createdAt));
+        timeStyle: 'short'
+      }).format(date);
     } catch {
       return '';
     }

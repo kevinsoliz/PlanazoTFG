@@ -110,7 +110,7 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
         result.lastID?.toString(),     // ID único (usado para recuperación offline)
         user,                          // Nombre del usuario que escribió
         avatar,                        // Avatar para mostrar en UI
-        createdAt,                     // Timestamp para mostrar hora exacta
+        new Date(createdAt).toISOString(), // Timestamp ISO para zona horaria local del usuario
         userId                         // userId para que frontend identifique mensajes propios
       );
     } catch (e) {
@@ -165,7 +165,7 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
             row.id.toString(),
             perfil.nombre,
             perfil.avatar_url,
-            row.created_at,
+            new Date(row.created_at).toISOString(),
             row.user_id
           );
 
