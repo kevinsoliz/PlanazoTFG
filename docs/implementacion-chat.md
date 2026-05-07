@@ -1,7 +1,7 @@
 # Implementación Chat en Tiempo Real 
 
 ## 📌 Resumen
-Chat simplificado que se abre desde `/mis-planes`. Usa Socket.IO para comunicación bidireccional y PostgreSQL para persistencia de mensajes.
+Chat simplificado que usa Socket.IO para comunicación bidireccional y PostgreSQL para persistencia de mensajes.
 
 ---
 
@@ -36,18 +36,15 @@ Chat simplificado que se abre desde `/mis-planes`. Usa Socket.IO para comunicaci
 
 ### 2. Modal Chat
 ```
-┌─────────────────────────┐
-│   Modal                 │
-│  ┌────────────────────┐ │
-│  │ Chat en vivo   [X] │ │
-│  ├────────────────────┤ │
-│  │ User1: Hola       │ │
-│  │              Yo: Hola (derecha)
-│  │ User1: ¿Qué tal?  │ │
-│  ├────────────────────┤ │
-│  │ [Input] [Send btn] │ │
-│  └────────────────────┘ │
-└─────────────────────────┘
+┌──────────────────────────────┐
+│  Título del plan         [X] │  ← Header dedicado
+├──────────────────────────────┤
+│  User1: Hola                 │
+│                    Yo: Hola  │ ← Mensajes propios derecha
+│  User1: ¿Qué tal?           │
+├──────────────────────────────┤
+│  [Input mensaje] [btn enviar]│
+└──────────────────────────────┘
 ```
 
 ### 3. Conexión Socket.IO
@@ -111,21 +108,43 @@ backend/
 ### `ChatModalBtn.tsx` - Botón que abre el modal
 ```tsx
 "use client";
+import { useState } from "react";
+import ChatPlan from "../chat/ChatPlan";
+
 export default function ChatModalBtn({ planId, userName, planTitulo }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className="btn btn-circle">
-        💬
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="btn btn-circle btn-ghost btn-sm"
+        title="Abrir chat"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+        </svg>
       </button>
-      
+
       {isOpen && (
         <div className="modal modal-open">
-          <div className="modal-box">
-            <button onClick={() => setIsOpen(false)}>✕</button>
-            <ChatPlan planId={planId} userName={userName} />
+          <div className="modal-box p-0 max-w-2xl w-11/12 h-96 flex flex-col">
+            {/* Header con título y botón cerrar */}
+            <div className="px-4 py-3 bg-neutral text-[#E0604D] flex items-center justify-between">
+              <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
+                {planTitulo}
+              </h3>
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="btn btn-sm btn-circle btn-ghost"
+              >✕</button>
+            </div>
+            {/* Chat container */}
+            <div className="flex-1 flex flex-col bg-base-100 overflow-hidden">
+              <ChatPlan planId={planId} userName={userName} />
+            </div>
           </div>
+          <div className="modal-backdrop" onClick={() => setIsOpen(false)}></div>
         </div>
       )}
     </>
@@ -136,54 +155,78 @@ export default function ChatModalBtn({ planId, userName, planTitulo }) {
 **Props:**
 - `planId` (number) - ID del plan
 - `userName` (string) - Nombre del usuario actual
-- `planTitulo` (string) - Título del plan (opcional)
+- `planTitulo` (string) - Título del plan (mostrado en header)
 
-**Funcionalidad:**
-- Click abre modal
+**Estructura:**
+- Modal responsive (`max-w-2xl w-11/12 h-96`)
+- Header dedicado con título y botón cerrar
+- Container flex para que ChatPlan se expanda correctamente
 - Click en X o backdrop cierra modal
-- Renderiza `<ChatPlan>` dentro
 
 ---
 
 ### `ChatPlan.tsx` - Componente principal del chat
 ```tsx
 "use client";
-export default function ChatPlan({ planId, userName }) {
+import { useChat } from '@/app/hooks/useChat';
+import { useRef, useEffect } from 'react';
+
+export default function ChatPlan({ planId, userName }: { planId: number, userName: string }) {
   const { messages, sendMessage } = useChat(planId, userName);
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom();
   }, [messages]);
 
-  return (
-    <div className="flex flex-col h-[500px]">
-      {/* Header */}
-      <div className="bg-primary p-4 text-primary-content">
-        Chat en vivo
-      </div>
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const input = form.elements.namedItem('message') as HTMLInputElement;
+    if (input.value) {
+      sendMessage(input.value);
+      form.reset();
+    }
+  };
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {messages.map((m) => (
-          <div key={m.id}>
-            <span className="text-xs">{m.user_name}</span>
-            <div className={m.user_name === userName ? 'bg-blue-500' : 'bg-gray-200'}>
+  return (
+    <>
+      {/* Messages area */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral/5">
+        {messages.map((m, i) => (
+          <div key={i} className={`flex flex-col ${m.user_name === userName ? 'items-end' : 'items-start'}`}> 
+            <span className="text-[10px] opacity-50 mb-1 px-1">{m.user_name}</span>
+            <div className={`max-w-[85%] px-4 py-2 rounded-2xl ${
+              m.user_name === userName 
+                ? 'bg-neutral text-primary-content rounded-tr-none' 
+                : 'bg-base-200 text-base-content border border-neutral/10 rounded-tl-none'
+            }`}>
               {m.content}
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} /> {/* Auto-scroll to here */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="p-4 border-t flex gap-2">
-        <input name="message" placeholder="Escribe un mensaje..." />
-        <button type="submit" className="btn btn-primary btn-circle">
-          ➤
+      <form onSubmit={handleSubmit} className="p-4 border-t border-neutral/20 flex gap-2">
+        <input 
+          name="message" 
+          className="input input-bordered flex-1 rounded-full px-4" 
+          placeholder="Escribe un mensaje..."
+          autoComplete="off"
+        />
+        <button type="submit" className="btn btn-primary btn-circle bg-neutral">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.519 0 0 0 3.478 2.404Z" />
+          </svg>
         </button>
       </form>
-    </div>
+    </>
   );
 }
 ```
@@ -192,11 +235,12 @@ export default function ChatPlan({ planId, userName }) {
 - `planId` (number) - ID del plan para esta sala de chat
 - `userName` (string) - Nombre de usuario actual
 
-**Características:**
-- ✅ Auto-scroll al último mensaje
-- ✅ Diferencia mensajes propios vs ajenos (colores)
-- ✅ Formulario simple sin validaciones extra
-- ✅ Input se limpia después de enviar
+**Estructura:**
+- ✅ Sin contenedor externo (solo fragmento)
+- ✅ Se renderiza dentro de contenedor flex externo
+- ✅ Mensajes con área scrolleable y auto-scroll
+- ✅ Diferencia visual entre mensajes propios (derecha, neutral) y ajenos (izquierda, base-200)
+- ✅ Input con formulario que se limpia después de enviar
 
 ---
 
@@ -505,6 +549,67 @@ CREATE INDEX idx_messages_id_plan ON messages(id, plan_id);
    - Si pierde conexión:
      - Socket.IO reintenta automáticamente
      - Envía serverOffset para recuperar mensajes nuevos
+
+---
+
+## 🎨 Arquitectura de Contenedores
+
+### Estructura Jerárquica
+
+**Modal (en `/mis-planes`):**
+```
+<ChatModalBtn>                              {estado: isOpen}
+  ├─ <button>                              {abre modal}
+  └─ {isOpen && (
+       <div className="modal modal-open">  {fondo oscuro}
+         <div className="modal-box flex-col">
+           ├─ <div className="header">     {Header: título + botón X}
+           └─ <div className="flex-1">     {Container flex para expander}
+                 <ChatPlan>                {Componente renderizado aquí}
+                   └─ <>
+                       ├─ <div messages>  {Área scrolleable}
+                       └─ <form>          {Input + botón enviar}
+               </div>
+         </div>
+       </div>
+     )}
+</ChatModalBtn>
+```
+
+**Página de Detalle (en `[id]/page.tsx`):**
+```
+<section className="rounded-md border-2">
+  ├─ <header>                         {Header: "Chat del plan"}
+  └─ <div className="h-96 flex-col">  {Container con altura fija}
+       <ChatPlan>                     {Componente renderizado aquí}
+         └─ <>
+             ├─ <div messages>        {Área scrolleable}
+             └─ <form>                {Input + botón enviar}
+       </div>
+</section>
+```
+
+### Puntos Clave de Diseño
+
+1. **ChatPlan es un fragmento (`<>`)**
+   - No tiene contenedor propio
+   - Retorna solo los elementos internos (div de mensajes + form)
+   - Se expande para llenar el contenedor padre
+
+2. **Contenedor padre proporciona estructura**
+   - **Modal**: `<div className="flex-1 flex flex-col bg-base-100">`
+   - **Página**: `<div className="h-96 flex flex-col">`
+   - Ambos usan `flex flex-col` para distribuir espacio
+
+3. **Header separado del componente**
+   - Modal: Header en `ChatModalBtn.tsx` (título del plan + botón cerrar)
+   - Página: Header en `page.tsx` (título "Chat del plan")
+   - ChatPlan no incluye header (reutilizable en ambos contextos)
+
+4. **Auto-scroll funciona porque**
+   - Mensajes están en `div className="flex-1 overflow-y-auto"`
+   - `flex-1` hace que crezca y llene el espacio disponible
+   - `scrollIntoView()` hace scroll suave al último mensaje
 
 ---
 
