@@ -136,14 +136,7 @@ export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
   );
   return resultado.rows;
 }
-// Servicio para comprobar si un usuario es participante de un plan (para autorización en chat y otras acciones):
-export async function esParticipanteEnPlan(planId: number, userId: number): Promise<boolean> { // Devuelve true si el usuario es participante del plan, false si no lo es
-  const resultado = await pool.query(
-    "SELECT 1 FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
-    [planId, userId],
-  );
-  return (resultado.rowCount ?? 0) > 0;
-}
+
 
 
 // 5. Servicio para obtener el detalle de un plan:
@@ -340,4 +333,13 @@ export async function actualizar(
   );
 
   return resultado.rows[0];
+}
+
+// 10. Servicio para comprobar si un usuario es participante de un plan (para autorización en chat y otras acciones):
+export async function esParticipanteEnPlan(planId: number, userId: number): Promise<boolean> { // Devuelve true si el usuario es participante del plan, false si no lo es
+  const resultado = await pool.query(
+    "SELECT 1 FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
+    [planId, userId],
+  );
+  return (resultado.rowCount ?? 0) > 0;
 }
