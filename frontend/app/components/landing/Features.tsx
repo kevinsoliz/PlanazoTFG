@@ -13,6 +13,7 @@ const FeaturesSection = () => {
             descripcion="Descubre planes y personas según tus intereses. Menos buscar, más disfrutar."
             bgColor="#928EF5"
             imagen="/images/landing/amigo1.png"
+            ruta="/encajan"
             invertido
           />
 
@@ -21,6 +22,7 @@ const FeaturesSection = () => {
             descripcion="Ver un plan que te mola y unirte es así de fácil. Sin formularios, sin complicaciones."
             bgColor="#FCD665"
             imagen="/images/landing/amigo2.png"
+            ruta="/unete"
             invertido
           />
 
@@ -29,6 +31,7 @@ const FeaturesSection = () => {
             descripcion="¿Tienes una idea? Compártela con la comunidad y encuentra gente con ganas de vivir lo mismo."
             bgColor="#47CEBA"
             imagen="/images/landing/amigo3.png"
+            ruta="/crea"
             invertido
           />
           <FeatureCard
@@ -37,6 +40,7 @@ const FeaturesSection = () => {
             bgColor="#171718"
             textColor="#E0604D"
             imagen="/images/landing/amigo4.png"
+            ruta="/encuentra"
             invertido
           />
         </div>
