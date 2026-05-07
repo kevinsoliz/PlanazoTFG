@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY (plan_id, user_id)
   );
 
+  -- Tabla para Valoracione
   CREATE TABLE valoraciones (
     id SERIAL PRIMARY KEY,
     plan_id INT NOT NULL,

@@ -328,14 +328,12 @@ router.post("/:id/rate", requireAuth, async (req, res) => {
   const { puntuacion } = req.body;
   const userId = req.session.userId;
 
-  // 1. Validación de los datos de entrada
   if (!puntuacion || puntuacion < 0.5 || puntuacion > 5 || puntuacion % 0.5 !== 0) {
     res.status(400).json({ error: "La puntuación debe ser entre 0.5 y 5, en incrementos de 0.5." });
     return;
   }
 
   try {
-    // 2. Verificar que el plan existe y comprobar su fecha
     const planResult = await pool.query(
       "SELECT fecha FROM planes WHERE id = $1", 
       [planId]
@@ -354,7 +352,6 @@ router.post("/:id/rate", requireAuth, async (req, res) => {
       // return;
     // }
 
-    // 3. Verificar que el usuario realmente se unió al plan
     const participantResult = await pool.query(
       "SELECT 1 FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
       [planId, userId]
@@ -365,8 +362,6 @@ router.post("/:id/rate", requireAuth, async (req, res) => {
       return;
     }
 
-    // 4. Guardar la valoración en la base de datos
-    // 4. Guardar o actualizar la valoración en la base de datos (UPSERT)
     await pool.query(
       `INSERT INTO valoraciones (plan_id, usuario_id, puntuacion) 
        VALUES ($1, $2, $3)

@@ -12,17 +12,20 @@ export default function EstrellasValoracion({
     votoInicial?: number;
     notaMedia?: number;
 }) {
+    // ESTADOS: Controlan la calificación fijada, la previsualización (hover) y el feedback de carga/error.
     const [rating, setRating] = useState(votoInicial); 
     const [hover, setHover] = useState(0);   
     const [loading, setLoading] = useState(false);
     const [mensaje, setMensaje] = useState<{ texto: string; error: boolean } | null>(null);
 
+    // MANEJADOR DE VOTACIÓN: Envía la puntuación al servidor de forma asíncrona.
     const handleVotar = async (puntuacion: number) => {
         setLoading(true);
         setMensaje(null);
         
         const result = await valorarPlan(planId, puntuacion);
         
+        // Gestión de respuesta: Si hay error revierte al voto inicial, si no, actualiza la UI.
         if (result?.error) {
             setMensaje({ texto: result.error, error: true });
             setRating(votoInicial);
@@ -34,6 +37,7 @@ export default function EstrellasValoracion({
         setLoading(false);
     };
 
+    // Lógica visual: Determina si mostrar la puntuación guardada o la que el usuario está previsualizando con el ratón.
     const valorActual = hover || rating;
 
     return (
@@ -45,11 +49,13 @@ export default function EstrellasValoracion({
                 </div>
             </div>
             
+            {/* CONTENEDOR DE ESTRELLAS: Gestiona el renderizado y el evento de salida del ratón. */}
             <div 
                 className="flex gap-1 w-fit"
                 onMouseLeave={() => setHover(0)}
             >
                 {[1, 2, 3, 4, 5].map((estrella) => {
+                    // CÁLCULO DE LLENADO: Determina si la estrella debe verse vacía, media o llena.
                     let fillPercent = "0%";
                     if (valorActual >= estrella) fillPercent = "100%";
                     else if (valorActual >= estrella - 0.5) fillPercent = "50%";
@@ -61,6 +67,8 @@ export default function EstrellasValoracion({
                                 className="absolute top-0 left-0 overflow-hidden text-yellow-400 pointer-events-none"
                                 style={{ width: fillPercent }}
                             >★</div>
+
+                            {/* DETECTORES DE ZONA: Divide la estrella en dos mitades invisibles para capturar el 0.5 y el 1.0. */}
                             <div 
                                 className="absolute top-0 left-0 w-1/2 h-full z-10"
                                 onMouseEnter={() => setHover(estrella - 0.5)}
@@ -76,6 +84,7 @@ export default function EstrellasValoracion({
                 })}
             </div>
 
+            {/* FEEDBACK: Texto descriptivo de la nota y mensajes de éxito/error. */}
             <p className="text-sm font-medium text-gray-500">
                 {valorActual > 0 ? `${valorActual} estrellas` : 'Selecciona una nota'}
             </p>

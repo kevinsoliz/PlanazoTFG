@@ -28,7 +28,7 @@ const MisPlanes = async () => {
         <div className="flex-1 ">
           <h1>Planes apuntados:</h1>
           {apuntados.map((plan) => {
-            // const planTerminado = new Date(plan.fecha) < ahora;
+            // const planTerminado = new Date(plan.fecha) < ahora; 
             const planTerminado = true; 
 
             return (
