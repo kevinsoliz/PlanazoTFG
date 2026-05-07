@@ -37,7 +37,7 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
         user,
         avatar,
         createdAt,
-        userId
+        userId // Enviamos también el userId para que el cliente pueda identificar sus propios mensajes
       );
     } catch (e) {
       console.error('Error en socket chat:', e);
