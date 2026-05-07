@@ -1,7 +1,7 @@
-# Implementación Chat en Tiempo Real 
+# Implementación Chat en Tiempo Real
 
 ## 📌 Resumen
-Chat simplificado que usa Socket.IO para comunicación bidireccional y PostgreSQL para persistencia de mensajes.
+Chat con Socket.IO para comunicación bidireccional, PostgreSQL para persistencia, DaisyUI para UI moderna, avatares de usuario, timestamps y colores únicos por usuario.
 
 ---
 
@@ -11,13 +11,17 @@ Chat simplificado que usa Socket.IO para comunicación bidireccional y PostgreSQ
 - **Next.js 16** con componentes client-side
 - **Socket.IO Client** para WebSocket
 - **React Hooks** (useState, useRef, useEffect)
-- **Tailwind + DaisyUI** para estilos
+- **Tailwind + DaisyUI** para estilos y componentes de chat
+- **Avatares de usuario** desde perfiles
+- **Colores únicos** por usuario usando HSL
+- **Timestamps** formateados en español
 
-### Backend  
+### Backend
 - **Node.js + Express**
 - **Socket.IO** server (puerto 4000)
-- **PostgreSQL** para guardar mensajes
+- **PostgreSQL** para guardar mensajes con user_id y created_at
 - **TypeScript** para type safety
+- **Integración con perfiles** para avatares
 
 ---
 
@@ -39,9 +43,11 @@ Chat simplificado que usa Socket.IO para comunicación bidireccional y PostgreSQ
 ┌──────────────────────────────┐
 │  Título del plan         [X] │  ← Header dedicado
 ├──────────────────────────────┤
-│  User1: Hola                 │
-│                    Yo: Hola  │ ← Mensajes propios derecha
-│  User1: ¿Qué tal?           │
+│  [Avatar] User1: Hola        │  ← Avatar + nombre + color único
+│                    [Avatar] Yo│
+│                    Hola       │  ← Mensajes propios derecha
+│  [Avatar] User1: ¿Qué tal?   │
+│                    14:30     │  ← Timestamp en footer
 ├──────────────────────────────┤
 │  [Input mensaje] [btn enviar]│
 └──────────────────────────────┘
@@ -51,19 +57,20 @@ Chat simplificado que usa Socket.IO para comunicación bidireccional y PostgreSQ
 ```
 Frontend                    Backend
    |                          |
-   |--- connect() ----------->|
+   |--- connect(auth: userId)->|
    |                    io.on('connection')
    |                          |
    |--- emit('join_plan') --->|
    |                   socket.join('plan_123')
    |                          |
    |<-- previous_messages ----|
-   |                   (historial)
+   |                   (historial con avatar, timestamp, userId)
    |                          |
    |--- emit('chat_message')->|
-   |                   guardar en BD
+   |                   guardar en BD con user_id
+   |                   consultar perfil para avatar
    |<-- chat_message ---------|
-   |                   (broadcast a room)
+   |                   (broadcast con avatar, timestamp, userId)
    |
 ```
 
@@ -75,30 +82,36 @@ Frontend                    Backend
 frontend/
 ├── app/
 │   ├── (app)/
+│   │   ├── home/[id]/
+│   │   │   └── page.tsx                    ✅ Página de plan con chat integrado
 │   │   └── mis-planes/
 │   │       └── page.tsx                    ✅ Página con botón chat
 │   ├── components/
 │   │   └── features/
 │   │       ├── planes/
-│   │       │   └── ChatModalBtn.tsx        ✅ Botón que abre modal
+│   │       │   └── ChatModalBtn.tsx        ✅ Botón que abre modal (recibe userId)
 │   │       └── chat/
-│   │           └── ChatPlan.tsx            ✅ Componente del chat
-│   └── hooks/
-│       └── useChat.ts                      ✅ Lógica Socket.IO
+│   │           └── ChatPlan.tsx            ✅ Componente del chat con DaisyUI
+│   ├── hooks/
+│   │   └── useChat.ts                      ✅ Lógica Socket.IO con auth userId
+│   └── services/
+│       └── perfiles.ts                     ✅ Servicio para obtener perfiles
 │
 backend/
 ├── src/
 │   ├── index.ts                            ✅ Express + Socket.IO setup
 │   ├── controllers/
-│   │   └── chat.controller.ts              ✅ Event handlers
+│   │   └── chat.controller.ts              ✅ Event handlers con avatares
 │   ├── lib/
-│   │   └── chatDb.ts                       ✅ Queries a DB
+│   │   └── chatDb.ts                       ✅ Queries a DB con created_at
+│   ├── services/
+│   │   └── perfiles.service.ts             ✅ Servicio para consultar perfiles
 │   ├── db.ts                               ✅ Pool de PostgreSQL
 │   └── types/
 │       └── session.ts                      ✅ Tipado de session
 │
 └── sql/
-    └── init.sql                            ✅ CREATE TABLE messages
+    └── init.sql                            ✅ CREATE TABLE messages con user_id, created_at
 ```
 
 ---
@@ -107,83 +120,31 @@ backend/
 
 ### `ChatModalBtn.tsx` - Botón que abre el modal
 ```tsx
-"use client";
-import { useState } from "react";
-import ChatPlan from "../chat/ChatPlan";
-
-export default function ChatModalBtn({ planId, userName, planTitulo }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="btn btn-circle btn-ghost btn-sm"
-        title="Abrir chat"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <div className="modal modal-open">
-          <div className="modal-box p-0 max-w-2xl w-11/12 h-96 flex flex-col">
-            {/* Header con título y botón cerrar */}
-            <div className="px-4 py-3 bg-neutral text-[#E0604D] flex items-center justify-between">
-              <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
-                {planTitulo}
-              </h3>
-              <button 
-                onClick={() => setIsOpen(false)} 
-                className="btn btn-sm btn-circle btn-ghost"
-              >✕</button>
-            </div>
-            {/* Chat container */}
-            <div className="flex-1 flex flex-col bg-base-100 overflow-hidden">
-              <ChatPlan planId={planId} userName={userName} />
-            </div>
-          </div>
-          <div className="modal-backdrop" onClick={() => setIsOpen(false)}></div>
-        </div>
-      )}
-    </>
-  );
+export default function ChatModalBtn({ planId, userName, userId, planTitulo }) {
+  // ... modal logic
+  <ChatPlan planId={planId} userName={userName} userId={userId} />
 }
 ```
 
-**Props:**
-- `planId` (number) - ID del plan
-- `userName` (string) - Nombre del usuario actual
-- `planTitulo` (string) - Título del plan (mostrado en header)
-
-**Estructura:**
-- Modal responsive (`max-w-2xl w-11/12 h-96`)
-- Header dedicado con título y botón cerrar
-- Container flex para que ChatPlan se expanda correctamente
-- Click en X o backdrop cierra modal
-
----
-
-### `ChatPlan.tsx` - Componente principal del chat
+### `ChatPlan.tsx` - Componente principal del chat (DaisyUI)
 ```tsx
-"use client";
-import { useChat } from '@/app/hooks/useChat';
-import { useRef, useEffect } from 'react';
+export default function ChatPlan({ planId, userName, userId }) {
+  const { messages, sendMessage } = useChat(planId, userName, userId);
+  const messagesEndRef = useRef(null);
 
-export default function ChatPlan({ planId, userName }: { planId: number, userName: string }) {
-  const { messages, sendMessage } = useChat(planId, userName);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const formatCreatedAt = (createdAt: string) => {
+    return new Intl.DateTimeFormat('es-ES', {
+      dateStyle: 'short',
+      timeStyle: 'short'
+    }).format(new Date(createdAt));
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  const getUserColor = (userId: number) => {
+    const hue = (userId * 137.5) % 360;
+    return `hsl(${hue}, 65%, 88%)`;
+  };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     const input = form.elements.namedItem('message') as HTMLInputElement;
@@ -193,19 +154,27 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
     }
   };
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
-    <>
+    <div className="flex flex-col h-full">
       {/* Messages area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral/5">
         {messages.map((m, i) => (
-          <div key={i} className={`flex flex-col ${m.user_name === userName ? 'items-end' : 'items-start'}`}> 
-            <span className="text-[10px] opacity-50 mb-1 px-1">{m.user_name}</span>
-            <div className={`max-w-[85%] px-4 py-2 rounded-2xl ${
-              m.user_name === userName 
-                ? 'bg-neutral text-primary-content rounded-tr-none' 
-                : 'bg-base-200 text-base-content border border-neutral/10 rounded-tl-none'
-            }`}>
+          <div key={i} className={`chat ${m.user_name === userName ? 'chat-end' : 'chat-start'}`}>
+            <div className="chat-image avatar">
+              <div className="w-10 rounded-full">
+                <img src={m.avatar || '/images/avatars/avatar-1.png'} alt={m.user_name} />
+              </div>
+            </div>
+            <div className="chat-header">{m.user_name}</div>
+            <div className="chat-bubble" style={{ backgroundColor: getUserColor(m.user_id) }}>
               {m.content}
+            </div>
+            <div className="chat-footer opacity-50 text-[11px]">
+              {m.created_at ? formatCreatedAt(m.created_at) : ''}
             </div>
           </div>
         ))}
@@ -214,9 +183,9 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
 
       {/* Input Form */}
       <form onSubmit={handleSubmit} className="p-4 border-t border-neutral/20 flex gap-2">
-        <input 
-          name="message" 
-          className="input input-bordered flex-1 rounded-full px-4" 
+        <input
+          name="message"
+          className="input input-bordered flex-1 rounded-full px-4"
           placeholder="Escribe un mensaje..."
           autoComplete="off"
         />
@@ -226,37 +195,39 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
           </svg>
         </button>
       </form>
-    </>
+    </div>
   );
 }
 ```
 
 **Props:**
-- `planId` (number) - ID del plan para esta sala de chat
-- `userName` (string) - Nombre de usuario actual
+- `planId` (number) - ID del plan
+- `userName` (string) - Nombre del usuario actual
+- `userId` (number) - ID del usuario actual
 
-**Estructura:**
-- ✅ Sin contenedor externo (solo fragmento)
-- ✅ Se renderiza dentro de contenedor flex externo
-- ✅ Mensajes con área scrolleable y auto-scroll
-- ✅ Diferencia visual entre mensajes propios (derecha, neutral) y ajenos (izquierda, base-200)
-- ✅ Input con formulario que se limpia después de enviar
+**Características:**
+- Usa componentes DaisyUI (`chat`, `chat-start/end`, `chat-image`, etc.)
+- Avatares de usuario desde perfiles
+- Colores únicos por usuario usando HSL
+- Timestamps formateados en español
+- Auto-scroll al último mensaje
 
 ---
 
 ### `useChat.ts` - Hook que maneja Socket.IO
 ```tsx
-export function useChat(planId: number, userName: string) {
+export function useChat(planId: number, userName: string, userId: number) {
   const [messages, setMessages] = useState([]);
   const socketRef = useRef(null);
 
   useEffect(() => {
-    // 1. Conectar
+    // 1. Conectar con autenticación
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     socketRef.current = io(backendUrl, {
-      auth: { 
+      auth: {
         serverOffset: 0,    // Para historial offline
-        planId              // Identificar la sala
+        planId,             // Identificar la sala
+        userId              // Para autenticación backend
       }
     });
 
@@ -264,22 +235,23 @@ export function useChat(planId: number, userName: string) {
     socketRef.current.emit('join_plan', planId);
 
     // 3. Escuchar mensajes
-    socketRef.current.on('chat_message', (msg, id, user) => {
-      setMessages((prev) => [...prev, { 
-        content: msg, 
-        user_name: user 
-      }]);
+    socketRef.current.on('chat_message', (msg) => {
+      setMessages((prev) => [...prev, msg]);
       // Actualizar offset para reconexiones
-      socketRef.current.auth.serverOffset = id;
+      socketRef.current.auth.serverOffset = msg.id;
     });
 
     // 4. Limpiar al desmontar
     return () => socketRef.current?.disconnect();
-  }, [planId]);
+  }, [planId, userId]);
 
   const sendMessage = (content: string) => {
     if (socketRef.current && content.trim()) {
-      socketRef.current.emit('chat_message', content, userName, planId);
+      socketRef.current.emit('chat_message', {
+        message: content,
+        user: userName,
+        planId
+      });
     }
   };
 
@@ -287,16 +259,21 @@ export function useChat(planId: number, userName: string) {
 }
 ```
 
+**Parámetros:**
+- `planId` (number) - ID del plan para esta sala de chat
+- `userName` (string) - Nombre de usuario actual
+- `userId` (number) - ID del usuario actual para autenticación
+
 **Retorna:**
-- `messages[]` - Array de mensajes `{ content, user_name }`
+- `messages[]` - Array de mensajes con `{ content, user_name, avatar, created_at, user_id }`
 - `sendMessage(str)` - Función para enviar mensaje
 
 **Lógica:**
-1. **Conectar**: Abre WebSocket a backend
-2. **Auth**: Envía planId en autenticación
+1. **Conectar**: Abre WebSocket a backend con `userId` en auth
+2. **Auth**: Envía `planId` y `userId` en autenticación
 3. **Join**: Emite `join_plan` para unirse a la sala
-4. **Listen**: Escucha `chat_message` del servidor
-5. **Send**: Emite `chat_message` con (contenido, usuario, planId)
+4. **Listen**: Escucha `chat_message` con datos completos (avatar, timestamp, etc.)
+5. **Send**: Emite `chat_message` con objeto estructurado
 
 ---
 
@@ -344,81 +321,124 @@ export async function registerChatHandlers(io, socket) {
   const chatDb = await getChatDB();
 
   // 1. Usuario se une a la sala
-  socket.on('join_plan', (planId) => {
+  socket.on('join_plan', async (planId) => {
     socket.join(`plan_${planId}`);
-    // Opcionalmente: enviar historial
-  });
 
-  // 2. Nuevo mensaje
-  socket.on('chat_message', async (msg, user, planId) => {
+    // Enviar historial de mensajes
     try {
-      // Guardar en BD
-      const result = await chatDb.run(
-        'INSERT INTO messages (content, user_name, plan_id) VALUES ($1, $2, $3)',
-        [msg, user, planId]
+      const messages = await chatDb.getMessagesByPlan(planId);
+      const messagesWithAvatars = await Promise.all(
+        messages.map(async (msg) => {
+          const perfil = await getPerfilByUserId(msg.user_id);
+          return {
+            ...msg,
+            avatar: perfil?.avatar_url
+          };
+        })
       );
-      
-      // Broadcast a todos en la sala
-      io.to(`plan_${planId}`).emit('chat_message', 
-        msg, 
-        result.lastID, 
-        user
-      );
-    } catch (e) {
-      console.error('Error:', e);
+
+      socket.emit('previous_messages', messagesWithAvatars);
+    } catch (error) {
+      console.error('Error loading message history:', error);
     }
   });
 
-  // 3. Historial offline (si se reconecta)
-  if (!socket.recovered) {
-    const lastId = socket.handshake.auth.serverOffset || 0;
-    const planId = socket.handshake.auth.planId;
-    
-    const results = await chatDb.all(
-      'SELECT id, content, user_name FROM messages WHERE id > $1 AND plan_id = $2',
-      [lastId, planId]
-    );
-    
-    results.forEach(row => {
-      socket.emit('chat_message', row.content, row.id, row.user_name);
-    });
-  }
+  // 2. Nuevo mensaje
+  socket.on('chat_message', async (data) => {
+    try {
+      const { message, user, planId } = data;
+      const userId = socket.handshake.auth.userId;
+
+      if (!userId) {
+        socket.emit('error', 'Usuario no autenticado');
+        return;
+      }
+
+      // Obtener perfil del usuario para avatar
+      const perfil = await getPerfilByUserId(userId);
+
+      // Insertar mensaje en BD
+      const result = await chatDb.insertMessage({
+        content: message,
+        user_id: userId,
+        plan_id: planId
+      });
+
+      // Broadcast a todos en la sala
+      io.to(`plan_${planId}`).emit('chat_message', {
+        id: result.id,
+        content: message,
+        user_name: user,
+        user_id: userId,
+        avatar: perfil?.avatar_url,
+        created_at: result.created_at
+      });
+    } catch (e) {
+      console.error('Error sending message:', e);
+      socket.emit('error', 'Error al enviar mensaje');
+    }
+  });
 }
 ```
 
 **Eventos escuchados:**
-1. `join_plan(planId)` - Usuario se une a sala `plan_{planId}`
-2. `chat_message(msg, user, planId)` - Nuevo mensaje
-3. `connection` + `recover` - Historial para reconexiones
+1. `join_plan(planId)` - Usuario se une a sala `plan_{planId}` y recibe historial
+2. `chat_message(data)` - Nuevo mensaje con `{ message, user, planId }`
 
 **Eventos emitidos:**
-1. `chat_message(msg, id, user)` - Broadcast a sala
+1. `previous_messages(messages[])` - Historial al unirse a sala
+2. `chat_message(msg)` - Broadcast con datos completos (id, content, user_name, user_id, avatar, created_at)
+3. `error(message)` - Errores de validación
 
 ---
 
 ### `chatDb.ts` - Acceso a BD
 ```ts
 export async function getChatDB() {
-  // Crear tabla si no existe
+  // Crear tabla si no existe con nueva estructura
   await pool.query(`
     CREATE TABLE IF NOT EXISTS messages (
       id SERIAL PRIMARY KEY,
       content TEXT NOT NULL,
-      user_name VARCHAR(100) NOT NULL,
-      plan_id INTEGER NOT NULL
+      user_id INTEGER NOT NULL REFERENCES users(id),
+      plan_id INTEGER NOT NULL REFERENCES planes(id),
+      created_at TIMESTAMP DEFAULT NOW()
     )
   `);
 
+  // Asegurar columna created_at en tablas existentes
+  await pool.query(`
+    ALTER TABLE messages
+    ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()
+  `);
+
+  // Cambiar user_name por user_id si es necesario
+  try {
+    await pool.query(`
+      ALTER TABLE messages
+      DROP COLUMN IF EXISTS user_name,
+      ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)
+    `);
+  } catch (error) {
+    // Ignorar si ya se cambió
+  }
+
   return {
-    // INSERT - devuelve ID generado
-    run: async (sql, params) => {
-      const result = await pool.query(sql + ' RETURNING id', params);
-      return { lastID: result.rows[0].id };
+    // INSERT - devuelve ID y timestamp generado
+    insertMessage: async ({ content, user_id, plan_id }) => {
+      const result = await pool.query(
+        'INSERT INTO messages (content, user_id, plan_id) VALUES ($1, $2, $3) RETURNING id, created_at',
+        [content, user_id, plan_id]
+      );
+      return result.rows[0];
     },
-    
-    // SELECT - devuelve array de filas
-    all: async (sql, params) => {
-      const result = await pool.query(sql, params);
+
+    // SELECT - mensajes por plan con orden cronológico
+    getMessagesByPlan: async (planId) => {
+      const result = await pool.query(
+        'SELECT id, content, user_id, created_at FROM messages WHERE plan_id = $1 ORDER BY created_at ASC',
+        [planId]
+      );
       return result.rows;
     }
   };
@@ -426,9 +446,10 @@ export async function getChatDB() {
 ```
 
 **Importante:**
-- ✅ `$1, $2, $3` - Placeholders de PostgreSQL (no `?`)
-- ✅ `RETURNING id` - Obtener ID del INSERT
-- ✅ Tabla auto-creada en primera conexión
+- ✅ Nueva estructura con `user_id` y `created_at`
+- ✅ `REFERENCES` para integridad referencial
+- ✅ `ALTER TABLE` para migración compatible
+- ✅ Métodos específicos para insertar y consultar mensajes
 
 ---
 
@@ -442,42 +463,53 @@ export async function getChatDB() {
    ↓
 3. sendMessage("Hola") del hook
    ↓
-4. socket.emit('chat_message', "Hola", "Juan", 123)
+4. socket.emit('chat_message', { message: "Hola", user: "Juan", planId: 123 })
    ↓
 5. Backend recibe en chat.controller.ts
    ↓
-6. INSERT INTO messages (content, user_name, plan_id)
-   VALUES ('Hola', 'Juan', 123)
+6. Valida userId de socket.handshake.auth.userId
    ↓
-7. io.to('plan_123').emit('chat_message', "Hola", ID, "Juan")
+7. Consulta perfil: SELECT avatar_url FROM perfiles WHERE user_id = ?
    ↓
-8. Frontend recibe → setMessages([...prev, {content, user_name}])
+8. INSERT INTO messages (content, user_id, plan_id) VALUES ('Hola', userId, 123)
    ↓
-9. Render: aparece el mensaje en el chat
+9. io.to('plan_123').emit('chat_message', {
+     id: ID,
+     content: 'Hola',
+     user_name: 'Juan',
+     user_id: userId,
+     avatar: 'url-avatar',
+     created_at: '2024-01-01T10:30:00Z'
+   })
    ↓
-10. scrollIntoView({ behavior: 'smooth' }) → scroll automático
+10. Frontend recibe → setMessages([...prev, mensajeCompleto])
+    ↓
+11. Render: aparece mensaje con avatar, color único, timestamp
+    ↓
+12. scrollIntoView({ behavior: 'smooth' }) → scroll automático
 ```
 
 ### Conexión Socket.IO
 ```
-1. Cliente abre ChatPlan
+1. Cliente abre ChatPlan con userId
    ↓
 2. useChat hook ejecuta useEffect
    ↓
-3. io(backendUrl, { auth: { serverOffset: 0, planId: 123 } })
+3. io(backendUrl, { auth: { serverOffset: 0, planId: 123, userId: 456 } })
    ↓
 4. Backend: io.on('connection', socket => registerChatHandlers)
    ↓
 5. socket.on('join_plan', planId) → socket.join('plan_123')
    ↓
-6. Si es reconexión (!socket.recovered):
-     SELECT * FROM messages WHERE id > serverOffset AND plan_id = 123
+6. Consultar historial: SELECT * FROM messages WHERE plan_id = 123 ORDER BY created_at
    ↓
-7. socket.emit('chat_message', ...) → enviar historial
+7. Para cada mensaje: consultar perfil para obtener avatar
    ↓
-8. Frontend recibe mensajes históricos
+8. socket.emit('previous_messages', [msg1, msg2, ...]) → enviar historial completo
    ↓
-9. setMessages([...históricos]) → mostrar conversación anterior
+9. Frontend recibe mensajes históricos con avatares y timestamps
+   ↓
+10. setMessages([...históricos]) → mostrar conversación completa
 ```
 
 ---
@@ -505,14 +537,15 @@ frontend:
 CREATE TABLE messages (
   id SERIAL PRIMARY KEY,
   content TEXT NOT NULL,
-  user_name VARCHAR(100) NOT NULL,
-  plan_id INTEGER NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW()  -- Opcional
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  plan_id INTEGER NOT NULL REFERENCES planes(id),
+  created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Índices útiles
+-- Índices para rendimiento
 CREATE INDEX idx_messages_plan_id ON messages(plan_id);
-CREATE INDEX idx_messages_id_plan ON messages(id, plan_id);
+CREATE INDEX idx_messages_user_id ON messages(user_id);
+CREATE INDEX idx_messages_created_at ON messages(created_at);
 ```
 
 ---
@@ -529,26 +562,91 @@ CREATE INDEX idx_messages_id_plan ON messages(id, plan_id);
    http://localhost:3000/mis-planes
    ```
 
-3. **Clickear botón chat**
-   - Se abre modal
-   - useChat hook establece WebSocket
-   - Socket.IO emite `join_plan`
-   - Backend carga mensajes históricos
+4. **Clickear botón chat**
+   - Se abre modal con `userId` del usuario actual
+   - `useChat` hook establece WebSocket con autenticación
+   - Socket.IO emite `join_plan` con ID del plan
+   - Backend valida `userId` y carga mensajes históricos con avatares
 
-4. **Escribir mensaje**
+5. **Escribir mensaje**
    - Input captura texto
-   - Form submit → sendMessage()
-   - Socket.IO emite a servidor
-   - Servidor guarda en BD
-   - Servidor broadcast a todos en sala
-   - Chat recibe y renderiza
+   - Form submit → `sendMessage()`
+   - Socket.IO emite mensaje estructurado a servidor
+   - Servidor valida usuario, consulta avatar, guarda en BD
+   - Servidor broadcast a todos en sala con datos completos
+   - Chat recibe y renderiza con DaisyUI, colores únicos, timestamps
 
-5. **Cerrar/Reconectar**
-   - Click X o backdrop cierra modal
-   - Component unmount → socket.disconnect()
-   - Si pierde conexión:
-     - Socket.IO reintenta automáticamente
-     - Envía serverOffset para recuperar mensajes nuevos
+---
+
+## 🎨 Nuevas Funcionalidades (v2.0)
+
+### Avatares de Usuario
+- **Integración**: Consultas a tabla `perfiles` para obtener `avatar_url`
+- **Backend**: `getPerfilByUserId(userId)` en cada mensaje
+- **Frontend**: `<img src={avatar || fallback} />` en `chat-image`
+- **Fallback**: `/images/avatars/avatar-1.png` si no hay avatar personalizado
+
+### Timestamps
+- **Base de datos**: Columna `created_at TIMESTAMP DEFAULT NOW()`
+- **Formato**: `Intl.DateTimeFormat('es-ES', { dateStyle: 'short', timeStyle: 'short' })`
+- **Ubicación**: `chat-footer` con `opacity-50` y `text-[11px]`
+- **Ejemplo**: "01/01/24 14:30"
+
+### Colores Únicos por Usuario
+- **Algoritmo**: `hue = (userId * 137.5) % 360`
+- **HSL**: `hsl(${hue}, 65%, 88%)` - saturación media, claridad alta
+- **Aplicación**: `style={{ backgroundColor: getUserColor(user_id) }}`
+- **Resultado**: Colores consistentes y únicos por usuario
+
+### Cambios en Base de Datos
+```sql
+-- Nueva estructura de tabla messages
+CREATE TABLE messages (
+  id SERIAL PRIMARY KEY,
+  content TEXT NOT NULL,
+  user_id INTEGER NOT NULL REFERENCES users(id),  -- Cambió de user_name
+  plan_id INTEGER NOT NULL REFERENCES planes(id), -- Nueva referencia
+  created_at TIMESTAMP DEFAULT NOW()              -- Nuevo campo
+);
+
+-- Migración compatible
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();
+ALTER TABLE messages DROP COLUMN IF EXISTS user_name;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id);
+```
+
+### Autenticación Mejorada
+- **Socket Auth**: `auth: { userId, planId, serverOffset }`
+- **Validación**: Backend verifica `userId` antes de procesar mensajes
+- **Props Chain**: `userId` se pasa desde páginas → componentes → hooks
+- **Error Handling**: Emite `'error'` si usuario no autenticado
+
+### Componentes DaisyUI Utilizados
+- `chat`: Contenedor principal del mensaje
+- `chat-start` / `chat-end`: Alineación izquierda/derecha
+- `chat-image`: Avatar circular del usuario
+- `chat-header`: Nombre del usuario remitente
+- `chat-bubble`: Contenido del mensaje con color único
+- `chat-footer`: Timestamp con opacidad reducida
+
+---
+
+## 🔧 Consideraciones Técnicas
+
+### Rendimiento
+- Consultas adicionales a `perfiles` por mensaje histórico
+- Generación de colores en cliente (bajo costo)
+- Auto-scroll optimizado con `useRef`
+
+### Compatibilidad
+- Requiere DaisyUI 5.5.19+
+- Compatible con PostgreSQL
+- Funciona con Socket.IO v4+
+
+### Seguridad
+- `userId` validado en cada mensaje
+- Autenticación requerida para chat
+- Sanitización de inputs
 
 ---
 
