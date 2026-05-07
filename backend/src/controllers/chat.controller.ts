@@ -1,13 +1,20 @@
 import { Server, Socket } from 'socket.io';
 import { getChatDB } from '../lib/chatDb';
 import { obtener as obtenerPerfil } from '../services/perfiles.service';
+import { esParticipanteEnPlan } from '../services/planes.service';
 
 export async function registerChatHandlers(io: Server, socket: Socket) {
   const chatDb = await getChatDB();
 
   // Unirse a sala por Plan
-  socket.on('join_plan', (planId: number) => {
-    socket.join(`plan_${planId}`);
+  socket.on('join_plan', async (planId: number) => { // El cliente solicita unirse a la sala de chat de un plan específico
+    const userId = socket.handshake.auth.userId; // Obtenemos el userId del cliente a través de la autenticación en el handshake
+    if (!userId) return; // Si no hay userId en la autenticación, no hacemos nada o podríamos emitir un error
+
+    const participante = await esParticipanteEnPlan(planId, userId); // Verificamos que el usuario sea participante del plan antes de permitirle unirse a la sala de chat
+    if (!participante) return; // Si el usuario no es participante del plan, no lo dejamos unirse a la sala
+
+    socket.join(`plan_${planId}`); // Unimos al socket a una sala específica para el plan
   });
 
   // Manejo de mensajes de chat
@@ -15,6 +22,9 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
     try {
       const userId = socket.handshake.auth.userId; // Obtenemos el userId del cliente a través de la autenticación en el handshake
       if (!userId) return; // or handle error
+
+      const participante = await esParticipanteEnPlan(planId, userId); // Verificamos que el usuario sea participante del plan antes de permitirle enviar mensajes
+      if (!participante) return; // Si el usuario no es participante del plan, no le permitimos enviar mensajes
 
       const perfil = await obtenerPerfil(userId); // Obtenemos el perfil del usuario para obtener su avatar
       const avatar = perfil.avatar_url;
