@@ -2,7 +2,7 @@
 import { useChat } from '@/app/hooks/useChat';
 import { useRef, useEffect } from 'react';
 
-export default function ChatPlan({ planId, userName, userId }: { planId: number, userName: string, userId: number }) {
+export default function ChatPlan({ planId, userName, userId, canWrite }: { planId: number, userName: string, userId: number, canWrite: boolean }) {
   const { messages, sendMessage } = useChat(planId, userName, userId);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -33,6 +33,8 @@ export default function ChatPlan({ planId, userName, userId }: { planId: number,
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!canWrite) return;
+
     const form = e.currentTarget;
     const input = form.elements.namedItem('message') as HTMLInputElement;
     if (input.value) {
@@ -65,14 +67,21 @@ export default function ChatPlan({ planId, userName, userId }: { planId: number,
         <div ref={messagesEndRef} />
       </div>
 
+      {!canWrite && (
+        <div className="px-4 py-3 text-sm text-neutral">
+          Solo los usuarios apuntados pueden escribir en este chat.
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="p-4 border-t border-neutral/20 flex gap-2">
         <input 
           name="message" 
+          disabled={!canWrite}
           className="input input-bordered flex-1 rounded-full px-4" 
-          placeholder="Escribe un mensaje..."
+          placeholder={canWrite ? "Escribe un mensaje..." : "Debes apuntarte para escribir"}
           autoComplete="off"
         />
-        <button type="submit" className="btn btn-primary btn-circle bg-neutral">
+        <button type="submit" disabled={!canWrite} className="btn btn-primary btn-circle bg-neutral disabled:opacity-50 disabled:cursor-not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
             <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.519 0 0 0 3.478 2.404Z" />
           </svg>
