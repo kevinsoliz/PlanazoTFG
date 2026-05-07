@@ -206,7 +206,7 @@ const PlanDetailPage = async ({ params }: Props) => {
           </h3>
         </header>
         <div className="h-125 flex flex-col bg-base-100">
-          <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} />
+          <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} userId={userActual?.id || 0} /> {/* Pasamos el nombre de usuario y el ID al componente de chat */}
         </div>
       </section>
     </div>
