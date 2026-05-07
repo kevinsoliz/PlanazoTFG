@@ -16,6 +16,7 @@ const MisPlanes = async () => {
 // Obtener el nombre de usuario para el chat
   const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
   const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
+  const userId = response.data?.user?.id || 0; // Fallback en caso de que no se obtenga el ID
 
   return (
     <div className="flex flex-col gap-9">
@@ -40,7 +41,7 @@ const MisPlanes = async () => {
             <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
-              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
+              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
           ))}
         </section>
@@ -55,7 +56,7 @@ const MisPlanes = async () => {
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
               <AbandonarBtn plan_id={plan.id} />
-              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
+              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
           ))}
         </section>
