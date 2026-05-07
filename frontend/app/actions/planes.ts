@@ -79,3 +79,19 @@ export async function abandonarPlan(planId: number) {
     
     return { ok: true };
 }
+
+export async function valorarPlan(planId: number, puntuacion: number) {
+    const res = await fetchServer(`/api/planes/${planId}/rate`, {
+        method: "POST",
+        body: { puntuacion }
+    });
+
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al valorar el plan" };
+    }
+
+    revalidatePath("/home");
+    revalidatePath("/apuntado");
+
+    return { ok: true };
+}

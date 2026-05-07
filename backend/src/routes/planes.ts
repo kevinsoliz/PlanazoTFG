@@ -117,14 +117,15 @@ router.get("/apuntado", requireAuth, async (req, res) => {
   try {
     const resultado = await pool.query(
       `SELECT planes.*,
-      (SELECT COUNT(*) FROM plan_participants
-      WHERE plan_participants.plan_id = planes.id) AS participants
+      (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+      (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
+      (SELECT puntuacion FROM valoraciones WHERE plan_id = planes.id AND usuario_id = $1) AS mi_voto
       FROM planes
       JOIN plan_participants ON plan_participants.plan_id = planes.id
-      WHERE plan_participants.user_id != $1
+      WHERE plan_participants.user_id = $1 
       AND planes.creator_id != $1
       ORDER BY planes.fecha ASC`,
-      [req.session.userId],
+      [req.session.userId]
     );
 
     res.json({ planes: resultado.rows });
@@ -163,6 +164,7 @@ router.get("/:id", async (req, res) => {
     console.log(error);
     res.status(500).json({ error: "Error del servidor " });
   }
+  
 });
 
 // unirse al plan
@@ -319,3 +321,83 @@ router.put("/:id", requireAuth, async (req, res) => {
   }
 });
 export default router;
+
+// valorar plan
+router.post("/:id/rate", requireAuth, async (req, res) => {
+  const planId = req.params.id;
+  const { puntuacion } = req.body;
+  const userId = req.session.userId;
+
+  // 1. Validación de los datos de entrada
+  if (!puntuacion || puntuacion < 0.5 || puntuacion > 5 || puntuacion % 0.5 !== 0) {
+    res.status(400).json({ error: "La puntuación debe ser entre 0.5 y 5, en incrementos de 0.5." });
+    return;
+  }
+
+  try {
+    // 2. Verificar que el plan existe y comprobar su fecha
+    const planResult = await pool.query(
+      "SELECT fecha FROM planes WHERE id = $1", 
+      [planId]
+    );
+    
+    if (planResult.rows.length === 0) {
+      res.status(404).json({ error: "Plan no encontrado" });
+      return;
+    }
+
+    // const fechaPlan = new Date(planResult.rows[0].fecha);
+    // const ahora = new Date();
+
+    // if (fechaPlan > ahora) {
+      // res.status(400).json({ error: "No puedes valorar un plan que aún no ha terminado." });
+      // return;
+    // }
+
+    // 3. Verificar que el usuario realmente se unió al plan
+    const participantResult = await pool.query(
+      "SELECT 1 FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
+      [planId, userId]
+    );
+
+    if (participantResult.rows.length === 0) {
+      res.status(403).json({ error: "Solo los participantes pueden valorar el plan." });
+      return;
+    }
+
+    // 4. Guardar la valoración en la base de datos
+    // 4. Guardar o actualizar la valoración en la base de datos (UPSERT)
+    await pool.query(
+      `INSERT INTO valoraciones (plan_id, usuario_id, puntuacion) 
+       VALUES ($1, $2, $3)
+       ON CONFLICT (plan_id, usuario_id) 
+       DO UPDATE SET puntuacion = EXCLUDED.puntuacion`,
+      [planId, userId, puntuacion]
+    );
+
+    res.status(201).json({ message: "Valoración registrada con éxito." });
+    
+  } catch (error: any) {
+    console.log("Error en /:id/rate: ", error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
+});
+
+// listar detalle del plan
+router.get("/:id", async (req, res) => {
+  try {
+    const plan = await pool.query(
+      `SELECT p.*, u.nombre AS creador_nombre, 
+        COALESCE(ROUND(AVG(v.puntuacion), 1), 0) AS nota_media,
+        COUNT(v.id) AS total_valoraciones
+       FROM planes p 
+       JOIN users u ON p.creator_id = u.id 
+       LEFT JOIN valoraciones v ON p.id = v.plan_id
+       WHERE p.id = $1
+       GROUP BY p.id, u.nombre`,
+      [req.params.id],
+    )} catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error del servidor " });
+  }
+  });

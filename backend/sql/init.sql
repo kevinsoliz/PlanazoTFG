@@ -46,3 +46,14 @@ CREATE TABLE IF NOT EXISTS users (
     joined_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (plan_id, user_id)
   );
+
+  CREATE TABLE valoraciones (
+    id SERIAL PRIMARY KEY,
+    plan_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    puntuacion NUMERIC(2,1) NOT NULL CHECK (puntuacion >= 0.5 AND puntuacion <= 5.0 AND (puntuacion * 2) % 1 = 0),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_plan FOREIGN KEY (plan_id) REFERENCES planes(id) ON DELETE CASCADE,
+    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(plan_id, usuario_id) 
+  );      
