@@ -22,12 +22,19 @@ export default function ChatModalBtn({ planId, userName, planTitulo }: { planId:
 
       {isOpen && (
         <div className="modal modal-open">
-          <div className="modal-box p-0 max-w-md">
-            <button 
-              onClick={() => setIsOpen(false)} 
-              className="btn btn-sm btn-circle absolute right-2 top-2 z-10"
-            >✕</button>
-            <ChatPlan planId={planId} userName={userName} />
+          <div className="modal-box p-0 max-w-2xl w-11/12 h-96 flex flex-col">
+            <div className="px-4 py-3 bg-neutral text-[#E0604D] flex items-center justify-between">
+              <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
+                {planTitulo}
+              </h3>
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="btn btn-sm btn-circle btn-ghost"
+              >✕</button>
+            </div>
+            <div className="flex-1 flex flex-col bg-base-100 overflow-hidden">
+              <ChatPlan planId={planId} userName={userName} />
+            </div>
           </div>
           <div className="modal-backdrop" onClick={() => setIsOpen(false)}></div>
         </div>
