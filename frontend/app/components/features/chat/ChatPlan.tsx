@@ -2,9 +2,26 @@
 import { useChat } from '@/app/hooks/useChat';
 import { useRef, useEffect } from 'react';
 
-export default function ChatPlan({ planId, userName }: { planId: number, userName: string }) {
-  const { messages, sendMessage } = useChat(planId, userName);
+export default function ChatPlan({ planId, userName, userId }: { planId: number, userName: string, userId: number }) {
+  const { messages, sendMessage } = useChat(planId, userName, userId);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const formatCreatedAt = (createdAt: string) => {
+    try {
+      return new Intl.DateTimeFormat('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      }).format(new Date(createdAt));
+    } catch {
+      return '';
+    }
+  };
+
+  const getUserColor = (userId: number) => {
+    // Genera un color HSL único basado en userId
+    const hue = (userId * 137.5) % 360; // Distribución uniforme usando ángulo dorado
+    return `hsl(${hue}, 65%, 88%)`; // Color claro y saturado
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -28,14 +45,20 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
     <>
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral/5">
         {messages.map((m, i) => (
-          <div key={i} className={`flex flex-col ${m.user_name === userName ? 'items-end' : 'items-start'}`}> 
-            <span className="text-[10px] opacity-50 mb-1 px-1">{m.user_name}</span>
-            <div className={`max-w-[85%] px-4 py-2 rounded-2xl ${
-              m.user_name === userName 
-                ? 'bg-neutral text-primary-content rounded-tr-none' 
-                : 'bg-base-200 text-base-content border border-neutral/10 rounded-tl-none'
-            }`}>
+          <div key={i} className={`chat ${m.user_name === userName ? 'chat-end' : 'chat-start'}`}>
+            <div className="chat-image avatar">
+              <div className="w-10 rounded-full">
+                <img src={m.avatar || '/images/avatars/avatar-1.png'} alt={m.user_name} />
+              </div>
+            </div>
+            <div className="chat-header">
+              {m.user_name}
+            </div>
+            <div className="chat-bubble" style={{ backgroundColor: getUserColor(m.user_id) }}>
               {m.content}
+            </div>
+            <div className="chat-footer opacity-50 text-[11px]">
+              {m.created_at ? formatCreatedAt(m.created_at) : ''}
             </div>
           </div>
         ))}
