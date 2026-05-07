@@ -25,7 +25,7 @@ export default function ChatPlan({ planId, userName }: { planId: number, userNam
   };
 
   return (
-    <div className="flex flex-col h-[500px] bg-base-100 rounded-xl overflow-hidden border border-neutral/20 shadow-xl">
+    <div className="flex flex-col w-full h-[500px] bg-base-100 rounded-xl overflow-hidden border border-neutral/20 shadow-xl">
       <div className="bg-primary p-4 text-primary-content font-bold shadow-md">
         Chat en vivo
       </div>
