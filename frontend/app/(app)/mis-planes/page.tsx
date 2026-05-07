@@ -15,7 +15,7 @@ const MisPlanes = async () => {
 
 // Obtener el nombre de usuario para el chat
   const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
-   const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
+  const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
 
   return (
     <div className="flex flex-col gap-9">
