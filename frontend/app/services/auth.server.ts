@@ -7,6 +7,6 @@ export async function getPerfil(): Promise<UserProfile | null> {
     if (!me) return null;
     
 
-    const data = await fetchServer(`/api/perfiles/${me.user.id}`)
-    return data?.perfil ?? null;
+    const data = await fetchServer(`/api/perfiles/${me.data.user.id}`)
+    return data?.data?.perfil ?? null;
 }

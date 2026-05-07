@@ -1,12 +1,13 @@
 "use client";
 import { crearPlan } from "@/app/actions/planes";
+import { CATEGORIAS } from "@/app/constants/categorias";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 const PlanPage = () => {
   const [plan, setPlan] = useState({
     titulo: "",
-    categoria: "",
+    categoria: CATEGORIAS[0].name,
     descripcion: "",
     fecha: "",
     ubicacion: "",
@@ -21,6 +22,7 @@ const PlanPage = () => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const resultado = await crearPlan(plan);
+    console.log(plan);
 
     if (resultado?.error) {
       setToast({ mensaje: resultado.error, tipo: "error" });
@@ -64,14 +66,19 @@ const PlanPage = () => {
           onChange={(event) => setPlan({ ...plan, titulo: event.target.value })}
         />
         <legend className="fieldset-legend">Categoria</legend>
-        <input
+        {/* <input
           type="text"
           className="input"
           value={plan.categoria}
           onChange={(event) =>
             setPlan({ ...plan, categoria: event.target.value })
           }
-        />
+        /> */}
+        <select value={plan.categoria} onChange={(event) => setPlan({ ...plan, categoria: event.target.value })}>
+          {CATEGORIAS.map(cat => 
+            (<option key={cat.name} value={cat.name}>{cat.name}</option>)
+          )}
+        </select>
         <legend className="fieldset-legend">Descripcion</legend>
         <input
           type="text"
