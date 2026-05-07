@@ -542,20 +542,6 @@ CREATE INDEX idx_messages_id_plan ON messages(id, plan_id);
 
 ---
 
-## 📊 Comparativa: Simple vs Compleja
-
-| Aspecto | Simple (legacy) | Compleja (doc) |
-|---------|-----------------|----------------|
-| Modal | Sí | No (página dedicada) |
-| Rutas dinámicas | No | Sí (`/plan-chat/[id]`) |
-| Typing indicators | No | No (future) |
-| Avatar users | No | Opcional |
-| Timestamps | No | Sí |
-| Búsqueda | No | No (future) |
-| Archivos/imgs | No | No (future) |
-
----
-
 ## ✅ Checklist para Probar
 
 - [ ] Backend corre sin errores (docker logs backend)
