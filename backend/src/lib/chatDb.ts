@@ -1,13 +1,13 @@
 import pool from '../db';
-
+// Interfaz simple para ejecutar consultas SQL
 export async function getChatDB() {
   // Creamos la tabla de mensajes si no existe
   await pool.query(`
     CREATE TABLE IF NOT EXISTS messages (
-      id SERIAL PRIMARY KEY,
-      content TEXT NOT NULL,
-      user_name VARCHAR(100) NOT NULL,
-      plan_id INTEGER NOT NULL
+    id SERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    plan_id INTEGER NOT NULL REFERENCES planes(id)
     )
   `);
 
