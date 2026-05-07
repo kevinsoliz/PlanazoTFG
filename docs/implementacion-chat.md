@@ -2,6 +2,8 @@
 
 ## 📌 Resumen
 Chat con Socket.IO para comunicación bidireccional, PostgreSQL para persistencia, DaisyUI para UI moderna, avatares de usuario, timestamps y colores únicos por usuario.
+- Restricción de escritura: solo usuarios apuntados pueden escribir en el chat.
+- Validación de participación en backend en `join_plan` y `chat_message`.
 
 ---
 
@@ -33,25 +35,29 @@ Chat con Socket.IO para comunicación bidireccional, PostgreSQL para persistenci
 │   Mis Planes (SSR)      │
 │                         │
 │  Plan 1  [chat btn]     │
-│  Plan 2  [chat btn] ◄─── Botón abre modal
+│  Plan 2  [chat btn]     │
 │  Plan 3  [chat btn]     │
 └─────────────────────────┘
 ```
+- En esta página hay un botón de chat para cada plan al que estás apuntado.
+- El botón abre un modal de chat cuando el plan está disponible.
 
-### 2. Modal Chat
+### 2. Página de detalle del plan (`/home/[id]`)
 ```
 ┌──────────────────────────────┐
-│  Título del plan         [X] │  ← Header dedicado
+│  Título del plan             │
 ├──────────────────────────────┤
-│  [Avatar] User1: Hola        │  ← Avatar + nombre + color único
+│  [Avatar] User1: Hola        │
 │                    [Avatar] Yo│
-│                    Hola       │  ← Mensajes propios derecha
+│                    Hola       │
 │  [Avatar] User1: ¿Qué tal?   │
-│                    14:30     │  ← Timestamp en footer
+│                    14:30     │
 ├──────────────────────────────┤
 │  [Input mensaje] [btn enviar]│
 └──────────────────────────────┘
 ```
+- La página de detalle del plan integra directamente el chat del plan.
+- Solo los usuarios apuntados pueden escribir, el input se deshabilita para los no-participantes.
 
 ### 3. Conexión Socket.IO
 ```
@@ -128,7 +134,7 @@ export default function ChatModalBtn({ planId, userName, userId, planTitulo }) {
 
 ### `ChatPlan.tsx` - Componente principal del chat (DaisyUI)
 ```tsx
-export default function ChatPlan({ planId, userName, userId }) {
+export default function ChatPlan({ planId, userName, userId, canWrite }) {
   const { messages, sendMessage } = useChat(planId, userName, userId);
   const messagesEndRef = useRef(null);
 
@@ -185,11 +191,12 @@ export default function ChatPlan({ planId, userName, userId }) {
       <form onSubmit={handleSubmit} className="p-4 border-t border-neutral/20 flex gap-2">
         <input
           name="message"
+          disabled={!canWrite}
           className="input input-bordered flex-1 rounded-full px-4"
-          placeholder="Escribe un mensaje..."
+          placeholder={canWrite ? "Escribe un mensaje..." : "Debes apuntarte para escribir"}
           autoComplete="off"
         />
-        <button type="submit" className="btn btn-primary btn-circle bg-neutral">
+        <button type="submit" disabled={!canWrite} className="btn btn-primary btn-circle bg-neutral disabled:opacity-50 disabled:cursor-not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
             <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.519 0 0 0 3.478 2.404Z" />
           </svg>
@@ -204,6 +211,7 @@ export default function ChatPlan({ planId, userName, userId }) {
 - `planId` (number) - ID del plan
 - `userName` (string) - Nombre del usuario actual
 - `userId` (number) - ID del usuario actual
+- `canWrite` (boolean) - Permiso para habilitar el input de envío
 
 **Características:**
 - Usa componentes DaisyUI (`chat`, `chat-start/end`, `chat-image`, etc.)
@@ -211,47 +219,48 @@ export default function ChatPlan({ planId, userName, userId }) {
 - Colores únicos por usuario usando HSL
 - Timestamps formateados en español
 - Auto-scroll al último mensaje
+- Input y botón deshabilitados para usuarios no apuntados
 
 ---
 
 ### `useChat.ts` - Hook que maneja Socket.IO
 ```tsx
 export function useChat(planId: number, userName: string, userId: number) {
-  const [messages, setMessages] = useState([]);
-  const socketRef = useRef(null);
+  const [messages, setMessages] = useState<{content: string, user_name: string, avatar: string | null, created_at: string, user_id: number}[]>([]);
+  const socketRef = useRef<CustomSocket | null>(null);
 
   useEffect(() => {
-    // 1. Conectar con autenticación
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
     socketRef.current = io(backendUrl, {
       auth: {
-        serverOffset: 0,    // Para historial offline
-        planId,             // Identificar la sala
-        userId              // Para autenticación backend
+        serverOffset: 0,
+        planId,
+        userId
       }
-    });
+    }) as CustomSocket;
 
-    // 2. Unirse a la sala del plan
     socketRef.current.emit('join_plan', planId);
 
-    // 3. Escuchar mensajes
-    socketRef.current.on('chat_message', (msg) => {
-      setMessages((prev) => [...prev, msg]);
-      // Actualizar offset para reconexiones
-      socketRef.current.auth.serverOffset = msg.id;
-    });
+    socketRef.current.on(
+      'chat_message',
+      (msg: string, id: string, user: string, avatar: string | null, createdAt: string, userId: number) => {
+        setMessages((prev) => [
+          ...prev,
+          { content: msg, user_name: user, avatar, created_at: createdAt, user_id: userId }
+        ]);
 
-    // 4. Limpiar al desmontar
+        if (socketRef.current) {
+          socketRef.current.auth.serverOffset = id;
+        }
+      }
+    );
+
     return () => socketRef.current?.disconnect();
-  }, [planId, userId]);
+  }, [planId]);
 
   const sendMessage = (content: string) => {
     if (socketRef.current && content.trim()) {
-      socketRef.current.emit('chat_message', {
-        message: content,
-        user: userName,
-        planId
-      });
+      socketRef.current.emit('chat_message', content, userName, planId);
     }
   };
 
@@ -273,7 +282,7 @@ export function useChat(planId: number, userName: string, userId: number) {
 2. **Auth**: Envía `planId` y `userId` en autenticación
 3. **Join**: Emite `join_plan` para unirse a la sala
 4. **Listen**: Escucha `chat_message` con datos completos (avatar, timestamp, etc.)
-5. **Send**: Emite `chat_message` con objeto estructurado
+5. **Send**: Emite `chat_message(content, userName, planId)` con parámetros separados
 
 ---
 
@@ -320,64 +329,82 @@ server.listen(PORT, () => {
 export async function registerChatHandlers(io, socket) {
   const chatDb = await getChatDB();
 
-  // 1. Usuario se une a la sala
+  // 1. Usuario solicita unirse a la sala
   socket.on('join_plan', async (planId) => {
+    const userId = socket.handshake.auth.userId;
+    if (!userId) return;
+
+    const participante = await esParticipanteEnPlan(planId, userId);
+    if (!participante) return;
+
     socket.join(`plan_${planId}`);
-
-    // Enviar historial de mensajes
-    try {
-      const messages = await chatDb.getMessagesByPlan(planId);
-      const messagesWithAvatars = await Promise.all(
-        messages.map(async (msg) => {
-          const perfil = await getPerfilByUserId(msg.user_id);
-          return {
-            ...msg,
-            avatar: perfil?.avatar_url
-          };
-        })
-      );
-
-      socket.emit('previous_messages', messagesWithAvatars);
-    } catch (error) {
-      console.error('Error loading message history:', error);
-    }
   });
 
   // 2. Nuevo mensaje
-  socket.on('chat_message', async (data) => {
+  socket.on('chat_message', async (msg, user, planId) => {
     try {
-      const { message, user, planId } = data;
       const userId = socket.handshake.auth.userId;
+      if (!userId) return;
 
-      if (!userId) {
-        socket.emit('error', 'Usuario no autenticado');
-        return;
-      }
+      const participante = await esParticipanteEnPlan(planId, userId);
+      if (!participante) return;
 
-      // Obtener perfil del usuario para avatar
-      const perfil = await getPerfilByUserId(userId);
+      const perfil = await obtenerPerfil(userId);
+      const avatar = perfil.avatar_url;
 
-      // Insertar mensaje en BD
-      const result = await chatDb.insertMessage({
-        content: message,
-        user_id: userId,
-        plan_id: planId
-      });
+      const result = await chatDb.run(
+        'INSERT INTO messages (content, user_id, plan_id) VALUES ($1, $2, $3)',
+        [msg, userId, planId]
+      );
 
-      // Broadcast a todos en la sala
-      io.to(`plan_${planId}`).emit('chat_message', {
-        id: result.id,
-        content: message,
-        user_name: user,
-        user_id: userId,
-        avatar: perfil?.avatar_url,
-        created_at: result.created_at
-      });
+      const createdRows = await chatDb.all(
+        'SELECT created_at FROM messages WHERE id = $1',
+        [result.lastID]
+      );
+      const createdAt = createdRows[0]?.created_at ?? new Date().toISOString();
+
+      io.to(`plan_${planId}`).emit(
+        'chat_message',
+        msg,
+        result.lastID?.toString(),
+        user,
+        avatar,
+        createdAt,
+        userId
+      );
     } catch (e) {
       console.error('Error sending message:', e);
-      socket.emit('error', 'Error al enviar mensaje');
     }
   });
+
+  // 3. Recuperación de historial offline
+  if (!socket.recovered) {
+    try {
+      const lastId = socket.handshake.auth.serverOffset || 0;
+      const planId = socket.handshake.auth.planId;
+      if (planId) {
+        const results = await chatDb.all(
+          'SELECT id, content, user_id, created_at FROM messages WHERE id > $1 AND plan_id = $2 ORDER BY id ASC',
+          [lastId, planId]
+        );
+
+        for (const row of results) {
+          const perfil = await obtenerPerfil(row.user_id);
+          socket.emit(
+            'chat_message',
+            row.content,
+            row.id.toString(),
+            perfil.nombre,
+            perfil.avatar_url,
+            row.created_at,
+            row.user_id
+          );
+        }
+      }
+    } catch (e) {
+      console.error('Error en recuperación de historial:', e);
+    }
+  }
 }
 ```
 
