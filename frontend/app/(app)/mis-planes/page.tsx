@@ -54,8 +54,8 @@ const MisPlanes = async () => {
           </header>
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
-              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
               <AbandonarBtn plan_id={plan.id} />
+              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
           ))}
         </section>
