@@ -26,8 +26,8 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
   // Recuperación de historial offline
   if (!socket.recovered) {
     try {
-      const lastId = socket.handshake.auth.serverOffset || 0;
-      const planId = socket.handshake.auth.planId;
+      const lastId = socket.handshake.auth.serverOffset || 0; // ID del último mensaje recibido por el cliente
+      const planId = socket.handshake.auth.planId; // ID del plan al que se unió el cliente
       if (planId) {
         const results = await chatDb.all(
           'SELECT id, content, user_name FROM messages WHERE id > $1 AND plan_id = $2',
