@@ -199,12 +199,12 @@ const PlanDetailPage = async ({ params }: Props) => {
         </aside>
       </div>
 
-      <section className="rounded-md border-2 overflow-hidden shadow-md">
-        <header className="px-4 py-3 bg-neutral text-[#E0604D]">
+      <section className="">
+        {/* <header className="px-4 py-3 bg-neutral text-[#E0604D]">
           <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
             Chat del plan
           </h3>
-        </header>
+        </header> */}
         <div className="min-h-96 flex items-center justify-center p-6 bg-base-100">
           <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} />
         </div>
