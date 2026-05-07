@@ -344,13 +344,13 @@ router.post("/:id/rate", requireAuth, async (req, res) => {
       return;
     }
 
-    // const fechaPlan = new Date(planResult.rows[0].fecha);
-    // const ahora = new Date();
+    const fechaPlan = new Date(planResult.rows[0].fecha);
+    const ahora = new Date();
 
-    // if (fechaPlan > ahora) {
-      // res.status(400).json({ error: "No puedes valorar un plan que aún no ha terminado." });
-      // return;
-    // }
+    if (fechaPlan > ahora) {
+      res.status(400).json({ error: "No puedes valorar un plan que aún no ha terminado." });
+      return;
+    }
 
     const participantResult = await pool.query(
       "SELECT 1 FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
