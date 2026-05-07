@@ -205,7 +205,7 @@ const PlanDetailPage = async ({ params }: Props) => {
             Chat del plan
           </h3>
         </header>
-        <div className="h-96 flex flex-col bg-base-100">
+        <div className="h-125 flex flex-col bg-base-100">
           <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} />
         </div>
       </section>
