@@ -53,5 +53,5 @@ CREATE TABLE IF NOT EXISTS users (
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL REFERENCES users(id),
     plan_id INTEGER NOT NULL REFERENCES planes(id),
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );

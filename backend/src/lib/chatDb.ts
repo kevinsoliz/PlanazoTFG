@@ -8,13 +8,13 @@ export async function getChatDB() {
       content TEXT NOT NULL,
       user_id INTEGER NOT NULL REFERENCES users(id),
       plan_id INTEGER NOT NULL REFERENCES planes(id),
-      created_at TIMESTAMP DEFAULT NOW()
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
   // Aseguramos el campo nuevo en tablas existentes
   await pool.query(
-    'ALTER TABLE messages ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()'
+    'ALTER TABLE messages ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
   );
 
   // Devolvemos una interfaz simple para ejecutar consultas

@@ -10,7 +10,8 @@ export default function ChatPlan({ planId, userName, userId, canWrite }: { planI
     try {
       return new Intl.DateTimeFormat('es-ES', {
         dateStyle: 'short',
-        timeStyle: 'short'
+        timeStyle: 'short',
+        timeZone: 'Europe/Madrid'
       }).format(new Date(createdAt));
     } catch {
       return '';
