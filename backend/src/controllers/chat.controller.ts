@@ -18,25 +18,26 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
 
       const perfil = await obtenerPerfil(userId); // Obtenemos el perfil del usuario para obtener su avatar
       const avatar = perfil.avatar_url;
-
+      // Insertamos el mensaje en la base de datos y obtenemos el ID del nuevo mensaje
       const result = await chatDb.run(
         'INSERT INTO messages (content, user_id, plan_id) VALUES ($1, $2, $3)',
         [msg, userId, planId]
       );
-
+      // Obtenemos el timestamp del mensaje recién insertado para enviarlo al cliente junto con el mensaje
       const createdRows = await chatDb.all(
         'SELECT created_at FROM messages WHERE id = $1',
         [result.lastID]
       );
       const createdAt = createdRows[0]?.created_at ?? new Date().toISOString();
-      
+      // Emitimos el mensaje a todos los clientes conectados a la sala del plan, incluyendo el ID del mensaje, nombre de usuario, avatar y timestamp
       io.to(`plan_${planId}`).emit(
         'chat_message',
         msg,
         result.lastID?.toString(),
         user,
         avatar,
-        createdAt
+        createdAt,
+        userId
       );
     } catch (e) {
       console.error('Error en socket chat:', e);
@@ -62,7 +63,8 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
             row.id.toString(),
             perfil.nombre,
             perfil.avatar_url,
-            row.created_at
+            row.created_at,
+            row.user_id
           );
         }
       }
