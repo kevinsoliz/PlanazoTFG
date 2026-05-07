@@ -46,3 +46,11 @@ CREATE TABLE IF NOT EXISTS users (
     joined_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (plan_id, user_id)
   );
+
+  -- Tabla de mensajes de chat por plan:
+  CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    user_name VARCHAR(100) NOT NULL,
+    plan_id INTEGER NOT NULL
+  );

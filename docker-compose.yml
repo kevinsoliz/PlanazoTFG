@@ -28,6 +28,7 @@ services:
       PORT: 4000
       DATABASE_URL: postgresql://planazo:planazo_dev_123@db:5432/planazo
       SESSION_SECRET: tu_secreto_de_sesion_aqui
+      FRONTEND_URL: http://localhost:3000 # URL que el backend usará para CORS y redirecciones. No es necesario que sea la URL del contenedor, ya que el backend no se comunica con el frontend directamente, sino a través del navegador del usuario.
       # En Windows el bind mount no propaga eventos fs -> nodemon necesita
       # polling para detectar cambios en los .ts. Sin esto, hay que reiniciar
       # el contenedor a mano tras cada edición.
@@ -49,7 +50,8 @@ services:
       - /app/node_modules
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:3000/api # es lo que usa Axios desde el navegador.
-      BACKEND_URL: http://backend:4000 # url interna que usa el rewrite del servidor de next.js. No lleva nex_public para que no se exponga al navegador
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:4000 # URL para Socket.io desde el navegador
+      BACKEND_URL: http://backend:4000 # url interna que usa el rewrite del servidor de next.js. No lleva next_public para que no se exponga al navegador
       WATCHPACK_POLLING: "true"   
       CHOKIDAR_USEPOLLING: "true"
     depends_on:

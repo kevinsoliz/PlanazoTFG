@@ -12,6 +12,7 @@ import { getCurrentUser } from "@/app/services/auth-server";
 import { getPlan } from "@/app/services/planes";
 import { notFound } from "next/navigation";
 import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
+import ChatPlan from "@/app/components/features/chat/ChatPlan";
 
 type EstadoPlan = "Próximo" | "Lleno" | "Pasado";
 
@@ -204,8 +205,8 @@ const PlanDetailPage = async ({ params }: Props) => {
             Chat del plan
           </h3>
         </header>
-        <div className="min-h-96 flex items-center justify-center p-6 opacity-40">
-          <p className="text-sm">Aquí irá el chat</p>
+        <div className="h-125 flex flex-col bg-base-100">
+          <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} />
         </div>
       </section>
     </div>
