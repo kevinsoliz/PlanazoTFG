@@ -5,7 +5,9 @@
 // El fichero compila a JS vacío en runtime — solo aporta tipos.
 
 import "express-session";
-
+// Al extender SessionData, añadimos el campo userId a req.session.userId
+// en todo el proyecto. Esto es crucial para que TypeScript no dé errores
+// al acceder a req.session.userId en nuestros controladores y middleware.
 declare module "express-session" {
   interface SessionData {
     userId: number;

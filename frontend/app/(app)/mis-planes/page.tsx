@@ -7,11 +7,17 @@ import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import EstrellasValoracion from "@/app/components/features/Valoracion";
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
+import { fetchServer } from "@/app/lib/api-server"; // Función para obtener datos del usuario 
+import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
   const ahora = new Date();
+
+// Obtener el nombre de usuario para el chat
+  const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
+  const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
 
   return (
     <div className="flex flex-col gap-9">
@@ -36,6 +42,7 @@ const MisPlanes = async () => {
             <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
+              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
           ))}
         </section>

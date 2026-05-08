@@ -58,3 +58,11 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE(plan_id, usuario_id) 
   );      
+  
+  -- Tabla de mensajes de chat por plan:
+  CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    user_name VARCHAR(100) NOT NULL,
+    plan_id INTEGER NOT NULL
+  );
