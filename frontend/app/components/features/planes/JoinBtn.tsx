@@ -9,7 +9,11 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   const { showToast } = useToast(); 
 
   const handleClick = async () => {
+<<<<<<< HEAD:frontend/app/components/features/JoinBtn.tsx
     setLoading(true); // Bloquea el botón para evitar doble click
+=======
+    setLoading(true);
+>>>>>>> origin/dev:frontend/app/components/features/planes/JoinBtn.tsx
     const resultado = await unirseAPlan(plan_id);
     setLoading(false);
 
@@ -21,6 +25,7 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   };
 
   return (
+<<<<<<< HEAD:frontend/app/components/features/JoinBtn.tsx
     <button
       onClick={handleClick}
       className="btn btn-primary btn-outline btn-sm"
@@ -28,6 +33,23 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
     >
       {loading ? "Uniéndome..." : "Unirme"}
     </button>
+=======
+    <>
+      {toast && (
+        <div className="toast toast-top toast-center z-50 mt-15">
+          <div className={`alert alert-${toast.tipo}`}>
+            <span>{toast.mensaje}</span>
+          </div>
+        </div>
+      )}
+      <button
+        onClick={handleClick}
+        className="btn btn-primary btn-outline  btn-xs"
+      >
+        {loading ? "Uniéndome..." : "Unirme"}
+      </button>
+    </>
+>>>>>>> origin/dev:frontend/app/components/features/planes/JoinBtn.tsx
   );
 };
 

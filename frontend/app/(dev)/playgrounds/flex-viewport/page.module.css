@@ -1,0 +1,49 @@
+.contenedor0 {
+  width: 100vw; /* 100% del ancho del viewport (toda la ventana del navegador) */
+  height: 100vh; /* 100% del alto del viewport */
+  background: black;
+  display: flex; /* coloca a los hijos en fila: contenedor y stack lado a lado */
+  border: 3px solid red;
+  scrollbar-width: thin; /* api estandar, valores válidos: auto | thin | none */
+  scrollbar-color: brown transparent; /* thumb marrón, track transparente */
+}
+
+.contenedor {
+  flex: 1; /* ocupa todo el espacio que sobre tras el stack */
+  background-color: lightblue;
+  overflow-y: hidden; /* sin scroll por defecto */
+  scrollbar-gutter: stable; /* reserva el sitio del scrollbar para que el layout no salte */
+  display: flex;
+  flex-wrap: wrap; /* los hijos saltan a la siguiente fila si no caben */
+  gap: 2rem;
+  justify-content: center; /* centra los items horizontalmente en cada fila cuando sobra espacio */
+}
+
+.contenedor:hover {
+  overflow-y: auto; /* activa scroll vertical al pasar el ratón por encima */
+}
+
+.caja {
+  height: 150px;
+  background-color: dodgerblue;
+  flex: 1 1 150px; /* arranca en 150px y crece para repartir el sobrante */
+  max-width: 200px; /* tope superior para que no se estire demasiado */
+}
+
+.stack {
+  width: 300px;
+  background-color: aqua;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: brown transparent;
+}
+
+.stack:hover {
+  overflow-y: auto;
+}
+
+.stackCaja {
+  height: 100px;
+  background: #fff;
+  margin-bottom: 1rem;
+}

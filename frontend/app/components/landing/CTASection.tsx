@@ -3,7 +3,7 @@ import Link from "next/link";
 const CTASection = () => {
   return (
     <section className="w-full bg-primary py-20 pb-0">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-6 text-center">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6 text-center">
         <h2 className="text-4xl font-bold text-primary-content">
           ¿Tus amigos no pueden? No pasa nada!
         </h2>

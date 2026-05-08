@@ -9,8 +9,7 @@ const useLogin = () => {
 
   const login = (user: { email: string; password: string }) => authService
     .login(user)
-    .then((res) => {
-      console.log("Este es el response:", res.data.user);
+    .then(() => {
       router.push("/home");
     })
     .catch((err) => {

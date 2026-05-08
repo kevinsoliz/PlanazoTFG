@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/home", "/perfil"]; //rutas que requieren login
+const protectedRoutes = ["/home", "/perfil", "/mis-planes", "/crear-plan", "/usuario"]; //rutas que requieren login
 
 export function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;

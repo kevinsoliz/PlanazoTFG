@@ -25,5 +25,4 @@ export async function fetchServer(path: string, options: Options = {}) {
   const data = await res.json().catch(() => null);
   return { ok: res.ok, status: res.status, data };
 
-  return res.json();
 }
