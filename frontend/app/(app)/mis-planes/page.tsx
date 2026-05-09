@@ -5,19 +5,13 @@ import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
-import EstrellasValoracion from "@/app/components/features/Valoracion";
+import MediaPlan from "@/app/components/features/valoraciones/media-plan"; 
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
-import { fetchServer } from "@/app/lib/api-server"; // Función para obtener datos del usuario 
-import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
   const ahora = new Date();
-
-// Obtener el nombre de usuario para el chat
-  const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
-  const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
 
   return (
     <div className="flex flex-col gap-9">
@@ -38,13 +32,31 @@ const MisPlanes = async () => {
             </h2>
             <CounterBadge value={creados.length} accent="#F87A36" />
           </header>
-          {creados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
-              <DeleteBtn plan_id={plan.id} />
-              <EditBtn plan={plan} />
-              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
-            </PlanCard>
-          ))}
+          {creados.map((plan) => {
+            const planTerminado = new Date(plan.fecha) < ahora; 
+
+            return (
+              <PlanCard key={plan.id} plan={plan}>
+                <div className="relative w-full h-full">
+                  {planTerminado && (
+                    <div className="absolute -top-16 right-0"> 
+                      <MediaPlan notaMedia={plan.nota_media ? Number(plan.nota_media) : 0} />
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center w-full mt-4">
+                    <div className="flex gap-2">
+                      <DeleteBtn plan_id={plan.id} />
+                      <EditBtn plan={plan} />
+                    </div>
+                    {planTerminado && (
+                      <span className="text-xs italic opacity-50">Plan finalizado</span>
+                    )}
+                  </div>
+                </div>
+              </PlanCard>
+            );
+          })}
         </section>
 
         <div className="divider divider-horizontal"></div>
@@ -58,23 +70,25 @@ const MisPlanes = async () => {
           </header>
           
           {apuntados.map((plan) => {
-            // const fechaPlan = new Date(plan.fecha);
-            // const planTerminado = fechaPlan < ahora;
-            const planTerminado = true; 
+            const planTerminado = new Date(plan.fecha) < ahora;
 
             return (
               <PlanCard key={plan.id} plan={plan}>
-                {planTerminado ? (
-                  <div className="flex flex-col gap-4 w-full">
-                    <EstrellasValoracion 
-                      planId={plan.id} 
-                      votoInicial={plan.mi_voto ? Number(plan.mi_voto) : 0} 
-                      notaMedia={plan.nota_media ? Number(plan.nota_media) : 0}
-                    />
+                <div className="relative w-full h-full">
+                  {planTerminado && (
+                    <div className="absolute -top-16 right-0"> 
+                      <MediaPlan notaMedia={plan.nota_media ? Number(plan.nota_media) : 0} />
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center w-full mt-4">
+                    {planTerminado ? (
+                      <span className="text-xs italic opacity-50 ml-auto">Plan finalizado</span>
+                    ) : (
+                      <AbandonarBtn plan_id={plan.id} />
+                    )}
                   </div>
-                ) : (
-                  <AbandonarBtn plan_id={plan.id} />
-                )}
+                </div>
               </PlanCard>
             );
           })}

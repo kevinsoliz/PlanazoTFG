@@ -1,12 +1,13 @@
 'use client';
 import { borrarPlan } from "@/app/actions/planes";
-import React from "react";
+import React, { useState } from "react";
 import { useToast } from "@/app/context/ToastContext"; 
 
 const DeleteBtn = ({ plan_id }: { plan_id: number }) => {
   const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
     null,
   );
+
   const handleClick = async () => {
     const resultado = await borrarPlan(plan_id);
 
@@ -18,16 +19,17 @@ const DeleteBtn = ({ plan_id }: { plan_id: number }) => {
 
   return (
     <>
-    {toast && (
+      {toast && (
         <div className="toast toast-top toast-center z-50 mt-15">
           <div className={`alert alert-${toast.tipo}`}>
             <span>{toast.mensaje}</span>
           </div>
         </div>
       )}
-    <button className="btn btn-error btn-xs btn-soft" onClick={handleClick}>
-      Borrar
-    </button>
+      <button className="btn btn-error btn-xs btn-soft" onClick={handleClick}>
+        Borrar
+      </button>
+    </> 
   );
 };
 
