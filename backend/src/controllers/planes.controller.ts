@@ -154,3 +154,16 @@ export async function listarCreadosPorUsuario(req: Request, res: Response) {
   const planes = await planesService.listarCreadosPor(userId);
   res.json({ planes });
 }
+
+// 11. Handler para valorar un plan:
+
+export async function valorar(req: Request, res: Response) {
+  const planId = Number(req.params.id);
+  const { puntuacion } = req.body;
+
+  if (Number.isNaN(planId)) throw new AppError(400, "ID inválido");
+
+  await planesService.valorar(planId, req.session.userId!, puntuacion);
+
+  res.json({ message: "Valoración actualizada correctamente" });
+}
