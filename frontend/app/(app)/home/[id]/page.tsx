@@ -68,6 +68,8 @@ const PlanDetailPage = async ({ params }: Props) => {
         ? "participante"
         : "no-participante";
 
+  const puedeEscribir = rolActual !== "no-participante";
+
   const fechaTexto = new Date(plan.fecha + "Z").toLocaleDateString("es-ES", {
     weekday: "long",
     day: "numeric",
@@ -206,7 +208,7 @@ const PlanDetailPage = async ({ params }: Props) => {
           </h3>
         </header>
         <div className="h-125 flex flex-col bg-base-100">
-          <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} />
+           <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} userId={userActual?.id || 0} canWrite={puedeEscribir} /> {/* Pasamos el userId para que el chat pueda identificar los mensajes del usuario actual y mostrar un estilo diferente, además de para la autorización de envío de mensajes */}
         </div>
       </section>
     </div>
