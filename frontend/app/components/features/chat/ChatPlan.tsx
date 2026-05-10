@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 
 export default function ChatPlan({ planId, userName, userId, canWrite }: { planId: number, userName: string, userId: number, canWrite: boolean }) {
   const { messages, sendMessage } = useChat(planId, userName, userId);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const formatCreatedAt = (createdAt: string) => {
     try {
@@ -26,7 +26,10 @@ export default function ChatPlan({ planId, userName, userId, canWrite }: { planI
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function ChatPlan({ planId, userName, userId, canWrite }: { planI
 
   return (
     <>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral/5">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral/5">
         {messages.map((m, i) => (
           <div key={i} className={`chat ${m.user_name === userName ? 'chat-end' : 'chat-start'}`}>
             <div className="chat-image avatar">
@@ -66,7 +69,6 @@ export default function ChatPlan({ planId, userName, userId, canWrite }: { planI
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} />
       </div>
 
       {!canWrite && (
