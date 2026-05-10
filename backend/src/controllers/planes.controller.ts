@@ -67,7 +67,7 @@ export async function obtenerDetalle(req: Request, res: Response) {
     throw new AppError(400, "ID de plan inválido");
   }
 
-  const detalle = await planesService.obtenerDetalle(planId);
+  const detalle = await planesService.obtenerDetalle(planId, req.session.userId);
 
   // Esparcimos el detalle: { plan, participantes, plazas_disponibles }.
   res.json(detalle);
@@ -153,4 +153,17 @@ export async function listarCreadosPorUsuario(req: Request, res: Response) {
 
   const planes = await planesService.listarCreadosPor(userId);
   res.json({ planes });
+}
+
+// 11. Handler para valorar un plan:
+
+export async function valorar(req: Request, res: Response) {
+  const planId = Number(req.params.id);
+  const { puntuacion } = req.body;
+
+  if (Number.isNaN(planId)) throw new AppError(400, "ID inválido");
+
+  await planesService.valorar(planId, req.session.userId!, puntuacion);
+
+  res.json({ message: "Valoración actualizada correctamente" });
 }

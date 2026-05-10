@@ -13,6 +13,9 @@ import { getPlan } from "@/app/services/planes";
 import { notFound } from "next/navigation";
 import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
 import ChatPlan from "@/app/components/features/chat/ChatPlan";
+import VotarPlan from "@/app/components/features/valoraciones/Valoracion";
+
+export const dynamic = 'force-dynamic';
 
 type EstadoPlan = "Próximo" | "Lleno" | "Pasado";
 
@@ -108,9 +111,26 @@ const PlanDetailPage = async ({ params }: Props) => {
         {estadoConfig.mostrarCountdown ? (
           <Countdown targetDate={plan.fecha} />
         ) : (
-          <div className="border-2 rounded-md px-8 py-6 text-center font-(family-name:--font-bagel-fat-one) text-2xl text-neutral">
-            {estadoConfig.mensaje}
-          </div>
+          <div className="flex flex-col md:flex-row items-center gap-6 bg-base-200 p-8 rounded-2xl border-2 border-dashed border-neutral/20 w-full max-w-4xl">
+      
+      {/* Mensaje de estado */}
+      <div className="flex-1 text-center md:text-left">
+        <h3 className="font-(family-name:--font-bagel-fat-one) text-3xl text-neutral">
+          {estadoConfig.mensaje}
+        </h3>
+        <p className="opacity-60 text-sm mt-1">Esperamos que hayas disfrutado la experiencia.</p>
+      </div>
+
+      {/* Votación: Solo para participantes/creadores una vez terminado */}
+      {rolActual === "participante" && (
+        <div className="shrink-0 bg-white p-6 rounded-xl shadow-sm border border-neutral/10">
+          <VotarPlan 
+            planId={plan.id} 
+            votoInicial={plan.mi_voto ? Number(plan.mi_voto) : 0} 
+          />
+        </div>
+      )}
+    </div>
         )}
       </section>
 

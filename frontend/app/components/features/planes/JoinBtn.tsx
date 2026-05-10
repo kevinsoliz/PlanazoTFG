@@ -2,12 +2,12 @@
 
 import { unirseAPlan } from "@/app/actions/planes";
 import { useState } from "react";
+import { useToast } from "@/app/context/ToastContext"; 
 
 const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
-    null,
-  );
+  const { showToast } = useToast(); 
+  const [toast, setgitToast]  = useState<{ mensaje: string; tipo: string; } | null>(null,);
 
   const handleClick = async () => {
     setLoading(true);
@@ -15,13 +15,12 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
     setLoading(false);
 
     if (resultado?.error) {
-      setToast({ mensaje: resultado.error, tipo: "error" });
-      setTimeout(() => setToast(null), 2000);
+      showToast(resultado.error, "error");
     } else {
-      setToast({ mensaje: "Te has unido al plan!", tipo: "success" });
-      setTimeout(() => setToast(null), 2000);
+      showToast("Te has unido al plan correctamente", "success");
     }
   };
+
   return (
     <>
       {toast && (

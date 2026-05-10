@@ -122,16 +122,19 @@ export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
   const resultado = await pool.query(
     `SELECT planes.*,
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        -- Añadimos la media y tu voto aquí:
+        (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
+        (SELECT puntuacion FROM valoraciones WHERE plan_id = planes.id AND usuario_id = $1) AS mi_voto,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url
-        FROM planes
-        JOIN plan_participants ON plan_participants.plan_id = planes.id
-        JOIN users ON planes.creator_id = users.id
-        JOIN perfiles ON perfiles.user_id = users.id
-        WHERE plan_participants.user_id = $1
-        AND planes.creator_id != $1
-        ORDER BY planes.fecha ASC`,
+     FROM planes
+     JOIN plan_participants ON plan_participants.plan_id = planes.id
+     JOIN users ON planes.creator_id = users.id
+     JOIN perfiles ON perfiles.user_id = users.id
+     WHERE plan_participants.user_id = $1
+     AND planes.creator_id != $1
+     ORDER BY planes.fecha ASC`,
     [userId],
   );
   return resultado.rows;
@@ -152,10 +155,12 @@ type PlanDetalle = {
   plazas_disponibles: number;
 };
 
-export async function obtenerDetalle(planId: number): Promise<PlanDetalle> {
+export async function obtenerDetalle(planId: number, userId?: number): Promise<PlanDetalle> {
   const plan = await pool.query(
     `SELECT planes.*,
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
+        (SELECT puntuacion FROM valoraciones WHERE plan_id = planes.id AND usuario_id = $2) AS mi_voto,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url,
@@ -164,7 +169,7 @@ export async function obtenerDetalle(planId: number): Promise<PlanDetalle> {
         JOIN users ON planes.creator_id = users.id
         JOIN perfiles ON perfiles.user_id = users.id
         WHERE planes.id = $1`,
-    [planId],
+    [planId, userId || null],
   );
 
   if (plan.rows.length === 0) {
@@ -332,4 +337,30 @@ export async function actualizar(
   );
 
   return resultado.rows[0];
+}
+
+export async function valorar(planId: number, userId: number, puntuacion: number): Promise<void> {
+ const plan = await pool.query("SELECT creator_id FROM planes WHERE id = $1", [planId]);
+
+ if (plan.rows.length > 0 && plan.rows[0].creator_id === userId) {
+  throw new AppError(403, "No puedes valorar tu propio plan.")
+ }
+
+ const participacion = await pool.query(
+    "SELECT 1 FROM plan_participants WHERE plan_id = $1 AND user_id = $2",
+    [planId, userId]
+  );
+
+  if (participacion.rows.length === 0) {
+    throw new AppError(403, "Solo los participantes pueden valorar este plan.");
+  }
+
+
+  await pool.query(
+    `INSERT INTO valoraciones (plan_id, usuario_id, puntuacion) 
+     VALUES ($1, $2, $3)
+     ON CONFLICT (plan_id, usuario_id) 
+     DO UPDATE SET puntuacion = EXCLUDED.puntuacion`,
+    [planId, userId, puntuacion]
+  );
 }

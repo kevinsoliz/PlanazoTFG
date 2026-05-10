@@ -44,6 +44,12 @@ router.delete("/:id/join", requireAuth, planesController.salir);
 // DELETE /api/planes/:id -> borrar plan (solo creador)
 router.delete("/:id", requireAuth, planesController.borrar);
 
+// POST /api/planes/:id/rate -> valorar plan
+router.post("/:id/rate", requireAuth, planesController.valorar);
+
+// Esta debe ir DESPUÉS de /rate para que no haya conflictos
+router.get("/:id", requireAuth, planesController.obtenerDetalle);
+
 // PUT /api/planes/:id -> actualizar plan (solo creador)
 router.put(
   "/:id",
@@ -53,3 +59,5 @@ router.put(
 );
 
 export default router;
+
+

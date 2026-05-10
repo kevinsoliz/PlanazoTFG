@@ -5,17 +5,13 @@ import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
+import MediaPlan from "@/app/components/features/valoraciones/media-plan"; 
 import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
-import { fetchServer } from "@/app/lib/api-server"; // Función para obtener datos del usuario 
-import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
-
-// Obtener el nombre de usuario para el chat
-  const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
-  const userName = response.data?.user?.nombre || "Usuario";  // Fallback en caso de que no se obtenga el nombre
+  const ahora = new Date();
 
   return (
     <div className="flex flex-col gap-9">
@@ -36,15 +32,35 @@ const MisPlanes = async () => {
             </h2>
             <CounterBadge value={creados.length} accent="#F87A36" />
           </header>
-          {creados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
-              <DeleteBtn plan_id={plan.id} />
-              <EditBtn plan={plan} />
-              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
-            </PlanCard>
-          ))}
+          {creados.map((plan) => {
+            const planTerminado = new Date(plan.fecha) < ahora; 
+
+            return (
+              <PlanCard key={plan.id} plan={plan}>
+                <div className="relative w-full h-full">
+                  {planTerminado && (
+                    <div className="absolute -top-16 right-0"> 
+                      <MediaPlan notaMedia={plan.nota_media ? Number(plan.nota_media) : 0} />
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center w-full mt-4">
+                    <div className="flex gap-2">
+                      <DeleteBtn plan_id={plan.id} />
+                      <EditBtn plan={plan} />
+                    </div>
+                    {planTerminado && (
+                      <span className="text-xs italic opacity-50">Plan finalizado</span>
+                    )}
+                  </div>
+                </div>
+              </PlanCard>
+            );
+          })}
         </section>
+
         <div className="divider divider-horizontal"></div>
+
         <section className="flex-1 flex flex-col gap-4">
           <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3 lg:sticky lg:top-56 lg:z-10 lg:backdrop-blur-md lg:bg-base-100/40">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
@@ -52,12 +68,30 @@ const MisPlanes = async () => {
             </h2>
             <CounterBadge value={apuntados.length} accent="#FCCE09" />
           </header>
-          {apuntados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
-              <AbandonarBtn plan_id={plan.id} />
-              <ChatModalBtn planId={plan.id} userName={userName} planTitulo={plan.titulo} /> {/* Botón de chat */}
-            </PlanCard>
-          ))}
+          
+          {apuntados.map((plan) => {
+            const planTerminado = new Date(plan.fecha) < ahora;
+
+            return (
+              <PlanCard key={plan.id} plan={plan}>
+                <div className="relative w-full h-full">
+                  {planTerminado && (
+                    <div className="absolute -top-16 right-0"> 
+                      <MediaPlan notaMedia={plan.nota_media ? Number(plan.nota_media) : 0} />
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center w-full mt-4">
+                    {planTerminado ? (
+                      <span className="text-xs italic opacity-50 ml-auto">Plan finalizado</span>
+                    ) : (
+                      <AbandonarBtn plan_id={plan.id} />
+                    )}
+                  </div>
+                </div>
+              </PlanCard>
+            );
+          })}
         </section>
       </div>
     </div>

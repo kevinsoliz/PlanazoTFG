@@ -15,15 +15,15 @@ export async function unirseAPlan(planId: number) {
     return { ok: true };
 }
 export async function abandonarPlan(planId: number) {
-
-    const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE"});
-
+    const res = await fetchServer(`/api/planes/${planId}/join`, { method: "DELETE" });
+    
     if (!res.ok) {
-        return { error: res.data?.error ?? "Error al abandonar el plan"}
+        return { error: res.data?.error ?? "Error al abandonar el plan" }
     }
 
+    revalidatePath("/home");
     revalidatePath("/mis-planes");
-
+    
     return { ok: true };
 }
 
@@ -62,6 +62,23 @@ export async function editarPlan(planId: number, datos: PlanInput) {
 
     if (!res.ok) return {error: res.data?.error ?? "Error al editar el plan"};
 
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+
+    return { ok: true };
+}
+
+export async function valorarPlan(planId: number, puntuacion: number) {
+    const res = await fetchServer(`/api/planes/${planId}/rate`, {
+        method: "POST",
+        body: { puntuacion }
+    });
+
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al valorar el plan" };
+    }
+
+    revalidatePath(`/home/${planId}`);
     revalidatePath("/home");
     revalidatePath("/mis-planes");
 
