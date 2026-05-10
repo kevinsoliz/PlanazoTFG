@@ -67,7 +67,7 @@ export async function obtenerDetalle(req: Request, res: Response) {
     throw new AppError(400, "ID de plan inválido");
   }
 
-  const detalle = await planesService.obtenerDetalle(planId);
+  const detalle = await planesService.obtenerDetalle(planId, req.session.userId);
 
   // Esparcimos el detalle: { plan, participantes, plazas_disponibles }.
   res.json(detalle);

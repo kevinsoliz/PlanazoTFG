@@ -78,8 +78,9 @@ export async function valorarPlan(planId: number, puntuacion: number) {
         return { error: res.data?.error ?? "Error al valorar el plan" };
     }
 
+    revalidatePath(`/home/${planId}`);
     revalidatePath("/home");
-    revalidatePath("/apuntado");
+    revalidatePath("/mis-planes");
 
     return { ok: true };
 }

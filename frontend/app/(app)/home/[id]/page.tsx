@@ -15,6 +15,8 @@ import { FiCalendar, FiMapPin, FiUsers } from "react-icons/fi";
 import ChatPlan from "@/app/components/features/chat/ChatPlan";
 import VotarPlan from "@/app/components/features/valoraciones/Valoracion";
 
+export const dynamic = 'force-dynamic';
+
 type EstadoPlan = "Próximo" | "Lleno" | "Pasado";
 
 const ESTADOS = {
@@ -120,7 +122,7 @@ const PlanDetailPage = async ({ params }: Props) => {
       </div>
 
       {/* Votación: Solo para participantes/creadores una vez terminado */}
-      {rolActual !== "no-participante" && (
+      {rolActual === "participante" && (
         <div className="shrink-0 bg-white p-6 rounded-xl shadow-sm border border-neutral/10">
           <VotarPlan 
             planId={plan.id} 

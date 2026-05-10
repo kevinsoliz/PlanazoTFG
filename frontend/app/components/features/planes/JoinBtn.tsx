@@ -7,7 +7,7 @@ import { useToast } from "@/app/context/ToastContext";
 const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast(); 
-  const [toast, setToast]  = useState<{ mensaje: string; tipo: string; } | null>(null,);
+  const [toast, setgitToast]  = useState<{ mensaje: string; tipo: string; } | null>(null,);
 
   const handleClick = async () => {
     setLoading(true);
