@@ -5,6 +5,7 @@ import { CATEGORIAS } from "../../../constants/categorias";
 import { ReactNode } from "react";
 import { FiCalendar, FiMapPin } from "react-icons/fi";
 import DetalleBtn from "./DetalleBtn";
+import MediaPlan from "../valoraciones/media-plan";
 
 interface Props {
   plan: Plan;
@@ -14,6 +15,7 @@ interface Props {
 const PlanCard = ({ plan, children }: Props) => {
 
     const dateObj = new Date(plan.fecha + "Z");
+    const planTerminado = dateObj < new Date();
 
     const fechaFormateada = dateObj.toLocaleDateString("es-ES", {
         weekday: "short",
@@ -35,13 +37,17 @@ const PlanCard = ({ plan, children }: Props) => {
 
       <BaseCard boxShadow="3px 3px 0px"bgColor="#ffff" className="max-w-85">
         <div className="card-body">
-          <UsuarioMini
-            userId={plan.creator_id}
-            nombre={plan.creador_nombre}
-            username={plan.creador_username}
-            avatar_url={plan.creador_avatar_url}
-
-          />
+          <div className="flex justify-between items-start gap-2">
+            <UsuarioMini
+              userId={plan.creator_id}
+              nombre={plan.creador_nombre}
+              username={plan.creador_username}
+              avatar_url={plan.creador_avatar_url}
+            />
+            {planTerminado && (
+              <MediaPlan notaMedia={plan.nota_media ? Number(plan.nota_media) : 0} />
+            )}
+          </div>
           <h2 className="card-title line-clamp-2">{plan.titulo}</h2>
           <p className="text-sm text-base-content/70 wrap-break-word line-clamp-2">{plan.descripcion}</p>
           <div className="flex flex-wrap gap-2 mt-2">
