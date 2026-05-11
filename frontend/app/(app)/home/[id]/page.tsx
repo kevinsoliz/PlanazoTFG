@@ -111,20 +111,20 @@ const PlanDetailPage = async ({ params }: Props) => {
         {estadoConfig.mostrarCountdown ? (
           <Countdown targetDate={plan.fecha} />
         ) : (
-          <div className="flex flex-col md:flex-row items-center gap-6 bg-base-200 p-8 rounded-2xl border-2 border-dashed border-neutral/20 w-full max-w-4xl">
+          <div className="flex flex-col md:flex-row items-center gap-6 bg-base-200 p-4 rounded-md border-2 border-dashed border-neutral/20 w-full">
             <div className="flex-1 text-center md:text-left">
-              <h3 className="font-(family-name:--font-bagel-fat-one) text-3xl text-neutral">
+              <h3 className="text-3xl text-neutral opacity-60">
                 {estadoConfig.mensaje}
               </h3>
               <p className="opacity-60 text-sm mt-1">Esperamos que hayas disfrutado la experiencia.</p>
             </div>
             {rolActual === "participante" && (
-              <div className="shrink-0 bg-white p-6 rounded-xl shadow-sm border border-neutral/10">
+             
                 <VotarPlan
                   planId={plan.id}
                   votoInicial={plan.mi_voto ? Number(plan.mi_voto) : 0}
                 />
-              </div>
+            
             )}
           </div>
         )}

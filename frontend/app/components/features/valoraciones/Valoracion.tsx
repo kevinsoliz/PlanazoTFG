@@ -39,13 +39,13 @@ export default function VotarPlan({ planId, votoInicial }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-3 p-5 bg-base-100 rounded-2xl border border-base-300 shadow-sm relative w-full max-w-xs">
-      <div className="flex flex-col">
+    <div className="flex flex-col  p-4 bg-base-100 rounded-md border border-base-300 shadow-sm relative ">
+      <div className="flex flex-col place-items-center">
         <span className="text-sm font-bold uppercase opacity-60">Tu valoración</span>
         <span className="text-2xl font-black">{rating} estrellas</span>
       </div>
 
-      <div className="rating rating-lg rating-half mt-2">
+      <div className="rating rating-lg rating-half mt-2 self-center">
         <input 
           type="radio" 
           name={`rating-${planId}`} 
