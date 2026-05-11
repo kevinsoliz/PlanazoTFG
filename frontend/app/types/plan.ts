@@ -21,7 +21,9 @@ export interface Plan {
     creador_nombre: string,
     creador_username: string,
     creador_avatar_url: string | null,
-    creador_descripcion?: string | null
+    creador_descripcion?: string | null,
+    mi_voto?: number | string | null,
+    nota_media?: number | string | null,
 }
 
 // Datos que se mandan al backend para crear (POST) o editar (PUT) un plan.

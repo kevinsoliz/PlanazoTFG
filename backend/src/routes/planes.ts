@@ -44,6 +44,9 @@ router.delete("/:id/join", requireAuth, planesController.salir);
 // DELETE /api/planes/:id -> borrar plan (solo creador)
 router.delete("/:id", requireAuth, planesController.borrar);
 
+// POST /api/planes/:id/rate -> valorar plan (solo participantes)
+router.post("/:id/rate", requireAuth, planesController.valorar);
+
 // PUT /api/planes/:id -> actualizar plan (solo creador)
 router.put(
   "/:id",

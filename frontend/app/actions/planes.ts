@@ -88,6 +88,27 @@ export async function crearPlan(datos: PlanInput) {
     return { ok: true };
 }
 
+/* Envía la puntuación que el usuario ha asignado a un plan (entre 0.5 y 5.0, en pasos de 0.5).
+   Solo los participantes pueden valorar, no el creador (el backend lo comprueba).
+   Tras éxito invalidamos /home, /mis-planes y la página de detalle del plan
+   para que tanto la nota_media como mi_voto se refresquen donde se muestren. */
+export async function valorarPlan(planId: number, puntuacion: number) {
+    const res = await fetchServer(`/api/planes/${planId}/rate`, {
+        method: "POST",
+        body: { puntuacion }
+    });
+
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al valorar el plan" };
+    }
+
+    revalidatePath(`/home/${planId}`);
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+
+    return { ok: true };
+}
+
 /* Actualiza los datos de un plan existente identificado por su ID.
    Realiza una petición PUT con los nuevos datos y, si tiene éxito,
    invalida la caché de las rutas afectadas para mostrar la información actualizada. */
