@@ -6,15 +6,13 @@ interface Props {
 
 export default function MediaPlanBadge({ notaMedia }: Props) {
   return (
-    <div className="bg-blue-50 border border-blue-200 px-2 py-1.5 rounded-xl flex flex-col items-center min-w-60px">
-      <span className="text-[9px] font-black uppercase text-blue-600 leading-none mb-1">
-        Media
-      </span>
+    <div className="bg-base-100 border border-base-300 px-2 py-1.5 rounded-xl flex flex-col items-center min-w-60px">
+     
       <div className="flex items-center gap-1">
-        <span className="text-lg font-bold text-blue-800">
+        <span className="text-lg font-bold text-base-content">
           {notaMedia ? notaMedia.toFixed(1) : "0.0"}
         </span>
-        <span className="text-blue-500 text-xs">★</span>
+        <span className="text-yellow-400 text-lg">★</span>
       </div>
     </div>
   );
