@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS users (
   CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
-    user_name VARCHAR(100) NOT NULL,
-    plan_id INTEGER NOT NULL
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    plan_id INTEGER NOT NULL REFERENCES planes(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );

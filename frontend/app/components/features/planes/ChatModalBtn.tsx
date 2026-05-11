@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BsChatFill } from "react-icons/bs";
 import ChatPlan from "../chat/ChatPlan";
 
-export default function ChatModalBtn({ planId, userName, planTitulo }: { planId: number, userName: string, planTitulo: string }) {
+export default function ChatModalBtn({ planId, userName, userId, planTitulo }: { planId: number, userName: string, userId: number, planTitulo: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,7 +29,7 @@ export default function ChatModalBtn({ planId, userName, planTitulo }: { planId:
               >✕</button>
             </div>
             <div className="flex-1 flex flex-col bg-base-100 overflow-hidden">
-              <ChatPlan planId={planId} userName={userName} />
+              <ChatPlan planId={planId} userName={userName} userId={userId} canWrite={true} /> {/* En este modal, el usuario siempre puede escribir, ya que para abrirlo ya se ha comprobado que es participante. Si quieres ser más estricto, podrías pasar canWrite como prop desde el padre, pero en este caso lo dejamos siempre true. */}
             </div>
           </div>
           <div className="modal-backdrop" onClick={() => setIsOpen(false)}></div>
