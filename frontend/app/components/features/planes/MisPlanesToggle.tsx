@@ -6,17 +6,20 @@ import PlanCard from "./PlanCard";
 import DeleteBtn from "./DeleteBtn";
 import EditBtn from "./EditBtn";
 import AbandonarBtn from "./AbandonarBtn";
+import ChatModalBtn from "./ChatModalBtn";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 
 interface Props {
   creados: Plan[];
   apuntados: Plan[];
+  userName: string;
+  userId: number;
 }
 
 // Este componente solo se ve en la versión móvil
 // Controla el toggler con el state showCreados (los planes creados se muestran por defecto)
 
-const MisPlanesToggle = ({ creados, apuntados }: Props) => {
+const MisPlanesToggle = ({ creados, apuntados, userName, userId }: Props) => {
   const [showCreados, setShowCreados] = useState(true);
 
   return (
@@ -45,6 +48,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
             <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
+              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} />
             </PlanCard>
           ))}
         </section>
@@ -59,6 +63,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
               <AbandonarBtn plan_id={plan.id} />
+              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} />
             </PlanCard>
           ))}
         </section>
