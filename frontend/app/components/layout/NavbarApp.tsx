@@ -35,7 +35,7 @@ const NavbarApp = async () => {
                 <Link href="/mis-planes">Mis planes</Link>
               </li>
               <li>
-                <span className="opacity-50 pointer-events-none">Contacto</span>
+                <Link href="/soporte">Contacto</Link>
               </li>
             </ul>
           </div>
@@ -64,10 +64,10 @@ const NavbarApp = async () => {
               </Link>
             </li>
             <li>
-              <span className="opacity-50 pointer-events-none">
+              <Link href="/soporte">
                 <FiMail className="h-5 w-5" />
                 Contacto
-              </span>
+              </Link>
             </li>
           </ul>
         </div>

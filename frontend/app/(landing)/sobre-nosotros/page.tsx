@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-base-100 py-20 px-6">
+    <main className="min-h-screen bg-primary text-primary-content py-20 px-6">
 
       <div className="max-w-7xl mx-auto flex flex-col gap-20">
 
@@ -13,7 +13,7 @@ export default function AboutPage() {
             Sobre Planazo
           </h1>
 
-          <p className="text-lg text-base-content/70 max-w-3xl mx-auto">
+          <p className="text-lg opacity-80 max-w-3xl mx-auto">
             Planazo nace con la idea de ayudar a las personas a descubrir
             actividades, compartir experiencias y conectar con gente con
             intereses similares de una forma sencilla y cercana.
@@ -27,7 +27,7 @@ export default function AboutPage() {
               Historia del proyecto
             </h2>
 
-            <p className="text-base-content/80 leading-relaxed text-lg">
+            <p className="opacity-90 leading-relaxed text-lg">
               Planazo surgió como una idea dentro del desarrollo
               de nuestro Trabajo de Fin de Grado. Detectamos que muchas personas
               quieren conocer gente nueva o realizar actividades diferentes,
@@ -36,7 +36,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <BaseCard >
+            <BaseCard textColor="#ffffff">
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   Cómo nació
@@ -49,7 +49,7 @@ export default function AboutPage() {
               </div>
             </BaseCard>
 
-            <BaseCard >
+            <BaseCard textColor="#ffffff">
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   El problema
@@ -62,7 +62,7 @@ export default function AboutPage() {
               </div>
             </BaseCard>
 
-            <BaseCard >
+            <BaseCard textColor="#ffffff">
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   Evolución
@@ -86,7 +86,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             {/* Kevin */}
-            <BaseCard>
+            <BaseCard textColor="#ffffff">
               <div className="card-body items-center text-center">
                 <div className="avatar">
                   <div className="w-20 rounded-full">
@@ -102,21 +102,16 @@ export default function AboutPage() {
                   Full Stack Developer
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2">
-                  <div className="badge" style={{ backgroundColor: "#928EF5", color: "white" }}>Frontend</div>
-                  <div className="badge" style={{ backgroundColor: "#FCD665" }}>Backend</div>
-                  <div className="badge" style={{ backgroundColor: "#47CEBA" }}>UI/UX</div>
-                </div>
-
                 <p className="text-sm opacity-70">
-                  Participó en distintas áreas del proyecto, colaborando tanto en frontend
-                  como backend y diseño general de la aplicación.
+                  Desarrollé el MVP completo de la plataforma, desde el modelo
+                  de datos hasta la interfaz, sentando la arquitectura sobre la
+                  que el resto del equipo construyó sus funcionalidades.
                 </p>
               </div>
             </BaseCard>
 
             {/* Sergio */}
-            <BaseCard>
+            <BaseCard textColor="#ffffff">
               <div className="card-body items-center text-center">
                 <div className="avatar">
                   <div className="w-20 rounded-full">
@@ -132,21 +127,16 @@ export default function AboutPage() {
                   Full Stack Developer
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2">
-                  <div className="badge" style={{ backgroundColor: "#928EF5", color: "white" }}>Node.js</div>
-                  <div className="badge" style={{ backgroundColor: "#FCD665" }}>React</div>
-                  <div className="badge" style={{ backgroundColor: "#47CEBA" }}>TypeScript</div>
-                </div>
-
                 <p className="text-sm opacity-70">
-                  Colaboró en parte del desarrollo de la plataforma, trabajando en múltiples
-                  partes del proyecto.
+                  Implementé el sistema de chat entre los participantes de un
+                  plan, permitiendo coordinar los detalles del encuentro antes
+                  de la actividad.
                 </p>
               </div>
             </BaseCard>
 
             {/* Thomas */}
-            <BaseCard>
+            <BaseCard textColor="#ffffff">
               <div className="card-body items-center text-center">
                 <div className="avatar">
                   <div className="w-20 rounded-full">
@@ -162,21 +152,16 @@ export default function AboutPage() {
                   Full Stack Developer
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2">
-                  <div className="badge" style={{ backgroundColor: "#928EF5", color: "white" }}>Node.js</div>
-                  <div className="badge" style={{ backgroundColor: "#FCD665" }}>React</div>
-                  <div className="badge" style={{ backgroundColor: "#47CEBA" }}>TypeScript</div>
-                </div>
-
                 <p className="text-sm opacity-70">
-                  Participó en distintas tareas técnicas del proyecto, ayudando en el
-                  desarrollo de la aplicación.
+                  Desarrollé el sistema de valoraciones, que permite a los
+                  participantes puntuarse entre sí tras un plan y refleja la
+                  reputación de cada usuario en su perfil.
                 </p>
               </div>
             </BaseCard>
 
             {/* Jaime */}
-            <BaseCard>
+            <BaseCard textColor="#ffffff">
               <div className="card-body items-center text-center">
                 <div className="avatar">
                   <div className="w-20 rounded-full">
@@ -192,15 +177,10 @@ export default function AboutPage() {
                   Frontend Developer
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2">
-                  <div className="badge" style={{ backgroundColor: "#928EF5", color: "white" }}>React</div>
-                  <div className="badge" style={{ backgroundColor: "#FCD665" }}>Next.js</div>
-                  <div className="badge" style={{ backgroundColor: "#47CEBA" }}>Tailwind</div>
-                </div>
-
                 <p className="text-sm opacity-70">
-                  Colaboró en el desarrollo frontend y de la experiencia visual
-                  de la aplicación.
+                  Implementé las vistas informativas del proyecto: las secciones
+                  de características, sobre nosotros y contacto, que acompañan
+                  a la página de inicio.
                 </p>
               </div>
             </BaseCard>
@@ -216,14 +196,14 @@ export default function AboutPage() {
                 Nuestra filosofía
               </h2>
 
-              <p className="text-lg leading-relaxed text-base-content/80">
+              <p className="text-lg leading-relaxed opacity-90">
                 Creemos que la tecnología debe servir para acercar a las personas,
                 no para alejarlas. Planazo busca unir conexiones reales,
                 experiencias auténticas y momentos compartidos fuera de la rutina
                 digital.
               </p>
 
-              <p className="text-lg leading-relaxed text-base-content/80">
+              <p className="text-lg leading-relaxed opacity-90">
                 Nuestro objetivo es ayudar a reducir el aislamiento social y
                 facilitar que cualquier persona pueda encontrar actividades,
                 amistades y experiencias que realmente encajen con sus intereses.
