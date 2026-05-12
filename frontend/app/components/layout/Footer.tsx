@@ -5,8 +5,8 @@ const Footer = () => {
     <footer className="footer footer-horizontal footer-center bg-neutral text-[#E0604D] p-8 gap-3">
        {/* Links */}
       <nav className="grid grid-flow-col gap-4 font-bold text-lg">
-        <span className="opacity-50 pointer-events-none">About</span>
-        <span className="opacity-50 pointer-events-none">Contacto</span>
+        <Link href="/sobre-nosotros" className="link link-hover">Sobre nosotros</Link>
+        <Link href="/contacto" className="link link-hover">Contacto</Link>
         <Link href="/planes" className="link link-hover">Planes</Link>
       </nav>
       {/* Logo */}
@@ -15,8 +15,6 @@ const Footer = () => {
           Planazo
         </span>
       </aside>
-
-     
 
       {/* Copyright */}
       <aside>
