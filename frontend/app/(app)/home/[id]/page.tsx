@@ -221,7 +221,7 @@ const PlanDetailPage = async ({ params }: Props) => {
             Chat del plan
           </h3>
         </header>
-        <div className="h-125 flex flex-col bg-base-100">
+        <div className="flex flex-col min-h-0 bg-base-100">
            <ChatPlan planId={plan.id} userName={userActual? userActual.nombre : ""} userId={userActual?.id || 0} canWrite={puedeEscribir} /> {/* Pasamos el userId para que el chat pueda identificar los mensajes del usuario actual y mostrar un estilo diferente, además de para la autorización de envío de mensajes */}
         </div>
       </section>
