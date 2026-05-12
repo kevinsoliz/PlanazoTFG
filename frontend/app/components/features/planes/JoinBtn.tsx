@@ -10,12 +10,8 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   );
 
   const handleClick = async () => {
-
     setLoading(true);
-    // debugger;
-    console.log('[CLIENT] voy a llamar a la server action')
     const resultado = await unirseAPlan(plan_id);
-    // debugger;
     setLoading(false);
 
     if (resultado?.error) {
@@ -37,7 +33,7 @@ const JoinBtn = ({ plan_id }: { plan_id: number }) => {
       )}
       <button
         onClick={handleClick}
-        className="btn btn-primary btn-outline btn-sm"
+        className="btn btn-primary btn-outline  btn-xs"
       >
         {loading ? "Uniéndome..." : "Unirme"}
       </button>

@@ -3,7 +3,7 @@ import FeatureCard from "./FeatureCard";
 const FeaturesSection = () => {
   return (
     <section className="py-20 bg-base-100">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col gap-8">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col gap-8">
         <h2 className="text-4xl font-bold text-center">
           ¿Qué puedes hacer en Planazo?
         </h2>
@@ -13,6 +13,7 @@ const FeaturesSection = () => {
             descripcion="Descubre planes y personas según tus intereses. Menos buscar, más disfrutar."
             bgColor="#928EF5"
             imagen="/images/landing/amigo1.png"
+            invertido
           />
 
           <FeatureCard

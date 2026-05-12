@@ -8,14 +8,21 @@ NO hay lógica aquí.
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth";
 import { validate } from "../middleware/validate";
+import { registroLimiter } from "../middleware/rateLimit";
 import { registroSchema, loginSchema } from "../schemas/auth.schema";
 import * as authController from "../controllers/auth.controller";
 
 const router = Router();
 
 // POST /api/auth/registro -> crear cuenta y abrir sesión
-// Cadena: validate -> handler. Si el body no cumple, errorHandler responde 400.
-router.post("/registro", validate(registroSchema), authController.registrar);
+// Cadena: rateLimit -> validate -> handler. El limiter rechaza al bot
+// antes de gastar CPU validando el body o tocando la base de datos.
+router.post(
+  "/registro",
+  registroLimiter,
+  validate(registroSchema),
+  authController.registrar
+);
 
 // POST /api/auth/login -> abrir sesión
 router.post("/login", validate(loginSchema), authController.login);

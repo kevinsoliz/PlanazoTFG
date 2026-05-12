@@ -51,6 +51,17 @@ CREATE TABLE IF NOT EXISTS users (
   CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
-    user_name VARCHAR(100) NOT NULL,
-    plan_id INTEGER NOT NULL
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    plan_id INTEGER NOT NULL REFERENCES planes(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+
+  -- Tabla de valoraciones (puntuacion entre 0.5 y 5.0, en pasos de 0.5):
+  CREATE TABLE IF NOT EXISTS valoraciones (
+    id SERIAL PRIMARY KEY,
+    plan_id INTEGER NOT NULL REFERENCES planes(id) ON DELETE CASCADE,
+    usuario_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    puntuacion NUMERIC(2,1) NOT NULL CHECK (puntuacion >= 0.5 AND puntuacion <= 5.0 AND (puntuacion * 2) % 1 = 0),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(plan_id, usuario_id)
   );

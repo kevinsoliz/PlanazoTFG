@@ -18,12 +18,13 @@ import cors from "cors";                              // Permitir peticiones des
 import session from "express-session";                // Gestión de sesiones HTTP
 import connectPgSimple from "connect-pg-simple";      // Almacena sesiones en PostgreSQL
 import pool from "./db";                              // Conexión a la base de datos
+import morgan from "morgan";
 
 // IMPORTES - Rutas API
 import authRoutes from "./routes/auth";               // Rutas de login/registro
 import perfilRoutes from "./routes/perfiles";         // Rutas de perfiles de usuario
 import planRoutes from "./routes/planes";             // Rutas de planes
-import { errorHandler } from "./middleware/errorHandler"; // Manejo central de errores
+import { errorHandler } from "./middleware/errorHandler"; // errorHandler: middleware central de errores. Se monta DESPUÉS de las routes.
 
 // CONFIGURACIÓN BÁSICA
 const app = express();                                // Crear aplicación Express
@@ -62,6 +63,13 @@ io.on('connection', (socket) => {
 // ============================================================================
 
 // Almacén de sesiones en PostgreSQL en lugar de memoria
+// Logger HTTP: registra cada petición (método, URL, status, tiempo).
+// 'combined' en producción añade IP y user-agent, útiles para auditoría;
+// 'dev' es corto y con colores para desarrollo local.
+app.use(
+  morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"),
+);
+
 const PGStore = connectPgSimple(session);
 
 // ============================================================================
@@ -90,7 +98,7 @@ app.use(express.json());
 // Permite que Express confíe en los headers del proxy.
 app.set("trust proxy", 1);
 
-// TODO: Agregar helmet (cabeceras de seguridad) y morgan (logs de peticiones)
+// TODO: Agregar helmet (cabeceras de seguridad)
 
 // MIDDLEWARE 4: Sesiones HTTP
 // Las sesiones almacenan información del usuario logueado en PostgreSQL.

@@ -1,12 +1,20 @@
 import Logo from "../ui/Logo";
+import Avatar from "../ui/Avatar";
 import LogoutBtn from "../features/auth/LogoutBtn";
 import Link from "next/link";
 import { FiPlus, FiMenu, FiCalendar, FiBookmark, FiMail } from "react-icons/fi";
+import { getPerfil } from "@/app/services/perfiles";
+import { getPlanesCreados, getPlanesApuntados } from "@/app/services/planes";
 
-const NavbarApp = () => {
+const NavbarApp = async () => {
+  const perfil = await getPerfil();
+  const creados = await getPlanesCreados();
+  const apuntados = await getPlanesApuntados();
+  const totalMisPlanes = creados.length + apuntados.length;
+
   return (
     <div className="navbar border-b border-neutral fixed top-0  z-50 shadow-md  backdrop-blur-md bg-base-100">
-      <div className="max-w-6xl mx-auto w-full flex">
+      <div className="max-w-7xl mx-auto w-full flex">
         <div className="navbar-start">
           <div className="dropdown">
             <div
@@ -27,7 +35,7 @@ const NavbarApp = () => {
                 <Link href="/mis-planes">Mis planes</Link>
               </li>
               <li>
-                <Link href="/contacto">Contacto</Link>
+                <span className="opacity-50 pointer-events-none">Contacto</span>
               </li>
             </ul>
           </div>
@@ -48,14 +56,18 @@ const NavbarApp = () => {
               <Link href="/mis-planes">
                 <FiBookmark className="h-5 w-5" />
                 Mis planes
-                <span className="badge badge-xs badge-error">3</span>
+                {totalMisPlanes > 0 && (
+                  <span className="badge badge-xs badge-error">
+                    {totalMisPlanes}
+                  </span>
+                )}
               </Link>
             </li>
             <li>
-              <Link href="/contacto">
+              <span className="opacity-50 pointer-events-none">
                 <FiMail className="h-5 w-5" />
                 Contacto
-              </Link>
+              </span>
             </li>
           </ul>
         </div>
@@ -74,12 +86,11 @@ const NavbarApp = () => {
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
-              </div>
+              <Avatar
+                nombre={perfil?.nombre ?? ""}
+                url={perfil?.avatar_url ?? null}
+                size="sm"
+              />
             </div>
             <ul
               tabIndex={-1}
@@ -87,12 +98,8 @@ const NavbarApp = () => {
             >
               <li>
                 <Link href="/perfil" className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                  Mi perfil
                 </Link>
-              </li>
-              <li>
-                <a>Settings</a>
               </li>
               <li>
                 <LogoutBtn />

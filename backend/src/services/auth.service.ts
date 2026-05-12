@@ -16,6 +16,12 @@ type AuthUser = {
   email: string;
 };
 
+// Texto de bienvenida que se guarda como descripción del perfil al registrarse.
+// Sirve también como pista visual: el usuario ve algo en su perfil y se le
+// invita a editarlo.
+const DESCRIPCION_POR_DEFECTO =
+  "¡Hola! Te damos la bienvenida a Planazo. Edita tu perfil para contar algo de ti.";
+
 // 1.Servicio de registro:
 
 // Registra un nuevo usuario en la BBDD.
@@ -73,8 +79,8 @@ export async function registrar(
 
   // 5. Insertar el perfil asociado al usuario
   await pool.query(
-    "INSERT INTO perfiles (user_id, nombre, username) VALUES ($1, $2, $3)",
-    [nuevo.rows[0].id, nombre, username],
+    "INSERT INTO perfiles (user_id, nombre, username, descripcion) VALUES ($1, $2, $3, $4)",
+    [nuevo.rows[0].id, nombre, username, DESCRIPCION_POR_DEFECTO],
   );
 
   return nuevo.rows[0];

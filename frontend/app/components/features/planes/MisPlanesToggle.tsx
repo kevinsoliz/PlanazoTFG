@@ -5,24 +5,27 @@ import type { Plan } from "@/app/types/plan";
 import PlanCard from "./PlanCard";
 import DeleteBtn from "./DeleteBtn";
 import EditBtn from "./EditBtn";
-import AnularBtn from "./AnularBtn";
+import AbandonarBtn from "./AbandonarBtn";
+import ChatModalBtn from "./ChatModalBtn";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 
 interface Props {
   creados: Plan[];
   apuntados: Plan[];
+  userName: string;
+  userId: number;
 }
 
 // Este componente solo se ve en la versión móvil
 // Controla el toggler con el state showCreados (los planes creados se muestran por defecto)
 
-const MisPlanesToggle = ({ creados, apuntados }: Props) => {
+const MisPlanesToggle = ({ creados, apuntados, userName, userId }: Props) => {
   const [showCreados, setShowCreados] = useState(true);
 
   return (
     <div className="flex flex-col gap-6">
       {/* toggler con sus labels */}
-      <div className="flex items-center justify-center gap-3 sticky top-50 z-5 bg-primary rounded-sm py-2">
+      <div className="flex items-center justify-center gap-3 bg-primary rounded-sm py-2">
         <span className="font-bold text-white">Apuntados</span>
         <input
           type="checkbox"
@@ -35,7 +38,7 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
 
       {showCreados ? (
         <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-62 z-5 backdrop-blur-md bg-base-100/40 mx-3">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Has creado
             </h2>
@@ -45,12 +48,13 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
             <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
+              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} />
             </PlanCard>
           ))}
         </section>
       ) : (
         <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 sticky top-62 z-5 backdrop-blur-md bg-base-100/40 mx-3">
+          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3">
             <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
               Te has apuntado a
             </h2>
@@ -58,7 +62,8 @@ const MisPlanesToggle = ({ creados, apuntados }: Props) => {
           </header>
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
-              <AnularBtn plan_id={plan.id} />
+              <AbandonarBtn plan_id={plan.id} />
+              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} />
             </PlanCard>
           ))}
         </section>

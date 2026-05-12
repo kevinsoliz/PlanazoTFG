@@ -12,8 +12,8 @@ import * as perfilesController from "../controllers/perfiles.controller";
 
 const router = Router();
 
-// GET /api/perfiles/:id -> ver perfil (público, no requiere auth)
-router.get("/perfiles/:id", perfilesController.obtener);
+// GET /api/perfiles/:id -> ver perfil (privado)
+router.get("/perfiles/:id", requireAuth, perfilesController.obtener);
 
 // PATCH /api/perfiles/:id -> editar perfil propio
 // Cadena: requireAuth -> validate(schema) -> handler.

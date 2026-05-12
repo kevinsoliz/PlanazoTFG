@@ -30,7 +30,7 @@ const Page = () => {
 
   return (
     <div className="p-6">
-      <MisPlanesToggle creados={creados} apuntados={apuntados} />
+      <MisPlanesToggle creados={creados} apuntados={apuntados} userName="Kevin" userId={1} />
     </div>
   );
 };
