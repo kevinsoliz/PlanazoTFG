@@ -215,7 +215,7 @@ const PlanDetailPage = async ({ params }: Props) => {
         </aside>
       </div>
 
-      <section className="rounded-md border-2 overflow-hidden shadow-md">
+      <section id="chat" className="rounded-md border-2 overflow-hidden shadow-md">
         <header className="px-4 py-3 bg-neutral text-[#E0604D]">
           <h3 className="font-(family-name:--font-bagel-fat-one) text-lg">
             Chat de {plan.titulo}

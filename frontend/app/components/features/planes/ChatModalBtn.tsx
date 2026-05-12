@@ -8,7 +8,7 @@ export default function ChatModalBtn({ planId, planTitulo }: { planId: number, u
 
   return (
     <button
-      onClick={() => router.push(`/home/${planId}`)}
+      onClick={() => router.push(`/home/${planId}#chat`)}
       className="btn btn-primary btn-xs"
       aria-label={`Abrir chat del plan ${planTitulo}`}
     >
