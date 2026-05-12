@@ -3,7 +3,7 @@ import BaseCard from "@/app/components/ui/BaseCard";
 export default function PlanesParaTiPage() {
   return (
     <main className="min-h-screen bg-base-100 py-20 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-14">
+      <div className="max-w-7xl mx-auto flex flex-col gap-14">
 
         {/* Hero */}
         <section className="flex flex-col gap-6">
