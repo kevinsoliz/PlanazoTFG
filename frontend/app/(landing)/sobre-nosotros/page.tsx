@@ -1,4 +1,6 @@
 import BaseCard from "@/app/components/ui/BaseCard";
+import Image from "next/image";
+
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-base-100 py-20 px-6">
@@ -86,9 +88,9 @@ export default function AboutPage() {
             {/* Kevin */}
             <BaseCard>
               <div className="card-body items-center text-center">
-                <div className="avatar placeholder">
-                  <div style={{ backgroundColor: "#928EF5" }} className="text-white rounded-full w-20">
-                    <span className="text-2xl">K</span>
+                <div className="avatar">
+                  <div className="w-20 rounded-full">
+                    <Image src="/images/avatars/avatar-kevin.png" alt="Kevin" width={80} height={80} />
                   </div>
                 </div>
 
@@ -116,9 +118,9 @@ export default function AboutPage() {
             {/* Sergio */}
             <BaseCard>
               <div className="card-body items-center text-center">
-                <div className="avatar placeholder">
-                  <div style={{ backgroundColor: "#FCD665" }} className="rounded-full w-20">
-                    <span className="text-2xl text-black">S</span>
+                <div className="avatar">
+                  <div className="w-20 rounded-full">
+                    <Image src="/images/avatars/avatar-8.png" alt="Sergio" width={80} height={80} />
                   </div>
                 </div>
 
@@ -146,9 +148,9 @@ export default function AboutPage() {
             {/* Thomas */}
             <BaseCard>
               <div className="card-body items-center text-center">
-                <div className="avatar placeholder">
-                  <div style={{ backgroundColor: "#47CEBA" }} className="rounded-full w-20">
-                    <span className="text-2xl text-black">T</span>
+                <div className="avatar">
+                  <div className="w-20 rounded-full">
+                    <Image src="/images/avatars/avatar-6.png" alt="Thomas" width={80} height={80} />
                   </div>
                 </div>
 
@@ -176,9 +178,9 @@ export default function AboutPage() {
             {/* Jaime */}
             <BaseCard>
               <div className="card-body items-center text-center">
-                <div className="avatar placeholder">
-                  <div style={{ backgroundColor: "#171718" }} className="rounded-full  w-20 text-white">
-                    <span className="text-2xl">J</span>
+                <div className="avatar">
+                  <div className="w-20 rounded-full">
+                    <Image src="/images/avatars/avatar-3.png" alt="Jaime" width={80} height={80} />
                   </div>
                 </div>
 
