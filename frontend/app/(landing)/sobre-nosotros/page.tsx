@@ -1,13 +1,7 @@
-import Link from "next/link";
+import BaseCard from "@/app/components/ui/BaseCard";
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-base-100 py-20 px-6">
-
-      <div className="max-w-6xl mx-auto mb-8">
-        <Link href="/" className="btn btn-outline">
-          ← Volver al inicio
-        </Link>
-      </div>
 
       <div className="max-w-6xl mx-auto flex flex-col gap-20">
 
@@ -40,11 +34,8 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-          <div
-            className="card text-dark rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-            style={{ backgroundColor: "#7e7af3" }}
-          >             
-            <div className="card-body">
+            <BaseCard bgColor="#7e7af3" className="rounded-2xl">
+              <div className="card-body">
                 <h3 className="card-title text-2xl">
                   Cómo nació
                 </h3>
@@ -54,12 +45,9 @@ export default function AboutPage() {
                   de organizar planes entre personas con intereses comunes.
                 </p>
               </div>
-            </div>
+            </BaseCard>
 
-            <div
-              className="card rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-              style={{ backgroundColor: "#FCD665" }}
-            >
+            <BaseCard bgColor="#FCD665" className="rounded-2xl">
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   El problema
@@ -70,12 +58,9 @@ export default function AboutPage() {
                   pero pocas fomentan experiencias reales fuera de la pantalla.
                 </p>
               </div>
-            </div>
+            </BaseCard>
 
-            <div
-              className="card rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-              style={{ backgroundColor: "#47CEBA" }}
-            >
+            <BaseCard bgColor="#47CEBA" className="rounded-2xl">
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   Evolución
@@ -86,7 +71,7 @@ export default function AboutPage() {
                   aplicación web moderna desarrollada con tecnologías actuales.
                 </p>
               </div>
-            </div>
+            </BaseCard>
           </div>
         </section>
 
@@ -99,9 +84,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             {/* Kevin */}
-            <div
-              className="card rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-            >
+            <BaseCard className="rounded-2xl">
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#928EF5" }} className="text-white rounded-full w-20">
@@ -128,12 +111,10 @@ export default function AboutPage() {
                   como backend y diseño general de la aplicación.
                 </p>
               </div>
-            </div>
+            </BaseCard>
 
             {/* Sergio */}
-            <div
-              className="card rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-            >
+            <BaseCard className="rounded-2xl">
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#FCD665" }} className="rounded-full w-20">
@@ -160,12 +141,10 @@ export default function AboutPage() {
                   partes del proyecto.
                 </p>
               </div>
-            </div>
+            </BaseCard>
 
             {/* Thomas */}
-            <div
-              className="card rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-            >
+            <BaseCard className="rounded-2xl">
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#47CEBA" }} className="rounded-full w-20">
@@ -192,12 +171,10 @@ export default function AboutPage() {
                   desarrollo de la aplicación.
                 </p>
               </div>
-            </div>
+            </BaseCard>
 
             {/* Jaime */}
-            <div
-              className="card rounded-2xl border border-black shadow-[10px_10px_0px_#111]"
-            >
+            <BaseCard className="rounded-2xl">
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#171718" }} className="rounded-full  w-20 text-white">
@@ -224,31 +201,33 @@ export default function AboutPage() {
                   de la aplicación.
                 </p>
               </div>
-            </div>
+            </BaseCard>
 
           </div>
         </section>
 
         {/* FILOSOFÍA */}
-        <section className="rounded-2xl border border-black shadow-[10px_10px_0px_#111]">
-          <div className="card-body flex flex-col gap-6">
-            <h2 className="text-4xl font-bold">
-              Nuestra filosofía
-            </h2>
+        <section>
+          <BaseCard className="rounded-2xl">
+            <div className="card-body flex flex-col gap-6">
+              <h2 className="text-4xl font-bold">
+                Nuestra filosofía
+              </h2>
 
-            <p className="text-lg leading-relaxed text-base-content/80">
-              Creemos que la tecnología debe servir para acercar a las personas,
-              no para alejarlas. Planazo busca unir conexiones reales,
-              experiencias auténticas y momentos compartidos fuera de la rutina
-              digital.
-            </p>
+              <p className="text-lg leading-relaxed text-base-content/80">
+                Creemos que la tecnología debe servir para acercar a las personas,
+                no para alejarlas. Planazo busca unir conexiones reales,
+                experiencias auténticas y momentos compartidos fuera de la rutina
+                digital.
+              </p>
 
-            <p className="text-lg leading-relaxed text-base-content/80">
-              Nuestro objetivo es ayudar a reducir el aislamiento social y
-              facilitar que cualquier persona pueda encontrar actividades,
-              amistades y experiencias que realmente encajen con sus intereses.
-            </p>
-          </div>
+              <p className="text-lg leading-relaxed text-base-content/80">
+                Nuestro objetivo es ayudar a reducir el aislamiento social y
+                facilitar que cualquier persona pueda encontrar actividades,
+                amistades y experiencias que realmente encajen con sus intereses.
+              </p>
+            </div>
+          </BaseCard>
         </section>
 
       </div>
