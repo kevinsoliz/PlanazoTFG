@@ -8,8 +8,8 @@ Este documento detalla todos los cambios realizados para mejorar el sistema de c
 - Comentarios detallados paso a paso en controladores
 
 ## Versiones
-- **v1.0**: Implementación inicial del chat con avatares y timestamps
-- **v1.1**: Restricción de escritura - solo participantes del plan pueden escribir
+- **v2.0**: Implementación inicial del chat con avatares y timestamps
+- **v2.1**: Restricción de escritura - solo participantes del plan pueden escribir
 
 ## Cambios por Categoría
 
@@ -223,6 +223,7 @@ Este documento detalla todos los cambios realizados para mejorar el sistema de c
 - **Fallido Seguro:** No expone detalles de error (no dice "no eres miembro").
 
 ## Próximos Pasos Sugeridos
+- Hacer que las salas de chat expiren un tiempo después de que haya finalizado el plan.
 - Implementar paginación para historial largo.
 - Agregar indicadores de "escribiendo...".
 - Soporte para mensajes multimedia.

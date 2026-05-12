@@ -40,7 +40,8 @@ Chat con Socket.IO para comunicación bidireccional, PostgreSQL para persistenci
 └─────────────────────────┘
 ```
 - En esta página hay un botón de chat para cada plan al que estás apuntado.
-- El botón abre un modal de chat cuando el plan está disponible.
+- El botón navega directamente a la página de detalle del plan (`/home/[id]`).
+- Esto proporciona mejor experiencia en móvil, URLs compartibles e historial de navegación natural.
 
 ### 2. Página de detalle del plan (`/home/[id]`)
 ```
@@ -95,7 +96,7 @@ frontend/
 │   ├── components/
 │   │   └── features/
 │   │       ├── planes/
-│   │       │   └── ChatModalBtn.tsx        ✅ Botón que abre modal (recibe userId)
+│   │       │   └── ChatModalBtn.tsx        ✅ Botón que navega a /home/[id]
 │   │       └── chat/
 │   │           └── ChatPlan.tsx            ✅ Componente del chat con DaisyUI
 │   ├── hooks/
@@ -124,19 +125,33 @@ backend/
 
 ## 🔌 Componentes Principales
 
-### `ChatModalBtn.tsx` - Botón que abre el modal
+### `ChatModalBtn.tsx` - Botón que navega a la página del plan
 ```tsx
 export default function ChatModalBtn({ planId, userName, userId, planTitulo }) {
-  // ... modal logic
-  <ChatPlan planId={planId} userName={userName} userId={userId} />
+  const router = useRouter();
+  
+  return (
+    <button
+      onClick={() => router.push(`/home/${planId}`)}
+      className="btn btn-primary btn-xs"
+      aria-label={`Abrir chat del plan ${planTitulo}`}
+    >
+      <BsChatFill className="size-4" />
+    </button>
+  );
 }
 ```
+
+**Cambios recientes:**
+- Ahora es un botón de navegación que dirige a `/home/[id]` en lugar de abrir un modal
+- Usa `next/navigation` useRouter para la navegación
+- Simplifica la experiencia del usuario en móvil evitando issues de viewport con el teclado
 
 ### `ChatPlan.tsx` - Componente principal del chat (DaisyUI)
 ```tsx
 export default function ChatPlan({ planId, userName, userId, canWrite }) {
   const { messages, sendMessage } = useChat(planId, userName, userId);
-  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const formatCreatedAt = (createdAt: string) => {
     return new Intl.DateTimeFormat('es-ES', {
@@ -150,8 +165,20 @@ export default function ChatPlan({ planId, userName, userId, canWrite }) {
     return `hsl(${hue}, 65%, 88%)`;
   };
 
-  const handleSubmit = (e) => {
+  const scrollToBottom = () => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!canWrite) return;
     const form = e.currentTarget;
     const input = form.elements.namedItem('message') as HTMLInputElement;
     if (input.value) {
@@ -160,14 +187,12 @@ export default function ChatPlan({ planId, userName, userId, canWrite }) {
     }
   };
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   return (
-    <div className="flex flex-col h-full">
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral/5">
+    <>
+      <div 
+        ref={messagesContainerRef} 
+        className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4 bg-neutral/5"
+      >
         {messages.map((m, i) => (
           <div key={i} className={`chat ${m.user_name === userName ? 'chat-end' : 'chat-start'}`}>
             <div className="chat-image avatar">
@@ -184,17 +209,25 @@ export default function ChatPlan({ planId, userName, userId, canWrite }) {
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Form */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-neutral/20 flex gap-2">
-        <input
-          name="message"
+      {!canWrite && (
+        <div className="px-4 py-3 text-sm text-neutral">
+          Solo los usuarios apuntados pueden escribir en este chat.
+        </div>
+      )}
+
+      <form 
+        onSubmit={handleSubmit} 
+        className="p-4 border-t border-neutral/20 flex gap-2 bg-base-100 shrink-0"
+      >
+        <input 
+          name="message" 
           disabled={!canWrite}
-          className="input input-bordered flex-1 rounded-full px-4"
+          className="input input-bordered flex-1 rounded-full px-4" 
           placeholder={canWrite ? "Escribe un mensaje..." : "Debes apuntarte para escribir"}
           autoComplete="off"
+          inputMode="text"
         />
         <button type="submit" disabled={!canWrite} className="btn btn-primary btn-circle bg-neutral disabled:opacity-50 disabled:cursor-not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -202,7 +235,7 @@ export default function ChatPlan({ planId, userName, userId, canWrite }) {
           </svg>
         </button>
       </form>
-    </div>
+    </>
   );
 }
 ```
@@ -286,7 +319,46 @@ export function useChat(planId: number, userName: string, userId: number) {
 
 ---
 
-## 🖥️ Backend - Socket.IO Handlers
+## � Optimización Móvil
+
+### Manejo del teclado virtual
+En móviles, la `ChatPlan` usa una estructura flex que:
+- `min-h-0` en el contenedor de mensajes previene overflow y permite que el teclado no oculte el input
+- `shrink-0` en el formulario evita que se comprima cuando el teclado aparece
+- `overflow-y-auto` independiente en mensajes permite scroll sin afectar el input
+- `inputMode="text"` en el input optimiza el tipo de teclado móvil
+
+### Por qué navegación en lugar de modal
+- **Mobile-first**: Navegar a página nueva evita conflictos de viewport con el teclado
+- **URLs compartibles**: Los usuarios pueden compartir el enlace del chat
+- **Historial**: El botón atrás funciona de forma natural
+- **Simpler**: Menos JavaScript, menos estado, mejor performance
+
+---
+
+## 🔮 Mejoras Futuras
+
+### Modal de chat (alternativa a navegación)
+En lugar de navegar a una página nueva, se podría implementar un modal que:
+- Abra directamente desde el botón chat sin cambiar de página
+- Mantenga la URL base (`/mis-planes` o donde sea que esté el botón)
+- Muestre el `ChatPlan` dentro de un modal DaisyUI
+
+**Consideraciones:**
+- Requeriría manejo especial del teclado móvil (visualViewport API)
+- Sería más complejo pero permitiría multi-tasking en desktop
+- Menos mobile-friendly que la navegación actual
+
+### Otras mejoras potenciales
+- Indicador de "escribiendo..." en tiempo real
+- Reacciones a mensajes (emojis)
+- Búsqueda y filtrado de mensajes históricos
+- Notificaciones push de nuevos mensajes
+- Archivos/imágenes en el chat
+
+---
+
+## �🖥️ Backend - Socket.IO Handlers
 
 ### `index.ts` - Setup principal
 ```ts
@@ -484,36 +556,31 @@ export async function getChatDB() {
 
 ### Envío de Mensaje
 ```
-1. Usuario escribe "Hola" y da click al botón
+1. Usuario escribe "Hola" y da click al botón enviar
    ↓
-2. handleSubmit() captura el evento
+2. handleSubmit() en ChatPlan captura el evento
    ↓
-3. sendMessage("Hola") del hook
+3. sendMessage("Hola") del hook useChat
    ↓
-4. socket.emit('chat_message', { message: "Hola", user: "Juan", planId: 123 })
+4. socket.emit('chat_message', msg, userName, planId)
    ↓
-5. Backend recibe en chat.controller.ts
+5. Backend recibe en chat.controller.ts en socket.on('chat_message')
    ↓
-6. Valida userId de socket.handshake.auth.userId
+6. Valida userId desde socket.handshake.auth.userId
    ↓
-7. Consulta perfil: SELECT avatar_url FROM perfiles WHERE user_id = ?
+7. Verifica que el usuario sea participante del plan
    ↓
-8. INSERT INTO messages (content, user_id, plan_id) VALUES ('Hola', userId, 123)
+8. Consulta perfil: SELECT avatar_url FROM perfiles WHERE user_id = ?
    ↓
-9. io.to('plan_123').emit('chat_message', {
-     id: ID,
-     content: 'Hola',
-     user_name: 'Juan',
-     user_id: userId,
-     avatar: 'url-avatar',
-     created_at: '2024-01-01T10:30:00Z'
-   })
+9. INSERT INTO messages (content, user_id, plan_id) VALUES ('Hola', userId, 123)
    ↓
-10. Frontend recibe → setMessages([...prev, mensajeCompleto])
+10. io.to('plan_123').emit('chat_message', msg, messageId, userName, avatar, createdAt, userId)
     ↓
-11. Render: aparece mensaje con avatar, color único, timestamp
+11. Frontend recibe en useChat hook → setMessages([...prev, mensajeCompleto])
     ↓
-12. scrollIntoView({ behavior: 'smooth' }) → scroll automático
+12. Render: aparece mensaje con avatar, color único, timestamp en ChatPlan
+    ↓
+13. scrollToBottom() → scroll automático al último mensaje
 ```
 
 ### Conexión Socket.IO
@@ -589,19 +656,20 @@ CREATE INDEX idx_messages_created_at ON messages(created_at);
    http://localhost:3000/mis-planes
    ```
 
-4. **Clickear botón chat**
-   - Se abre modal con `userId` del usuario actual
-   - `useChat` hook establece WebSocket con autenticación
+3. **Clickear botón chat**
+   - Navega a `/home/[id]` del plan
+   - Se carga la página con el componente `ChatPlan`
+   - `useChat` hook establece WebSocket con autenticación `userId`
    - Socket.IO emite `join_plan` con ID del plan
-   - Backend valida `userId` y carga mensajes históricos con avatares
+   - Backend valida `userId`, verifica participación y carga mensajes históricos con avatares y timestamps
 
-5. **Escribir mensaje**
-   - Input captura texto
+4. **Escribir mensaje**
+   - Solo usuarios apuntados pueden escribir (input habilitado)
    - Form submit → `sendMessage()`
    - Socket.IO emite mensaje estructurado a servidor
    - Servidor valida usuario, consulta avatar, guarda en BD
    - Servidor broadcast a todos en sala con datos completos
-   - Chat recibe y renderiza con DaisyUI, colores únicos, timestamps
+   - Frontend renderiza con avatar, color único y hora
 
 ---
 
