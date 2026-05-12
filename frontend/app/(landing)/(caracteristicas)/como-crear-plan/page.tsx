@@ -53,7 +53,7 @@ export default function CreaPlanPage() {
 
         {/* Consejos */}
         <section className="card bg-base-200 shadow-xl">
-          <BaseCard className="rounded-2xl">
+          <BaseCard>
             <div className="card-body">
               <h2 className="text-3xl font-bold mb-4">
                 Consejos para crear un buen plan

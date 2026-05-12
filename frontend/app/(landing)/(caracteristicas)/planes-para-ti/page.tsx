@@ -20,7 +20,7 @@ export default function PlanesParaTiPage() {
         {/* Ventajas */}
         <section className="grid md:grid-cols-3 gap-6">
 
-          <BaseCard bgColor="#928EF5" className="rounded-2xl">
+          <BaseCard bgColor="#928EF5">
             <div className="card-body">
               <h2 className="card-title text-2xl">Personalización</h2>
               <p>
@@ -29,7 +29,7 @@ export default function PlanesParaTiPage() {
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#FCD665" className="rounded-2xl">
+          <BaseCard bgColor="#FCD665">
             <div className="card-body">
               <h2 className="card-title text-2xl">Planes cercanos</h2>
               <p>
@@ -38,7 +38,7 @@ export default function PlanesParaTiPage() {
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#47CEBA" className="rounded-2xl">
+          <BaseCard bgColor="#47CEBA">
             <div className="card-body">
               <h2 className="card-title text-2xl">Experiencias reales</h2>
               <p>
@@ -51,7 +51,7 @@ export default function PlanesParaTiPage() {
 
         {/* Categorias */}
         <section className="card bg-base-200 shadow-xl">
-          <BaseCard className="rounded-2xl">
+          <BaseCard>
             <div className="card-body">
               <h2 className="text-3xl font-bold mb-4">
                 Categorías disponibles

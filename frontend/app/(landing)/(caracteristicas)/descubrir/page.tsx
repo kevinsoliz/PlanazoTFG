@@ -18,21 +18,21 @@ export default function DescubrePage() {
         {/* Filtros */}
         <section className="grid md:grid-cols-3 gap-6">
 
-          <BaseCard bgColor="#7e7af3" className="rounded-2xl">
+          <BaseCard bgColor="#7e7af3">
             <div className="card-body">
               <h2 className="card-title">Categorías</h2>
               <p>Filtra por deporte, cultura, ocio y más.</p>
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#FCD665" className="rounded-2xl">
+          <BaseCard bgColor="#FCD665">
             <div className="card-body">
               <h2 className="card-title">Ubicación</h2>
               <p>Encuentra planes cerca de tu zona.</p>
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#47CEBA" className="rounded-2xl">
+          <BaseCard bgColor="#47CEBA">
             <div className="card-body">
               <h2 className="card-title">Fecha</h2>
               <p>Busca actividades según el día disponible.</p>
@@ -43,7 +43,7 @@ export default function DescubrePage() {
 
         {/* Tags */}
         <section className="card bg-base-200 shadow-xl">
-          <BaseCard className="rounded-2xl">
+          <BaseCard>
             <div className="card-body">
               <h2 className="text-3xl font-bold mb-4">
                 Actividades populares

@@ -16,14 +16,14 @@ export default function ContactoPage() {
 
         {/* Tarjetas de contacto */}
         <section className="grid md:grid-cols-2 gap-6">
-          <BaseCard bgColor="#171718" textColor="#ff6b5a" className="rounded-2xl">
+          <BaseCard bgColor="#171718" textColor="#ff6b5a">
             <div className="card-body items-center text-center">
               <h2 className="card-title text-2xl">Email</h2>
               <p>hello.planazo@gmail.com</p>
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#7e7af3" className="rounded-2xl">
+          <BaseCard bgColor="#7e7af3">
             <div className="card-body items-center text-center text-white">
               <h2 className="card-title text-2xl">Ubicación</h2>
               <p>Murcia, España</p>

@@ -20,28 +20,28 @@ export default function UnetePage() {
         {/* Pasos */}
         <section className="grid md:grid-cols-4 gap-6">
 
-          <BaseCard bgColor="#7e7af3" className="rounded-2xl">
+          <BaseCard bgColor="#7e7af3">
             <div className="card-body items-center text-center">
               <h2 className="text-5xl font-bold">1</h2>
               <p>Explora planes</p>
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#FCD665" className="rounded-2xl">
+          <BaseCard bgColor="#FCD665">
             <div className="card-body items-center text-center">
               <h2 className="text-5xl font-bold">2</h2>
               <p>Consulta detalles</p>
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#47CEBA" className="rounded-2xl">
+          <BaseCard bgColor="#47CEBA">
             <div className="card-body items-center text-center">
               <h2 className="text-5xl font-bold">3</h2>
               <p>Únete fácilmente</p>
             </div>
           </BaseCard>
 
-          <BaseCard bgColor="#171718" textColor="#ff6b5a" className="rounded-2xl">
+          <BaseCard bgColor="#171718" textColor="#ff6b5a">
             <div className="card-body items-center text-center">
               <h2 className="text-5xl font-bold">4</h2>
               <p>Disfruta la experiencia</p>
@@ -52,7 +52,7 @@ export default function UnetePage() {
 
         {/* Beneficios */}
         <section className="card bg-base-200 shadow-xl">
-          <BaseCard className="rounded-2xl">
+          <BaseCard>
             <div className="card-body">
               <h2 className="text-3xl font-bold mb-4">
                 ¿Por qué unirse?

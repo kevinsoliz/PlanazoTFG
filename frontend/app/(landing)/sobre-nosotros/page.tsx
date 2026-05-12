@@ -34,7 +34,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <BaseCard bgColor="#7e7af3" className="rounded-2xl">
+            <BaseCard >
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   Cómo nació
@@ -47,7 +47,7 @@ export default function AboutPage() {
               </div>
             </BaseCard>
 
-            <BaseCard bgColor="#FCD665" className="rounded-2xl">
+            <BaseCard >
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   El problema
@@ -60,7 +60,7 @@ export default function AboutPage() {
               </div>
             </BaseCard>
 
-            <BaseCard bgColor="#47CEBA" className="rounded-2xl">
+            <BaseCard >
               <div className="card-body">
                 <h3 className="card-title text-2xl">
                   Evolución
@@ -84,7 +84,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             {/* Kevin */}
-            <BaseCard className="rounded-2xl">
+            <BaseCard>
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#928EF5" }} className="text-white rounded-full w-20">
@@ -114,7 +114,7 @@ export default function AboutPage() {
             </BaseCard>
 
             {/* Sergio */}
-            <BaseCard className="rounded-2xl">
+            <BaseCard>
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#FCD665" }} className="rounded-full w-20">
@@ -144,7 +144,7 @@ export default function AboutPage() {
             </BaseCard>
 
             {/* Thomas */}
-            <BaseCard className="rounded-2xl">
+            <BaseCard>
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#47CEBA" }} className="rounded-full w-20">
@@ -174,7 +174,7 @@ export default function AboutPage() {
             </BaseCard>
 
             {/* Jaime */}
-            <BaseCard className="rounded-2xl">
+            <BaseCard>
               <div className="card-body items-center text-center">
                 <div className="avatar placeholder">
                   <div style={{ backgroundColor: "#171718" }} className="rounded-full  w-20 text-white">
@@ -208,7 +208,7 @@ export default function AboutPage() {
 
         {/* FILOSOFÍA */}
         <section>
-          <BaseCard className="rounded-2xl">
+          
             <div className="card-body flex flex-col gap-6">
               <h2 className="text-4xl font-bold">
                 Nuestra filosofía
@@ -227,7 +227,7 @@ export default function AboutPage() {
                 amistades y experiencias que realmente encajen con sus intereses.
               </p>
             </div>
-          </BaseCard>
+          
         </section>
 
       </div>
