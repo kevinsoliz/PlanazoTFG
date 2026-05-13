@@ -1,14 +1,5 @@
-/*
-Schemas de perfil con zod.
-Fuente única de verdad para tipos + validación.
-
-- perfilSchema: forma completa del perfil (refleja la fila de BBDD).
-- perfilUpdateSchema: derivado, solo los campos editables y todos opcionales.
-- Los tipos TS se sacan con z.infer — nunca escribir tipos a mano.
-
-Si añadimos un campo a perfilSchema, perfilUpdateSchema y sus tipos
-derivados se actualizan automáticamente. Eso es la "fuente única".
-*/
+/* Validación de perfiles con zod. Definimos el schema y de paso sacamos
+   los tipos TypeScript, así schema y tipo van siempre acompasados. */
 
 import { z } from "zod";
 
@@ -17,35 +8,28 @@ const AVATARES_PERMITIDOS = Array.from(
   (_, i) => `/images/avatars/avatar-${i + 1}.png`,
 );
 
-// 1. Schema completo (tipo + forma de la fila de BBDD)
 
+// Forma completa del perfil tal y como se guarda.
 export const perfilSchema = z.object({
   id: z.number(),
   user_id: z.number(),
-  // min/max razonables. Si los superan, zod rechaza con un mensaje claro.
   nombre: z.string().min(1).max(20),
   username: z.string().min(1).max(20),
-  // nullable porque la columna en Postgres acepta NULL.
+  // Puede no haber elegido avatar todavía.
   avatar_url: z.string().nullable(),
-  // La columna en Postgres es nullable por compatibilidad con datos antiguos,
-  // pero a nivel de aplicación la descripción es obligatoria (min 50). Cualquier
-  // perfil existente con NULL deberá rellenarla la próxima vez que edite.
+  /* La descripción es obligatoria (mínimo 50 caracteres). Los perfiles
+     antiguos que la tengan vacía la rellenarán al editar. */
   descripcion: z.string().min(50).max(500),
   categorias: z.string().max(200).nullable(),
   created_at: z.string(),
 });
 
-// Tipo TS derivado. Se exporta para que el service tipe sus retornos.
 export type Perfil = z.infer<typeof perfilSchema>;
 
 
-// 2. Schema de input para PATCH /api/perfiles/:id
-
-// .pick selecciona los campos editables.
-// .partial los hace todos opcionales (PATCH parcial: solo los que vienen).
-// Cualquier campo que NO esté en la lista (id, user_id, created_at)
-// será stripeado por defecto si llega en el body — eso reemplaza la whitelist
-// manual que hacíamos en el controller con desestructuración.
+/* Schema para editar el perfil. Cogemos solo los campos editables y los
+   hacemos opcionales, así el usuario puede enviar solo los que cambia.
+   id, user_id y created_at no son editables. */
 export const perfilUpdateSchema = perfilSchema
   .pick({
     nombre: true,

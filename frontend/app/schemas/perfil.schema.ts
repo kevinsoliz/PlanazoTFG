@@ -1,19 +1,16 @@
-/*
-Schema de perfil en el frontend.
-Duplicado intencional del de backend/src/schemas/perfil.schema.ts.
-Si cambian las reglas, hay que actualizar ambos ficheros.
+/* Schema de perfil en el frontend. Duplicado intencional del de
+   backend/src/schemas/perfil.schema.ts. Si cambian las reglas hay que
+   tocar los dos ficheros.
 
-A diferencia del backend (que usa un schema PARTIAL para PATCH parcial),
-aquí el form de editar perfil siempre envía los 5 campos, así que el schema
-es no-partial. La forma del payload sigue siendo compatible: el backend
-acepta cualquier subconjunto.
-*/
+   Aquí no son opcionales como en el backend porque el formulario siempre
+   manda los 5 campos, aunque el backend acepta también enviar solo unos
+   pocos. */
 
 import { z } from "zod";
 
-// Lista cerrada de avatares permitidos. Los 9 que se ven en el grid del
-// formulario. La validación es defensiva: el UI ya impide otros valores,
-// pero replicamos lo que hace el backend para mantener simetría.
+/* Lista cerrada de avatares permitidos (los 9 que se ven en el grid del
+   formulario). El UI ya impide otros valores, pero validamos también aquí
+   por simetría con el backend. */
 const AVATARES_PERMITIDOS = Array.from(
   { length: 9 },
   (_, i) => `/images/avatars/avatar-${i + 1}.png`,

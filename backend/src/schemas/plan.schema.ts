@@ -1,63 +1,44 @@
-/*
-Schemas de plan con zod.
-- planSchema: forma completa de un plan (refleja la fila de BBDD + el
-  campo participants que se calcula en SQL).
-- planInputSchema: derivado, los campos editables en POST y PUT.
-
-El mismo planInputSchema vale para crear y editar: ambos endpoints
-aceptan exactamente los mismos campos.
-*/
+/* Validación de planes con zod. planSchema es la forma completa de un plan
+   tal y como sale a leer; planInputSchema es solo lo que el usuario rellena
+   al crear o editar (los dos endpoints reciben los mismos campos). */
 
 import { z } from "zod";
 
-
-// 1. Schema completo (tipo + forma de la fila)
 
 export const planSchema = z.object({
   id: z.number(),
   creator_id: z.number(),
   titulo: z.string().min(1).max(100),
   categoria: z.string().min(1).max(50),
-  // La descripción es obligatoria a nivel de aplicación. La columna en
-  // BBDD sigue siendo nullable por compatibilidad con planes antiguos,
-  // pero los nuevos deben llevar mínimo 20 caracteres.
+  /* La descripción es obligatoria (mínimo 20 caracteres). Los planes
+     antiguos pueden tenerla vacía, los nuevos no. */
   descripcion: z.string().min(20).max(2000),
-  // fecha: string ISO. Solo aceptamos fechas futuras: no tiene sentido
-  // crear ni mover un plan al pasado.
+  // Solo aceptamos fechas futuras.
   fecha: z.string().refine((v) => new Date(v).getTime() > Date.now(), {
     message: "La fecha debe ser futura",
   }),
-  // Ubicación obligatoria: la PlanCard la imprime sin gestionar el null.
   ubicacion: z.string().min(1).max(200),
-  // int().min(1): al menos 1 plaza. max(1000) como cap razonable.
+  // Al menos 1 plaza, máximo 1000 como tope razonable.
   aforo_max: z.number().int().min(1).max(1000),
-  // participants es un campo CALCULADO por la subquery SQL,
-  // no existe en la tabla. Solo aparece en lecturas, opcional.
+  /* participants lo calculamos en la query, no es una columna real.
+     Solo aparece en lecturas, por eso es opcional. */
   participants: z.number().optional(),
   created_at: z.string(),
-  // Campos del creador, traídos por JOIN con users + perfiles en las
-  // queries de lectura. Permiten pintar avatar + @username en la PlanCard
-  // sin que el frontend tenga que hacer una petición extra por cada plan
-  // (anti N+1).
+  /* Datos del creador. Los traemos en la misma query para que el
+     frontend pinte avatar y @username sin pedirlos aparte. */
   creador_nombre: z.string(),
   creador_username: z.string(),
-  // nullable porque el usuario puede no haber elegido avatar todavía
-  // (cae al fallback con inicial sobre fondo gris).
+  // Puede no haber elegido avatar todavía.
   creador_avatar_url: z.string().nullable(),
-  // .optional() porque solo lo seleccionamos en obtenerDetalle (no en las
-  // queries de lista, que no pintan la bio en las PlanCards).
+  // Solo viene en el detalle del plan; en la lista no la usamos.
   creador_descripcion: z.string().nullable().optional(),
 });
 
 export type Plan = z.infer<typeof planSchema>;
 
 
-// 2. Schema de input para POST y PUT
-
-// .pick selecciona los campos editables. Los demás (id, creator_id,
-// participants, created_at) los pone el backend, no el cliente.
-// NO usamos .partial() porque crear/editar requieren los campos completos
-// (a diferencia de PATCH en perfiles).
+/* Schema para crear o editar un plan. Solo los campos que el usuario rellena;
+   id, creator_id, participants y created_at los pone el backend. */
 export const planInputSchema = planSchema.pick({
   titulo: true,
   categoria: true,
