@@ -10,9 +10,9 @@ Usamos **Socket.IO** para hacer que el chat funcione en tiempo real. Socket.IO e
 
 Además, guardamos los mensajes en **PostgreSQL** para que cuando alguien entre más tarde, pueda ver el historial del chat.
 
----
+### Frontend: Interfaz y Conexión
 
-### 1️⃣ El usuario se conecta
+#### 1. El usuario se conecta
 Cuando entras a ver un plan, el frontend crea una conexión Socket.IO con el backend. Es como levantar el teléfono para poder hablar.
 
 ```javascript
@@ -22,7 +22,7 @@ const socket = io('http://localhost:3001', {
 });
 ```
 
-### 2️⃣ El usuario pide entrar a la sala del chat
+#### 2. El usuario pide entrar a la sala del chat
 Cuando ves los comentarios de un plan, el frontend le pide al backend: "Quiero ver el chat del plan 5".
 
 ```javascript
@@ -30,14 +30,7 @@ Cuando ves los comentarios de un plan, el frontend le pide al backend: "Quiero v
 socket.emit('join_plan', 5);
 ```
 
-### 3️⃣ El backend valida y lo acepta
-El backend comprueba:
-- ¿Quién eres? (Lee tu userId del handshake)
-- ¿Estás apuntado a este plan? (Busca en la base de datos)
-
-Si todo ok, lo añade a la "sala" del plan. Es como entrar a una sala en Discord.
-
-### 4️⃣ El usuario escribe un mensaje
+#### 3. El usuario escribe un mensaje
 Cuando haces clic en enviar:
 
 ```javascript
@@ -45,12 +38,32 @@ Cuando haces clic en enviar:
 socket.emit('chat_message', "Hola a todos!", "TuNombre", 5);
 ```
 
-### 5️⃣ El backend procesa el mensaje
+#### 4. El frontend recibe y muestra mensajes
+Cuando llega un mensaje nuevo, el frontend lo añade a la lista de mensajes en la interfaz.
+
+```javascript
+// El frontend escucha:
+socket.on('new_message', (message) => {
+  // Añade el mensaje a la lista y actualiza la UI
+  setMessages(prev => [...prev, message]);
+});
+```
+
+### Backend: Lógica del Servidor
+
+#### 1. El backend valida y acepta la conexión
+El backend comprueba:
+- ¿Quién eres? (Lee tu userId del handshake)
+- ¿Estás apuntado a este plan? (Busca en la base de datos)
+
+Si todo ok, lo añade a la "sala" del plan. Es como entrar a una sala en Discord.
+
+#### 2. El backend procesa el mensaje
 El backend:
-- ✅ Valida que sigas siendo participante del plan
-- ✅ Guarda el mensaje en PostgreSQL con: contenido, tu usuario, el plan, la hora
-- ✅ Obtiene tu avatar del perfil
-- ✅ Envía el mensaje a TODOS los que están en esa sala
+- Valida que sigas siendo participante del plan
+- Guarda el mensaje en PostgreSQL con: contenido, tu usuario, el plan, la hora
+- Obtiene tu avatar del perfil
+- Envía el mensaje a TODOS los que están en esa sala
 
 ```javascript
 // El backend hace:
@@ -63,9 +76,6 @@ io.to('plan_5').emit('new_message', {
 });
 ```
 
-### 6️⃣ Todos reciben el mensaje
-Todos los dispositivos que estén viendo el plan 5 ven el mensaje aparecer al instante. ¡Sin recargar!
-
 ---
 
 ## ¿Dónde está el código?
@@ -73,7 +83,7 @@ Todos los dispositivos que estén viendo el plan 5 ven el mensaje aparecer al in
 | Controladores de Socket.IO | `backend/src/controllers/chat.controller.ts` |
 | Conexión a la BD | `backend/src/lib/chatDb.ts` |
 | Tabla de mensajes | `backend/sql/init.sql` |
-| Componente del frontend | `frontend/app/components/` (el que muestra el chat) |
+| Componente del frontend | `frontend/app/components/ChatPlan.tsx` (el que muestra el chat) |
 | Hook del frontend | `frontend/app/hooks/useChat.ts` |
 
 ---
