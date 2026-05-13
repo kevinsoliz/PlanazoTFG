@@ -45,6 +45,7 @@ export const metadata: Metadata = {
   
 };
 
+// Layout raíz: html/body, fuentes, tema y metadatos comunes a toda la app.
 export default function RootLayout({
   children,
 }: Readonly<{

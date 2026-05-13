@@ -1,6 +1,7 @@
 import NavbarApp from "../components/layout/NavbarApp";
 import BackToTopBtn from "../components/ui/BackToTopBtn";
 
+// Layout de la zona privada (usuario logueado): navbar + contenedor central.
 const AppLayout = ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {

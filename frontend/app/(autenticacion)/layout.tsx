@@ -1,6 +1,7 @@
 import React from "react";
 import Logo from "../components/ui/Logo";
 
+// Layout para login y registro: contenido a la izquierda, ilustración a la derecha.
 const PublicLayout = ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
