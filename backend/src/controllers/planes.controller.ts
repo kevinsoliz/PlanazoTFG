@@ -1,34 +1,27 @@
-/*
-Controller de planes.
-Capa intermedia entre la route y el service. Extrae datos del request,
-los pasa al service y devuelve la response. Errores los recoge el
-errorHandler central via Express 5.
-*/
+/* Controller de planes. Capa intermedia entre la ruta y el service.
+   Extrae datos del request, los pasa al service y devuelve la response.
+   Los errores los recoge el errorHandler central. */
 
 import { Request, Response } from "express";
 import * as planesService from "../services/planes.service";
 import { AppError } from "../AppError";
 
 
-// 1. Handler para crear un plan:
-
-// POST /api/planes
-// Crea un plan a nombre del usuario logado. requireAuth garantiza la sesión.
-// req.body ya viene validado por `validate(planInputSchema)` en la route.
+/* POST /api/planes. Crea un plan a nombre del usuario logueado.
+   requireAuth garantiza la sesión; el body ya viene validado por
+   validate(planInputSchema) en la ruta. */
 export async function crear(req: Request, res: Response) {
   const plan = await planesService.crear(req.session.userId!, req.body);
   res.status(201).json({ plan });
 }
 
 
-// 2. Handler para listar planes:
-
-// GET /api/planes?categoria=...
-// Endpoint público. Si llega categoría en la query, filtra por ella.
+/* GET /api/planes?categoria=... Endpoint público. Si llega 'categoria'
+   en la query, filtra por ella. */
 export async function listar(req: Request, res: Response) {
-  // req.query.categoria puede ser string | string[] | ParsedQs | undefined.
-  // Solo aceptamos string. Si llega otra cosa (p. ej. ?categoria=a&categoria=b),
-  // la ignoramos para evitar pasar tipos inesperados al service.
+  /* req.query.categoria puede llegar como string, array o undefined.
+     Solo aceptamos string; si llega otra cosa (por ejemplo
+     ?categoria=a&categoria=b), la ignoramos. */
   const categoria =
     typeof req.query.categoria === "string" ? req.query.categoria : undefined;
 
@@ -38,29 +31,23 @@ export async function listar(req: Request, res: Response) {
 }
 
 
-// 3. Handler para listar los planes creados por el usuario logado:
-
-// GET /api/planes/creados
+// GET /api/planes/creados. Planes del usuario logueado.
 export async function listarCreados(req: Request, res: Response) {
   const planes = await planesService.listarCreadosPor(req.session.userId!);
   res.json({ planes });
 }
 
 
-// 4. Handler para listar los planes a los que el usuario está apuntado:
-
-// GET /api/planes/apuntado
-// (Solo planes ajenos en los que es participante; los suyos van en /creados.)
+/* GET /api/planes/apuntado. Solo planes ajenos en los que el usuario
+   es participante; los suyos van en /creados. */
 export async function listarApuntado(req: Request, res: Response) {
   const planes = await planesService.listarApuntadosDe(req.session.userId!);
   res.json({ planes });
 }
 
 
-// 5. Handler para obtener el detalle de un plan:
-
-// GET /api/planes/:id
-// Endpoint público. Devuelve plan + participantes + plazas disponibles.
+/* GET /api/planes/:id. Endpoint público. Devuelve plan + participantes +
+   plazas disponibles. */
 export async function obtenerDetalle(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {
@@ -69,14 +56,11 @@ export async function obtenerDetalle(req: Request, res: Response) {
 
   const detalle = await planesService.obtenerDetalle(planId, req.session.userId);
 
-  // Esparcimos el detalle: { plan, participantes, plazas_disponibles }.
   res.json(detalle);
 }
 
 
-// 6. Handler para unirse a un plan:
-
-// POST /api/planes/:id/join
+// POST /api/planes/:id/join. Unirse a un plan.
 export async function unirse(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {
@@ -89,9 +73,7 @@ export async function unirse(req: Request, res: Response) {
 }
 
 
-// 7. Handler para salir de un plan:
-
-// DELETE /api/planes/:id/join
+// DELETE /api/planes/:id/join. Salir de un plan.
 export async function salir(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {
@@ -104,9 +86,7 @@ export async function salir(req: Request, res: Response) {
 }
 
 
-// 8. Handler para borrar un plan (solo el creador):
-
-// DELETE /api/planes/:id
+// DELETE /api/planes/:id. Borrar un plan (solo el creador).
 export async function borrar(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {
@@ -119,10 +99,8 @@ export async function borrar(req: Request, res: Response) {
 }
 
 
-// 9. Handler para actualizar un plan (solo el creador):
-
-// PUT /api/planes/:id
-// req.body ya viene validado por `validate(planInputSchema)` en la route.
+/* PUT /api/planes/:id. Editar un plan (solo el creador). El body ya
+   viene validado por validate(planInputSchema) en la ruta. */
 export async function actualizar(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {
@@ -139,12 +117,9 @@ export async function actualizar(req: Request, res: Response) {
 }
 
 
-// 10. Handler para listar los planes creados por un usuario concreto:
-
-// GET /api/planes/usuario/:id
-// Devuelve los planes creados por el usuario indicado en la URL.
-// Reutiliza el mismo service que /creados; la diferencia es de dónde
-// sale el userId: aquí del path, allí de la sesión.
+/* GET /api/planes/usuario/:id. Planes creados por un usuario concreto.
+   Reutiliza el mismo service que /creados; la diferencia es de dónde
+   sale el userId: aquí del path, allí de la sesión. */
 export async function listarCreadosPorUsuario(req: Request, res: Response) {
   const userId = Number(req.params.id);
   if (Number.isNaN(userId)) {
@@ -156,11 +131,9 @@ export async function listarCreadosPorUsuario(req: Request, res: Response) {
 }
 
 
-// 11. Handler para valorar un plan:
-
-// POST /api/planes/:id/rate
-// req.body: { puntuacion: number }  (lo valida el CHECK constraint de postgres
-// hasta que metamos un schema de zod en el route).
+/* POST /api/planes/:id/rate. Valorar un plan.
+   El body es { puntuacion: number }. De momento lo valida el CHECK de
+   postgres; cuando añadamos un schema de zod en la ruta, se valida aquí. */
 export async function valorar(req: Request, res: Response) {
   const planId = Number(req.params.id);
   if (Number.isNaN(planId)) {

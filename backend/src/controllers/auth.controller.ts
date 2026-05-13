@@ -1,87 +1,61 @@
-/*
-Controller de autenticación.
-Es la capa intermedia entre la route (Express) y el service (lógica).
-Aquí SÍ se conoce req/res: extraemos datos del request, llamamos al
-service y devolvemos la response. NO se manejan errores aquí — los
-errores que se lancen los captura el errorHandler central (Express 5
-propaga las promesas rechazadas automáticamente).
-Mantener esta capa fina: nada de queries SQL ni reglas de negocio aquí,
-eso vive en el service.
-*/
+/* Controller de autenticación. Capa intermedia entre la ruta y el service.
+   Aquí sí conocemos req/res: extraemos datos del request, llamamos al service
+   y devolvemos la response. No manejamos errores: si algo lanza, lo recoge
+   el errorHandler central (Express 5 propaga las promesas rechazadas). */
 
 import { Request, Response, NextFunction } from "express";
 import * as authService from "../services/auth.service";
 
 
-// 1. Handler de registro:
-
-// POST /api/auth/registro
-// Crea un usuario nuevo y abre sesión inmediatamente (auto-login tras registro).
-// La validación del body la hizo el middleware `validate(registroSchema)` en
-// la route, así que aquí req.body ya viene parseado y con los tipos correctos.
+/* POST /api/auth/registro. Crea un usuario y abre sesión a la vez
+   (auto-login tras registro). La validación del body la hizo ya el
+   middleware validate(registroSchema) en la ruta. */
 export async function registrar(req: Request, res: Response) {
   const { nombre, email, password } = req.body;
 
-  // Delegamos toda la lógica al service. Si el service lanza AppError
-  // (email duplicado, etc.), Express 5 propaga la rejection al errorHandler
-  // automáticamente — no hace falta try/catch aquí.
   const user = await authService.registrar(nombre, email, password);
 
   // Abrimos sesión guardando el id del usuario en la cookie de sesión.
-  // Esto SÍ vive en el controller porque req.session es de Express.
   req.session.userId = user.id;
 
   res.status(201).json({ user });
 }
 
 
-// 2. Handler de login:
-
-// POST /api/auth/login
-// Comprueba credenciales y abre sesión. Responde con el user.
-// req.body ya viene validado por `validate(loginSchema)` en la route.
+/* POST /api/auth/login. Comprueba credenciales y abre sesión. El body
+   ya viene validado por validate(loginSchema) en la ruta. */
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
   const user = await authService.login(email, password);
 
-  // Sesión iniciada -> guardamos userId en la cookie de sesión.
   req.session.userId = user.id;
 
   res.json({ user });
 }
 
 
-// 3. Handler de logout:
+/* POST /api/auth/logout. Destruye la sesión y borra la cookie. No usa
+   service porque no hay lógica de negocio.
 
-// POST /api/auth/logout
-// Destruye la sesión y borra la cookie. NO usa service porque no hay lógica
-// de negocio: es 100% Express.
-// req.session.destroy es callback-based (no devuelve Promise), así que
-// Express 5 NO captura sus errores automáticamente. Por eso este handler
-// SÍ recibe `next` y lo usa para pasar el error al errorHandler.
+   req.session.destroy() funciona con callback (no devuelve promesa), así
+   que Express 5 no captura sus errores automáticamente. Por eso este
+   handler sí recibe 'next' y lo usa para pasar el error al errorHandler. */
 export function logout(req: Request, res: Response, next: NextFunction) {
   req.session.destroy((err) => {
-    // Si destroy falla, lo enviamos al errorHandler central via next(err).
     if (err) return next(err);
 
-    // session_id es el nombre de la cookie configurado en index.ts cuando
-    // se inicializa express-session.
+    // session_id es el nombre de la cookie que pusimos en index.ts.
     res.clearCookie("session_id");
     res.json({ message: "Sesión cerrada" });
   });
 }
 
 
-// 4. Handler de "quién soy":
-
-// GET /api/auth/me
-// Devuelve el usuario de la sesión actual. La ruta lleva el middleware
-// requireAuth, así que cuando entramos aquí req.session.userId está garantizado:
-// no hace falta revalidarlo.
+/* GET /api/auth/me. Devuelve el usuario de la sesión actual. La ruta lleva
+   el middleware requireAuth, así que aquí req.session.userId está garantizado;
+   por eso usamos el '!' para decirle a TypeScript que confíe en que existe. */
 export async function me(req: Request, res: Response) {
-  // El "!" le dice a TS "confío en que userId existe aquí" — es seguro porque
-  // requireAuth corta antes si no hay sesión.
   const user = await authService.obtenerUsuario(req.session.userId!);
 
   res.json({ user });
