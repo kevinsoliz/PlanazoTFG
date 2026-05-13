@@ -3,6 +3,7 @@ import authService from "../services/auth-service";
 import axios from "axios";
 import { useState } from "react";
 
+// Hook para el formulario de login: llama al servicio, redirige a /home y guarda el mensaje de error si falla.
 const useLogin = () => {
   const router = useRouter();
   const [error, setError] = useState("");
