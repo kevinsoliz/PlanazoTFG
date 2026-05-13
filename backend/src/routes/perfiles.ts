@@ -1,8 +1,4 @@
-/*
-Routes de perfiles.
-Wiring puro: cada URL/método HTTP -> handler del controller.
-Sin lógica aquí.
-*/
+// Rutas de perfiles. Cada URL apunta al handler de su controller.
 
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth";
@@ -12,13 +8,12 @@ import * as perfilesController from "../controllers/perfiles.controller";
 
 const router = Router();
 
-// GET /api/perfiles/:id -> ver perfil (privado)
+// GET /api/perfiles/:id: ver perfil (privado).
 router.get("/perfiles/:id", requireAuth, perfilesController.obtener);
 
-// PATCH /api/perfiles/:id -> editar perfil propio
-// Cadena: requireAuth -> validate(schema) -> handler.
-// El middleware validate se ejecuta antes del handler: si el body no
-// cumple el schema, nunca se llama al handler — el errorHandler responde 400.
+/* PATCH /api/perfiles/:id: editar perfil propio.
+   El validate se ejecuta antes del handler: si el body no cumple el
+   schema, nunca se llega al handler y el errorHandler responde 400. */
 router.patch(
   "/perfiles/:id",
   requireAuth,

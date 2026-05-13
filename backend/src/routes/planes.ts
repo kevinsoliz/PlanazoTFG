@@ -1,12 +1,9 @@
-/*
-Routes de planes.
-Wiring puro: cada URL/método HTTP -> handler del controller.
+/* Rutas de planes. Cada URL apunta al handler de su controller.
 
-IMPORTANTE: el orden importa. Las rutas específicas (/creados, /apuntado)
-DEBEN ir antes de la dinámica /:id. Si /:id fuera primero, Express
-matchearía /creados como /:id con id="creados" y nunca llegaría al handler
-correcto.
-*/
+   Importante: el orden importa. Las rutas específicas (/creados, /apuntado)
+   tienen que ir antes de la dinámica /:id. Si /:id fuera primero, Express
+   matchearía /creados como /:id con id="creados" y nunca llegaría al
+   handler correcto. */
 
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth";
@@ -16,38 +13,37 @@ import * as planesController from "../controllers/planes.controller";
 
 const router = Router();
 
-// POST /api/planes -> crear plan
-// Cadena: requireAuth -> validate -> handler.
+// POST /api/planes: crear plan.
 router.post("/", requireAuth, validate(planInputSchema), planesController.crear);
 
-// GET /api/planes -> listar planes (público, opcional ?categoria=...)
+// GET /api/planes: listar planes (público, opcional ?categoria=...).
 router.get("/", planesController.listar);
 
-// GET /api/planes/creados -> planes creados por el usuario logado
+// GET /api/planes/creados: planes creados por el usuario logueado.
 router.get("/creados", requireAuth, planesController.listarCreados);
 
-// GET /api/planes/apuntado -> planes a los que el usuario está apuntado (sin contar los suyos)
+// GET /api/planes/apuntado: planes a los que el usuario está apuntado (sin contar los suyos).
 router.get("/apuntado", requireAuth, planesController.listarApuntado);
 
-// GET /api/planes/usuario/:id -> planes creados por un usuario concreto
+// GET /api/planes/usuario/:id: planes creados por un usuario concreto.
 router.get("/usuario/:id", requireAuth, planesController.listarCreadosPorUsuario);
 
-// GET /api/planes/:id -> detalle de un plan (privado)
+// GET /api/planes/:id: detalle de un plan (privado).
 router.get("/:id", requireAuth, planesController.obtenerDetalle);
 
-// POST /api/planes/:id/join -> unirse a un plan
+// POST /api/planes/:id/join: unirse a un plan.
 router.post("/:id/join", requireAuth, planesController.unirse);
 
-// DELETE /api/planes/:id/join -> salir de un plan
+// DELETE /api/planes/:id/join: salir de un plan.
 router.delete("/:id/join", requireAuth, planesController.salir);
 
-// DELETE /api/planes/:id -> borrar plan (solo creador)
+// DELETE /api/planes/:id: borrar plan (solo creador).
 router.delete("/:id", requireAuth, planesController.borrar);
 
-// POST /api/planes/:id/rate -> valorar plan (solo participantes)
+// POST /api/planes/:id/rate: valorar plan (solo participantes).
 router.post("/:id/rate", requireAuth, planesController.valorar);
 
-// PUT /api/planes/:id -> actualizar plan (solo creador)
+// PUT /api/planes/:id: actualizar plan (solo creador).
 router.put(
   "/:id",
   requireAuth,
