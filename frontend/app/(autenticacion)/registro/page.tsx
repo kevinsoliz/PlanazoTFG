@@ -5,15 +5,16 @@ import { FormEvent, useState } from "react";
 
 type Campo = "nombre" | "email" | "password" | "website";
 
+// Formulario de registro. Valida con zod en el cliente antes de llamar a useRegistro.
 const Registro = () => {
   const [newUser, setNewUser] = useState({
     nombre: "",
     email: "",
     password: "",
-    // Honeypot: campo trampa para bots. Los humanos no lo ven (lo
-    // ocultamos fuera de pantalla más abajo) pero los bots automáticos
-    // que parsean el HTML lo rellenan. El backend rechaza el registro
-    // si llega con cualquier valor distinto de "".
+    /* Honeypot: campo trampa para bots. Los humanos no lo ven (lo ocultamos
+       fuera de pantalla más abajo) pero los bots que parsean el HTML lo
+       rellenan. El backend rechaza el registro si llega con valor distinto
+       de "". */
     website: "",
   });
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<Campo, string>>>({});

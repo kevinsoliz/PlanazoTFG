@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import useLogin from "@/app/hooks/useLogin";
 
+// Formulario de login. Delega en useLogin para llamar al backend y redirigir a /home si todo va bien.
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
