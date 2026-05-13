@@ -10,6 +10,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+// Perfil público de otro usuario con sus planes. Sin botón de editar; en su lugar, "Seguir" (aún no funciona).
 const UsuarioPage = async ({ params }: Props) => {
   const { id } = await params;
   const userId = Number(id);

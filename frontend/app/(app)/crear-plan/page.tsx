@@ -17,6 +17,7 @@ type FormData = {
 
 type Campo = keyof FormData;
 
+// Página con el formulario para crear un plan nuevo.
 const PlanPage = () => {
   const router = useRouter();
   const [form, setForm] = useState<FormData>({
@@ -31,9 +32,9 @@ const PlanPage = () => {
     {},
   );
 
-  // Setter genérico: actualiza el campo y limpia su error si lo había.
-  // El generic K mantiene la correspondencia tipo-valor (titulo es string,
-  // aforo_max es number, etc.) — sin esto perderíamos el tipado.
+  /* Setter genérico que actualiza un campo del formulario y, si tenía error,
+     lo limpia. Tipamos con K para que TypeScript sepa qué tipo corresponde a
+     cada campo (titulo string, aforo_max number, etc.). */
   const update = <K extends Campo>(campo: K, valor: FormData[K]) => {
     setForm((prev) => ({ ...prev, [campo]: valor }));
     if (fieldErrors[campo]) {

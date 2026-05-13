@@ -33,6 +33,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+// Detalle de un plan: info, participantes, valoración (si ya pasó) y chat.
 const PlanDetailPage = async ({ params }: Props) => {
   const { id } = await params;
   const detalle = await getPlan(Number(id));

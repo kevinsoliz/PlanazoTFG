@@ -6,7 +6,7 @@ import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes, getPlanesApuntados } from "@/app/services/planes";
 
 
-// server component, los datos se obtienen antes de renderizar, el servidor de next.js renderiza el html antes de enviarlo al navegador
+// Listado de planes disponibles. Es un server component: los datos se piden antes de enviar el HTML al navegador.
 
 type Props = {
   searchParams: Promise<{ categoria?: string }>;

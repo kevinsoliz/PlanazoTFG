@@ -9,6 +9,7 @@ import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
 import { fetchServer } from "@/app/lib/api-server"; // Función para obtener datos del usuario 
 import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
+// Página "Mis planes": planes creados por el usuario y planes a los que se ha apuntado.
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
