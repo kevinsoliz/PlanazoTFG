@@ -4,6 +4,7 @@ interface Props {
   top?: string;
 }
 
+// Cabecera sticky para las páginas internas (home, mis-planes, perfil...).
 const PageHeader = ({ title, subtitle, top = "top-24" }: Props) => {
   return (
     <header className={`flex flex-col gap-2 border-2 rounded-md px-4 py-4 lg:sticky lg:${top} z-10 backdrop-blur-md bg-base-100/40 shadow-md`}>

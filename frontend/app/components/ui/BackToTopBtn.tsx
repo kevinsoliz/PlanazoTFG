@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FiArrowUp } from "react-icons/fi";
 
+// Botón flotante que aparece al bajar más de 400px y vuelve al inicio al pulsarlo. Solo en móvil.
 const BackToTopBtn = () => {
   const [visible, setVisible] = useState(false);
 

@@ -1,5 +1,6 @@
 import { CATEGORIAS } from "@/app/constants/categorias";
 
+// Muestra las 6 primeras categorías como badges. Se usa en la landing como decoración.
 const CategoriasRotator = () => {
   return (
     <span className="text-rotate text-7xl leading-loose">

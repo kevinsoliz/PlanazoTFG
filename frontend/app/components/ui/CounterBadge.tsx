@@ -3,6 +3,7 @@ interface Props {
   accent: string;
 }
 
+// Badge numérico con color de acento (usado para contadores tipo "12 planes activos").
 const CounterBadge = ({ value, accent }: Props) => {
   return (
     <span

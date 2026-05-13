@@ -10,6 +10,7 @@ const sizeClasses = {
   lg: "w-24 h-24 text-3xl",
 };
 
+// Si hay url muestra la imagen, si no cae al fallback con la inicial del nombre sobre fondo de color.
 const Avatar = ({ nombre, url, size = "md" }: Props) => {
   const dimensiones = sizeClasses[size];
 

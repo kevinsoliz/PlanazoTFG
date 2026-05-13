@@ -6,6 +6,7 @@ interface Props {
   boxShadow?: string;
 }
 
+// Tarjeta base con borde y sombra desplazada. Reutilizable por las features (planes, valoraciones, etc.).
 const BaseCard = ({ children, bgColor, textColor = "#171718", boxShadow = "6px 6px 0px", className = "" }: Props) => {
   return (
     <div

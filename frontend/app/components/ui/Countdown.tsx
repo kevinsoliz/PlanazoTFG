@@ -24,6 +24,7 @@ const calcular = (target: number): Tiempo => {
   };
 };
 
+// Cuenta atrás hasta targetDate. Se actualiza cada segundo y se para al desmontar.
 const Countdown = ({ targetDate }: Props) => {
   const target = new Date(targetDate).getTime();
   const [tiempo, setTiempo] = useState<Tiempo>({
