@@ -1,10 +1,12 @@
 import { Pool, types } from "pg";
-// PostgreSQL devuelve los campos TIMESTAMP sin zona horaria como strings en formato "YYYY-MM-DD HH:mm:ss".
-// Esto puede causar problemas al trabajar con fechas en JavaScript, ya que se interpretan como UTC.
-// Para evitar confusiones, configuramos el parser de tipos de pg para que devuelva estos campos como strings sin modificar.
+
+// pg devuelve los TIMESTAMP como '2026-05-13 10:30:00'; cambiamos
+// el espacio por una T para que JS los parsee como fecha ISO.
 types.setTypeParser(types.builtins.TIMESTAMP, (val) => val.replace(" ", "T"));
-// Creamos un pool de conexiones a PostgreSQL usando la URL de conexión definida en las variables de entorno.
+
+// pool: reutiliza conexiones a Postgres en vez de abrir una nueva por consulta
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
 });
+
 export default pool;
