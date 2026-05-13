@@ -2,35 +2,24 @@ import pool from '../db';
 // Interfaz simple para ejecutar consultas SQL
 export async function getChatDB() {
   // Creamos la tabla de mensajes si no existe
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS messages (
-      id SERIAL PRIMARY KEY,
-      content TEXT NOT NULL,
-      user_id INTEGER NOT NULL REFERENCES users(id),
-      plan_id INTEGER NOT NULL REFERENCES planes(id),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-
-  // Aseguramos el campo nuevo en tablas existentes
-  await pool.query(
-    'ALTER TABLE messages ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
-  );
 
   // Devolvemos una interfaz simple para ejecutar consultas
   return {
-    run: async (sql: string, params: any[]) => {
-      // Detectamos si es una consulta de inserción para devolver el ID insertado
-      if (sql.trim().toUpperCase().startsWith('INSERT')) {
-        // En PostgreSQL, usamos RETURNING para obtener el ID del nuevo registro
-        const result = await pool.query(sql + ' RETURNING id', params);
-        return { lastID: result.rows[0]?.id };
-      }
-      const result = await pool.query(sql, params);
-      return { lastID: result.rowCount };
+// INSERT 
+    insertMessage: async ({ content, user_id, plan_id }: { content: string, user_id: number, plan_id: number }) => {
+      const result = await pool.query(
+        'INSERT INTO messages (content, user_id, plan_id) VALUES ($1, $2, $3) RETURNING id, created_at',
+        [content, user_id, plan_id]
+      );
+      return result.rows[0];
     },
-    all: async (sql: string, params: any[]) => {
-      const result = await pool.query(sql, params);
+
+    // SELECT 
+    getMessagesByPlan: async (planId: number) => {
+      const result = await pool.query(
+        'SELECT id, content, user_id, created_at FROM messages WHERE plan_id = $1 ORDER BY created_at ASC',
+        [planId]
+      );
       return result.rows;
     }
   };
