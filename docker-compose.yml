@@ -29,9 +29,9 @@ services:
       DATABASE_URL: postgresql://planazo:planazo_dev_123@db:5432/planazo
       SESSION_SECRET: tu_secreto_de_sesion_aqui
       FRONTEND_URL: http://localhost:3000 # URL que el backend usará para CORS y redirecciones. No es necesario que sea la URL del contenedor, ya que el backend no se comunica con el frontend directamente, sino a través del navegador del usuario.
-      # En Windows el bind mount no propaga eventos fs -> nodemon necesita
-      # polling para detectar cambios en los .ts. Sin esto, hay que reiniciar
-      # el contenedor a mano tras cada edición.
+      # En Windows el bind mount no propaga eventos fs, así que nodemon
+      # necesita polling para detectar cambios en los .ts. Sin esto, hay que
+      # reiniciar el contenedor a mano tras cada edición.
       CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - db
