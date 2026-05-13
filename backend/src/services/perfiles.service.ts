@@ -1,23 +1,13 @@
-/*
-Service de perfiles.
-Lógica de negocio relacionada con la tabla `perfiles`: lectura y
-actualización. NO sabe de Express (no toca req/res/session).
-La autorización ("solo puedo editar mi propio perfil") la hace el
-controller antes de llamar aquí — el service confía en que quien
-le invoca tiene permiso.
-*/
+/* Servicio de perfiles. Lógica para leer y actualizar la tabla 'perfiles'.
+   No toca req/res (eso lo hace el controller). La autorización
+   (solo puedes editar tu propio perfil) la hace también el controller. */
 
 import pool from "../db";
 import { AppError } from "../AppError";
-// Tipos derivados de los schemas de zod -> fuente única de verdad.
-// Si el schema cambia, estos tipos cambian solos.
+// Tipos derivados de los schemas de zod (fuente única de verdad).
 import type { Perfil, PerfilUpdate } from "../schemas/perfil.schema";
 
 
-// 1. Servicio para obtener un perfil:
-
-// Busca el perfil cuyo user_id coincide.
-// Lanza AppError(404) si no existe.
 export async function obtener(userId: number): Promise<Perfil> {
   const resultado = await pool.query(
     "SELECT * FROM perfiles WHERE user_id = $1",
@@ -32,18 +22,13 @@ export async function obtener(userId: number): Promise<Perfil> {
 }
 
 
-// 2. Servicio para actualizar un perfil:
-
-// Actualiza los campos enviados y mantiene los demás.
-// COALESCE($n, columna) -> si el parámetro es NULL/undefined, usa el valor
-// actual de la columna. Así soportamos PATCH parcial sin escribir varios
-// UPDATEs distintos según qué campos vengan.
-// RETURNING * devuelve la fila actualizada, evitando un SELECT extra.
-// Lanza AppError(404) si el perfil no existe.
 export async function actualizar(
   userId: number,
   datos: PerfilUpdate,
 ): Promise<Perfil> {
+  /* COALESCE($n, columna): si el parámetro viene null/undefined, usa el
+     valor actual de la columna. Así podemos hacer un PATCH parcial sin
+     escribir un UPDATE distinto según qué campos lleguen. */
   const resultado = await pool.query(
     `UPDATE perfiles
         SET nombre = COALESCE($1, nombre),
