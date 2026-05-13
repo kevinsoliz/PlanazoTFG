@@ -6,6 +6,7 @@ import { FiPlus, FiMenu, FiCalendar, FiBookmark, FiMail } from "react-icons/fi";
 import { getPerfil } from "@/app/services/perfiles";
 import { getPlanesCreados, getPlanesApuntados } from "@/app/services/planes";
 
+// Navbar de la zona privada (logueado). Trae el perfil y el contador de planes para enseñarlos.
 const NavbarApp = async () => {
   const perfil = await getPerfil();
   const creados = await getPlanesCreados();

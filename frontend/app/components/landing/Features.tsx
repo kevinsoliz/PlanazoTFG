@@ -1,5 +1,6 @@
 import FeatureCard from "./FeatureCard";
 
+// Grid de tarjetas con las 4 features principales que vendemos en la landing.
 const FeaturesSection = () => {
   return (
     <section className="py-20 bg-base-100">

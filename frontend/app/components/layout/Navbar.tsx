@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FiMenu } from "react-icons/fi";
 
+// Navbar de las páginas públicas (landing, planes, contacto). Lleva el botón de Login.
 const Navbar = () => {
   return (
     <div className="navbar bg-base-100 border-b border-neutral relative z-50">

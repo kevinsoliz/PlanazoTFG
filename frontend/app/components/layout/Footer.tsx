@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// Footer común a las páginas públicas: enlaces, logo y aviso de copyright.
 const Footer = () => {
   return (
     <footer className="footer footer-horizontal footer-center bg-neutral text-[#E0604D] p-8 gap-3">

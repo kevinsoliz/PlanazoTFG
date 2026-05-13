@@ -8,6 +8,7 @@ interface Props {
   perfil: UserProfile;
 }
 
+// Sidebar con el perfil y el menú lateral (Feed, Settings, Logout).
 const Sidebar = ({ perfil }: Props) => {
 
   return (

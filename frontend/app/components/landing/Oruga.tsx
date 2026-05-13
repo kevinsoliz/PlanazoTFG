@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Grupo de avatares solapados con el contador de "+2000 personas ya se han unido".
 const Oruga = () => {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

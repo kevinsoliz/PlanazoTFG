@@ -1,3 +1,4 @@
+// Tira de badges con las categorías para la landing (decorativa, sin enlaces).
 const CategoryBadges = () => {
   const categorias = [
     { nombre: "Aventura", bg: "bg-indigo-400", texto: "text-white" },

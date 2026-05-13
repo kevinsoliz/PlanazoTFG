@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
+// Bloque principal de la landing: titular, descripción, CTA y imagen.
 const Hero = () => {
   return (
     <section className="bg-base-100 py-20">

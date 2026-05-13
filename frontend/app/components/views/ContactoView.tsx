@@ -1,6 +1,7 @@
 import BaseCard from "@/app/components/ui/BaseCard";
 import { FiMail, FiMapPin, FiClock } from "react-icons/fi";
 
+// Vista de contacto: la usan /contacto (landing) y /soporte (zona privada). Por eso vive en views/ y no en pages.
 const ContactoView = () => {
   return (
     <main className="min-h-screen text-neutral py-20 px-6">

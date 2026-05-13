@@ -11,6 +11,7 @@ interface Props {
   textColor?: string;
 }
 
+// Tarjeta de una de las features de la landing: imagen + título + descripción + enlace.
 const FeatureCard = ({
   titulo,
   descripcion,

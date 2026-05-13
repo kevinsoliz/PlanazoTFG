@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// Sección final de llamada a la acción de la landing: empuja al registro.
 const CTASection = () => {
   return (
     <section className="w-full bg-primary py-20 pb-0">

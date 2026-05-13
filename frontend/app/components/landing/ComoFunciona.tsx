@@ -1,5 +1,4 @@
-// Sección "Cómo funciona" — 3 mockup-phone con capturas mobile
-// que ilustran el flujo de uso de la app.
+// Sección "Cómo funciona" de la landing: 3 capturas en mockup de móvil que ilustran el flujo de uso.
 
 import Image from "next/image";
 import Logo from "../ui/Logo";
