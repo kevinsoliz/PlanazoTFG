@@ -17,12 +17,13 @@ type FormData = {
 
 type Campo = keyof FormData;
 
+// Botón que abre un modal con el formulario para editar el plan. Valida con zod antes de mandar el PUT.
 const EditBtn = ({ plan }: { plan: Plan }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  // Estado inicializado con los valores actuales del plan. Los campos
-  // nullables (descripcion, ubicacion) se convierten a "" porque los
-  // inputs de React no pueden tener value={null}.
+  /* Estado inicializado con los valores actuales del plan. Los campos
+     que pueden ser null (descripcion, ubicacion) se convierten a ""
+     porque los inputs de React no pueden tener value={null}. */
   const [form, setForm] = useState<FormData>({
     titulo: plan.titulo,
     categoria: plan.categoria,
@@ -70,7 +71,7 @@ const EditBtn = ({ plan }: { plan: Plan }) => {
 
   return (
     <>
-      {/* (You can open the modal using document.getElementById('ID').showModal() method) -> de DaisyUI, para no tener que usar el document usamos useRef que persiste la referencia al elemento html dialog*/}
+      {/* DaisyUI recomienda abrir el modal con document.getElementById, pero usamos useRef para mantener la referencia tipada. */}
       <button
         className="btn btn-success btn-soft btn-xs"
         onClick={handleClick}

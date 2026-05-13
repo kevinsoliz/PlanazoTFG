@@ -4,6 +4,7 @@ import authService from "@/app/services/auth-service";
 import { useRouter } from "next/navigation";
 import { FiLogOut } from "react-icons/fi";
 
+// Botón que cierra la sesión y vuelve a la portada (también si la llamada falla, para no dejar al usuario atascado).
 const LogoutBtn = () => {
   const router = useRouter();
   const handleLogout = () => {

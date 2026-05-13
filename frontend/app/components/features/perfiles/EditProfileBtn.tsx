@@ -12,6 +12,7 @@ type Props = {
 
 type Campo = "nombre" | "username" | "descripcion";
 
+// Botón que abre un modal con el formulario para editar el perfil. Valida con zod antes de mandar el PATCH.
 const EditProfileBtn = ({ perfil }: Props) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState<

@@ -9,6 +9,7 @@ type Props = {
   size?: "sm" | "md";
 };
 
+// Bloque pequeño con avatar + nombre + @username que enlaza al perfil del usuario.
 const UsuarioMini = ({
   userId,
   nombre,

@@ -3,6 +3,7 @@
 import { unirseAPlan } from "@/app/actions/planes";
 import { useState } from "react";
 
+// Botón para unirse a un plan. Muestra un toast con el resultado (éxito o error).
 const JoinBtn = ({ plan_id }: { plan_id: number }) => {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(

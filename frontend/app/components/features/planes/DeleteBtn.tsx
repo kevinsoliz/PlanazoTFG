@@ -2,6 +2,7 @@
 import { borrarPlan } from "@/app/actions/planes";
 import React, { useState } from "react";
 
+// Botón para borrar un plan (solo lo verá el creador). Si el backend rechaza, enseña un toast con el error.
 const DeleteBtn = ({ plan_id }: { plan_id: number }) => {
   const [toast, setToast] = useState<{ mensaje: string; tipo: string } | null>(
     null,
