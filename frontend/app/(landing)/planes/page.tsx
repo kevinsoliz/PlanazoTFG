@@ -2,6 +2,7 @@ import PlanCard from "@/app/components/features/planes/PlanCard";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes } from "@/app/services/planes";
 
+// Listado público de planes (sin login). Para apuntarse hay que registrarse.
 const PlanesPublic = async () => {
   const planes = await getPlanes();
 

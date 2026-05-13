@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: "Descubre planes de deporte, cultura y ocio organizados por amigos con tus mismos gustos.",
 };
 
+// Página principal pública: hero, badges, features, "cómo funciona" y CTA final.
 export default function Home() {
   return (
     <main>
