@@ -16,9 +16,7 @@ interface Props {
   userId: number;
 }
 
-// Este componente solo se ve en la versión móvil
-// Controla el toggler con el state showCreados (los planes creados se muestran por defecto)
-
+// Solo se ve en móvil. Cambia entre la lista de planes creados y la de apuntados con un toggle.
 const MisPlanesToggle = ({ creados, apuntados, userName, userId }: Props) => {
   const [showCreados, setShowCreados] = useState(true);
 

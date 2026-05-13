@@ -12,6 +12,9 @@ interface Props {
   children?: ReactNode
 }
 
+/* Tarjeta de plan reutilizable: muestra creador, título, descripción, fecha, ubicación,
+   plazas y categoría. Por children le pasamos los botones que cambian según el contexto
+   (Join, Edit, Delete, Abandonar, etc.). */
 const PlanCard = ({ plan, children }: Props) => {
 
     const dateObj = new Date(plan.fecha + "Z");

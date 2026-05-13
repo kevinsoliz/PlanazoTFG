@@ -5,14 +5,15 @@ import { useRef } from "react";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { FiChevronDown } from "react-icons/fi";
 
+// Desplegable para filtrar planes por categoría. Pone la elección en la URL como ?categoria=...
 const CategoriaFiltro = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const categoriaActual = searchParams.get("categoria") ?? "";
-  // Ref al <details> para poder cerrarlo programáticamente tras seleccionar.
-  // <details> nativo se mantiene abierto hasta que se vuelve a clicar el summary;
-  // forzando removeAttribute("open") simulamos el cierre tipo dropdown.
+  /* Ref al <details> para poder cerrarlo a mano tras seleccionar una categoría.
+     El <details> nativo se queda abierto hasta que se vuelve a clicar el summary;
+     con removeAttribute("open") forzamos el cierre tipo dropdown. */
   const detailsRef = useRef<HTMLDetailsElement>(null);
 
   const labelActual = categoriaActual || "Todas las categorías";

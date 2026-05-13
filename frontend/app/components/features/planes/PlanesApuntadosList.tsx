@@ -1,6 +1,7 @@
 import { getPlanesApuntados } from "@/app/services/planes";
 import Avatar from "../../ui/Avatar";
 
+// Lista compacta de los planes a los que el usuario está apuntado (usada en la sidebar).
 const PlanesApuntadosList = async () => {
   const planes = await getPlanesApuntados();
 
