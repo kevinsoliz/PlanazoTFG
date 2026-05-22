@@ -24,6 +24,7 @@ const io = new Server(server, {
   connectionStateRecovery: {}, // {} = activa la recuperación de conexiones caídas con defaults
   cors: {
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true,
   },
 });
 
@@ -38,7 +39,7 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", process.env.FRONTEND_URL || ""].filter(Boolean),
+    origin: ["http://localhost:3000", process.env.FRONTEND_URL || ""].filter(Boolean), 
     credentials: true, // para que el navegador envíe la cookie de sesión
   }),
 );
@@ -52,28 +53,29 @@ app.set("trust proxy", 1);
 // que devuelva la clase Store que luego se instancia con 'new PGStore()'.
 const PGStore = connectPgSimple(session);
 
-app.use(
-  session({
-    store: new PGStore({
-      pool,
-      createTableIfMissing: true,
-    }),
-    secret: process.env.SESSION_SECRET || "secreto_desarrollo", // el fallback solo vale en dev; en producción la env var es obligatoria
-    name: "session_id",
-    resave: false,         // no reescribir la sesión en cada request si no ha cambiado
-    saveUninitialized: false, // no crear sesión vacía para visitantes anónimos
-    cookie: {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    },
-  }),
-);
+const mySessionConfig = session({
+      store: new PGStore({
+        pool,
+        createTableIfMissing: true,
+      }),
+      secret: process.env.SESSION_SECRET || "secreto_desarrollo", // el fallback solo vale en dev; en producción la env var es obligatoria
+      name: "session_id",
+      resave: false,         // no reescribir la sesión en cada request si no ha cambiado
+      saveUninitialized: false, // no crear sesión vacía para visitantes anónimos
+      cookie: {
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      },
+    });
 
+app.use(mySessionConfig);
 app.use("/api/auth", authRoutes);
 app.use("/api", perfilRoutes);
 app.use("/api/planes", planRoutes);
+
+io.engine.use(mySessionConfig); // Compartimos la configuración de sesión con Socket.IO para acceder a req.session en los handlers de Socket.IO
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });

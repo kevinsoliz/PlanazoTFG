@@ -27,12 +27,12 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
   // Ejecutado cuando el cliente hace: socket.emit('join_plan', planId)
   // Validamos que el usuario esté inscrito en el plan ANTES de permitir acceso
   socket.on('join_plan', async (planId: number) => {
-    // PASO 1.1: Extraer userId del handshake (autenticación inicial)
-    // El handshake.auth contiene los datos que envió el cliente al conectarse
-    const userId = socket.handshake.auth.userId;
+    // PASO 1.1: Extraer userId de la sesión (establecida al iniciar sesión)
+    const req = socket.request as any; // Cast a any para acceder a req.session sin error de tipos
+    const userId = req.session?.userId; // userId se establece al iniciar sesión
     if (!userId) {
-      // Si no hay userId, el socket no está autenticado
-      // Abandonamos sin emitir error (fallo silencioso por seguridad)
+      // Sin autenticación, no unimos a ninguna sala
+      // No emitimos error al cliente (fallo silencioso por seguridad)
       return;
     }
 
@@ -59,7 +59,8 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
   socket.on('chat_message', async (msg: string, user: string, planId: number) => {
     try {
       // PASO 2.1: Extraer userId de autenticación (igual que join_plan)
-      const userId = socket.handshake.auth.userId;
+      const req = socket.request as any;
+      const userId = req.session?.userId;
       if (!userId) {
         // Sin autenticación, no procesamos el mensaje
         return;
