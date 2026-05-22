@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import { getChatDB } from '../lib/chatDb';
+import { getChatDB } from '../repositories/chatDb';
 import { obtener as obtenerPerfil } from '../services/perfiles.service';
 import { esParticipanteEnPlan } from '../services/planes.service';
 
