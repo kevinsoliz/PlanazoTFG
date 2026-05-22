@@ -67,7 +67,7 @@ const UsuarioPage = async ({ params }: Props) => {
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan}>
             {apuntadosIds.has(plan.id) ? (
-              <span className="badge badge-success badge-sm">Apuntado</span>
+              <span className="badge badge-success badge-sm badge-dash place-self-center">Apuntado</span>
             ) : (
               <JoinBtn plan_id={plan.id} />
             )}
