@@ -65,3 +65,11 @@ CREATE TABLE IF NOT EXISTS users (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(plan_id, usuario_id)
   );
+
+  -- Tabla intermedia de favoritos: relacion N:M entre usuarios y planes. PK compuesta para que un usuario no pueda marcar el mismo plan dos veces.
+  CREATE TABLE IF NOT EXISTS favoritos (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    plan_id INTEGER NOT NULL REFERENCES planes(id),
+    created_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (user_id, plan_id)
+  );
