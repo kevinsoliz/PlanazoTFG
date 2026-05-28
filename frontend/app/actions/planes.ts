@@ -32,6 +32,34 @@ export async function abandonarPlan(planId: number) {
     return { ok: true };
 }
 
+// Marcar un plan como favorito. Refrescamos /home y /mis-planes porque el corazon aparece en ambas.
+export async function marcarFavoritoPlan(planId: number) {
+    const res = await fetchServer(`/api/planes/${planId}/favorite`, { method: "POST" });
+
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al marcar como favorito" };
+    }
+
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+
+    return { ok: true };
+}
+
+// Quitar un plan de favoritos.
+export async function desmarcarFavoritoPlan(planId: number) {
+    const res = await fetchServer(`/api/planes/${planId}/favorite`, { method: "DELETE" });
+
+    if (!res.ok) {
+        return { error: res.data?.error ?? "Error al quitar de favoritos" };
+    }
+
+    revalidatePath("/home");
+    revalidatePath("/mis-planes");
+
+    return { ok: true };
+}
+
 // Borrar un plan (solo el creador puede hacerlo; el backend lo comprueba).
 export async function borrarPlan(planId: number) {
     const res = await fetchServer(`/api/planes/${planId}`, { method: "DELETE"});
