@@ -23,6 +23,7 @@ export interface Plan {
     creador_descripcion?: string | null,
     mi_voto?: number | string | null,
     nota_media?: number | string | null,
+    es_favorito?: boolean,
 }
 
 // Datos que se mandan al backend al crear (POST) o editar (PUT) un plan.
