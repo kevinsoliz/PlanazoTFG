@@ -25,6 +25,9 @@ router.get("/creados", requireAuth, planesController.listarCreados);
 // GET /api/planes/apuntado: planes a los que el usuario está apuntado (sin contar los suyos).
 router.get("/apuntado", requireAuth, planesController.listarApuntado);
 
+// GET /api/planes/favoritos: planes marcados como favoritos por el usuario logueado.
+router.get("/favoritos", requireAuth, planesController.listarFavoritos);
+
 // GET /api/planes/usuario/:id: planes creados por un usuario concreto.
 router.get("/usuario/:id", requireAuth, planesController.listarCreadosPorUsuario);
 
@@ -36,6 +39,12 @@ router.post("/:id/join", requireAuth, planesController.unirse);
 
 // DELETE /api/planes/:id/join: salir de un plan.
 router.delete("/:id/join", requireAuth, planesController.salir);
+
+// POST /api/planes/:id/favorite: marcar un plan como favorito.
+router.post("/:id/favorite", requireAuth, planesController.favoritear);
+
+// DELETE /api/planes/:id/favorite: quitar un plan de favoritos.
+router.delete("/:id/favorite", requireAuth, planesController.desfavoritear);
 
 // DELETE /api/planes/:id: borrar plan (solo creador).
 router.delete("/:id", requireAuth, planesController.borrar);
