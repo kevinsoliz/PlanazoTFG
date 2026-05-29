@@ -1,4 +1,5 @@
 import Avatar from "@/app/components/ui/Avatar";
+import FavoritoBtn from "@/app/components/features/planes/FavoritoBtn";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import { CATEGORIAS } from "@/app/constants/categorias";
@@ -66,6 +67,7 @@ const UsuarioPage = async ({ params }: Props) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {planes.map((plan) => (
           <PlanCard key={plan.id} plan={plan}>
+            <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />
             {apuntadosIds.has(plan.id) ? (
               <span className="badge badge-success badge-sm badge-dash place-self-center">Apuntado</span>
             ) : (
