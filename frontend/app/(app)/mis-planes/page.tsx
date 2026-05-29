@@ -1,6 +1,7 @@
 import AbandonarBtn from "@/app/components/features/planes/AbandonarBtn";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
+import FavoritoBtn from "@/app/components/features/planes/FavoritoBtn";
 import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
@@ -40,6 +41,7 @@ const MisPlanes = async () => {
           </header>
           {creados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
+              <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
               <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} /> {/* Botón de chat */}
@@ -56,6 +58,7 @@ const MisPlanes = async () => {
           </header>
           {apuntados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
+              <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />
               <AbandonarBtn plan_id={plan.id} />
               <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} /> {/* Botón de chat */}
             </PlanCard>
