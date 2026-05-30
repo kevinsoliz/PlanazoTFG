@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import { getChatDB } from '../lib/chatDb';
+import { getChatDB } from '../repositories/chatDb';
 import { obtener as obtenerPerfil } from '../services/perfiles.service';
 import { esParticipanteEnPlan } from '../services/planes.service';
 
@@ -27,12 +27,12 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
   // Ejecutado cuando el cliente hace: socket.emit('join_plan', planId)
   // Validamos que el usuario esté inscrito en el plan ANTES de permitir acceso
   socket.on('join_plan', async (planId: number) => {
-    // PASO 1.1: Extraer userId del handshake (autenticación inicial)
-    // El handshake.auth contiene los datos que envió el cliente al conectarse
-    const userId = socket.handshake.auth.userId;
+    // PASO 1.1: Extraer userId de la sesión (establecida al iniciar sesión)
+    const req = socket.request as any; // Cast a any para acceder a req.session sin error de tipos
+    const userId = req.session?.userId; // userId se establece al iniciar sesión
     if (!userId) {
-      // Si no hay userId, el socket no está autenticado
-      // Abandonamos sin emitir error (fallo silencioso por seguridad)
+      // Sin autenticación, no unimos a ninguna sala
+      // No emitimos error al cliente (fallo silencioso por seguridad)
       return;
     }
 
@@ -59,7 +59,8 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
   socket.on('chat_message', async (msg: string, user: string, planId: number) => {
     try {
       // PASO 2.1: Extraer userId de autenticación (igual que join_plan)
-      const userId = socket.handshake.auth.userId;
+      const req = socket.request as any;
+      const userId = req.session?.userId;
       if (!userId) {
         // Sin autenticación, no procesamos el mensaje
         return;
@@ -82,23 +83,16 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
       const avatar = perfil.avatar_url;
 
       // PASO 2.4: INSERTAR MENSAJE EN BASE DE DATOS
-      // Almacenamos: contenido, quién lo escribió (user_id), en qué plan
-      // SQLite genera automáticamente:
-      // - id (AUTOINCREMENT)
-      // - created_at (TIMESTAMP DEFAULT NOW())
-      const result = await chatDb.run(
-        'INSERT INTO messages (content, user_id, plan_id) VALUES ($1, $2, $3)',
-        [msg, userId, planId]
-      );
+      const chatDb = await getChatDB(); 
+      const result = await chatDb.insertMessage({
+        content: msg,
+        user_id: userId,
+        plan_id: planId
+      });
+
 
       // PASO 2.5: OBTENER TIMESTAMP EXACTO del mensaje
-      // Consultamos el timestamp que generó SQLite (con milisegundos precisos)
-      // Si algo falla, usamos la hora actual del servidor como fallback
-      const createdRows = await chatDb.all(
-        'SELECT created_at FROM messages WHERE id = $1',
-        [result.lastID]
-      );
-      const createdAt = createdRows[0]?.created_at ?? new Date().toISOString();
+      const createdAt = result.created_at || Date();
 
       // PASO 2.6: EMITIR MENSAJE A TODOS EN LA SALA
       // io.to(`plan_${planId}`) = enviar a TODOS los clientes en esa sala
@@ -107,7 +101,7 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
       io.to(`plan_${planId}`).emit(
         'chat_message',
         msg,                           // Contenido del mensaje
-        result.lastID?.toString(),     // ID único (usado para recuperación offline)
+        result.id?.toString(),         // ID único (usado para recuperación offline)
         user,                          // Nombre del usuario que escribió
         avatar,                        // Avatar para mostrar en UI
         new Date(createdAt).toISOString(), // Timestamp ISO para zona horaria local del usuario
@@ -140,13 +134,7 @@ export async function registerChatHandlers(io: Server, socket: Socket) {
       const planId = socket.handshake.auth.planId;
       if (planId) {
         // PASO 3.3: CONSULTAR MENSAJES NUEVOS EN BD
-        // WHERE id > lastId: traer solo mensajes más nuevos que los que ya tiene
-        // ORDER BY id ASC: enviarlos en orden cronológico
-        // Ejemplo: si cliente tiene hasta ID 5, obtenemos 6, 7, 8, etc.
-        const results = await chatDb.all(
-          'SELECT id, content, user_id, created_at FROM messages WHERE id > $1 AND plan_id = $2 ORDER BY id ASC',
-          [lastId, planId]
-        );
+        const results = await chatDb.getMessagesByPlan(planId);
 
         // PASO 3.4: PARA CADA MENSAJE, EMITIR INDIVIDUALMENTE
         // No usamos io.to() aquí (eso sería a toda la sala)

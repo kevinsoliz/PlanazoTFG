@@ -7,7 +7,6 @@ import { io, Socket } from 'socket.io-client';
 interface ChatAuth {
   serverOffset: string | number;
   planId: number;
-  userId: number; // Agregamos el userId para identificar al usuario en el backend
 }
 
 // Extendemos la interfaz original de Socket.io
@@ -25,10 +24,10 @@ export function useChat(planId: number, userName: string, userId: number) {
     // Conectamos al backend usando la URL definida en las variables de entorno
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000"; 
     socketRef.current = io(backendUrl, {
+      withCredentials: true, // para enviar cookies de sesión
       auth: { 
         serverOffset: 0, 
-        planId,
-        userId
+        planId
       }
     }) as CustomSocket;
 
