@@ -54,8 +54,7 @@ const PerfilPage = async () => {
         {/* Grid de planes creados */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planesCreados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
-              <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />
+            <PlanCard key={plan.id} plan={plan} favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />}>
               <EditBtn plan={plan} />
               <DeleteBtn plan_id={plan.id} />
             </PlanCard>

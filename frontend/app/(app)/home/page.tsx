@@ -30,8 +30,7 @@ const Planes = async ({ searchParams }: Props) => {
         <CategoriaFiltro />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planes.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
-              <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />
+            <PlanCard key={plan.id} plan={plan} favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />}>
               {apuntadosIds.has(plan.id) ? (
               <span className="badge badge-success badge-sm badge-dash place-self-center">Apuntado</span>
               ) : (
