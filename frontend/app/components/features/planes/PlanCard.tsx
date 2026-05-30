@@ -81,7 +81,7 @@ const PlanCard = ({ plan, favorito, children }: Props) => {
 
           {/* Botones */}
           <div className="flex items-center gap-3">
-            {favorito}
+            {!planTerminado && favorito}
             <div className="flex gap-3 ml-auto">
               <DetalleBtn plan_id={plan.id} />
               {children}
