@@ -88,12 +88,12 @@ export async function listar(categoria?: string, userId?: number): Promise<Plan[
 }
 
 
-export async function listarCreadosPor(userId: number): Promise<Plan[]> {
+export async function listarCreadosPor(creatorId: number, viewerId?: number): Promise<Plan[]> {
   const resultado = await pool.query(
     `SELECT planes.*,
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
         (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
-        EXISTS (SELECT 1 FROM favoritos WHERE favoritos.plan_id = planes.id AND favoritos.user_id = $1) AS es_favorito,
+        EXISTS (SELECT 1 FROM favoritos WHERE favoritos.plan_id = planes.id AND favoritos.user_id = $2) AS es_favorito,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url
@@ -102,7 +102,7 @@ export async function listarCreadosPor(userId: number): Promise<Plan[]> {
         JOIN perfiles ON perfiles.user_id = users.id
         WHERE planes.creator_id = $1
         ORDER BY planes.fecha ASC`,
-    [userId],
+    [creatorId, viewerId ?? null],
   );
   return resultado.rows;
 }

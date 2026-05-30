@@ -33,7 +33,7 @@ export async function listar(req: Request, res: Response) {
 
 // GET /api/planes/creados. Planes del usuario logueado.
 export async function listarCreados(req: Request, res: Response) {
-  const planes = await planesService.listarCreadosPor(req.session.userId!);
+  const planes = await planesService.listarCreadosPor(req.session.userId!, req.session.userId!);
   res.json({ planes });
 }
 
@@ -126,7 +126,7 @@ export async function listarCreadosPorUsuario(req: Request, res: Response) {
     throw new AppError(400, "ID de usuario inválido");
   }
 
-  const planes = await planesService.listarCreadosPor(userId);
+  const planes = await planesService.listarCreadosPor(userId, req.session.userId);
   res.json({ planes });
 }
 
