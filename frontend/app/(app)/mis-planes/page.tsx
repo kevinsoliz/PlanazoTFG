@@ -40,7 +40,7 @@ const MisPlanes = async () => {
             <CounterBadge value={creados.length} accent="#F87A36" />
           </header>
           {creados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />}>
+            <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
               <EditBtn plan={plan} />
               <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} /> {/* Botón de chat */}

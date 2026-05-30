@@ -80,9 +80,9 @@ const PlanCard = ({ plan, favorito, children }: Props) => {
           </div>
 
           {/* Botones */}
-          <div className="flex justify-between items-center gap-3">
+          <div className="flex items-center gap-3">
             {favorito}
-            <div className="flex gap-3">
+            <div className="flex gap-3 ml-auto">
               <DetalleBtn plan_id={plan.id} />
               {children}
             </div>

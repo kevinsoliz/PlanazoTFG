@@ -1,7 +1,6 @@
 import Avatar from "@/app/components/ui/Avatar";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
-import FavoritoBtn from "@/app/components/features/planes/FavoritoBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
 import EditProfileBtn from "@/app/components/features/perfiles/EditProfileBtn";
@@ -54,7 +53,7 @@ const PerfilPage = async () => {
         {/* Grid de planes creados */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planesCreados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />}>
+            <PlanCard key={plan.id} plan={plan}>
               <EditBtn plan={plan} />
               <DeleteBtn plan_id={plan.id} />
             </PlanCard>
