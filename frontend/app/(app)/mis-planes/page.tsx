@@ -28,7 +28,7 @@ const MisPlanes = async () => {
       />
 
       <div className="lg:hidden">
-        <MisPlanesToggle creados={creados} apuntados={apuntados} userName={userName} userId={userId} />
+        <MisPlanesToggle creados={creados} apuntados={apuntados} favoritos={favoritos} userName={userName} userId={userId} />
       </div>
 
       <div className="hidden lg:flex gap-6">

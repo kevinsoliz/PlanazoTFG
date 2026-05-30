@@ -7,41 +7,54 @@ import DeleteBtn from "./DeleteBtn";
 import EditBtn from "./EditBtn";
 import AbandonarBtn from "./AbandonarBtn";
 import ChatModalBtn from "./ChatModalBtn";
-import CounterBadge from "@/app/components/ui/CounterBadge";
+import FavoritoBtn from "./FavoritoBtn";
+import JoinBtn from "./JoinBtn";
 
 interface Props {
   creados: Plan[];
   apuntados: Plan[];
+  favoritos?: Plan[];
   userName: string;
   userId: number;
 }
 
-// Solo se ve en móvil. Cambia entre la lista de planes creados y la de apuntados con un toggle.
-const MisPlanesToggle = ({ creados, apuntados, userName, userId }: Props) => {
-  const [showCreados, setShowCreados] = useState(true);
+type Tab = "creados" | "apuntados" | "favoritos";
+
+// Solo se ve en móvil. Alterna entre creados, apuntados y favoritos con pestañas.
+const MisPlanesToggle = ({ creados, apuntados, favoritos = [], userName, userId }: Props) => {
+  const [tab, setTab] = useState<Tab>("creados");
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* toggler con sus labels */}
-      <div className="flex items-center justify-center gap-3 bg-primary rounded-sm py-2">
-        <span className="font-bold text-white">Apuntados</span>
-        <input
-          type="checkbox"
-          checked={showCreados}
-          onChange={(e) => setShowCreados(e.target.checked)}
-          className="toggle border-indigo-600 bg-indigo-500 checked:border-orange-500 checked:bg-orange-400 checked:text-orange-800"
-        />
-        <span className="font-bold text-white">Creados</span>
+    <div className="flex flex-col gap-4">
+      <div role="tablist" className="tabs tabs-box">
+        <button
+          role="tab"
+          className={`tab ${tab === "creados" ? "tab-active" : ""}`}
+          onClick={() => setTab("creados")}
+        >
+          <span className="font-(family-name:--font-bagel-fat-one)">Creados</span>
+          <span className="badge badge-sm badge-warning ml-2">{creados.length}</span>
+        </button>
+        <button
+          role="tab"
+          className={`tab ${tab === "apuntados" ? "tab-active" : ""}`}
+          onClick={() => setTab("apuntados")}
+        >
+          <span className="font-(family-name:--font-bagel-fat-one)">Apuntados</span>
+          <span className="badge badge-sm badge-warning ml-2">{apuntados.length}</span>
+        </button>
+        <button
+          role="tab"
+          className={`tab ${tab === "favoritos" ? "tab-active" : ""}`}
+          onClick={() => setTab("favoritos")}
+        >
+          <span className="font-(family-name:--font-bagel-fat-one)">Favoritos</span>
+          <span className="badge badge-sm badge-warning ml-2">{favoritos.length}</span>
+        </button>
       </div>
 
-      {showCreados ? (
-        <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3">
-            <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
-              Has creado
-            </h2>
-            <CounterBadge value={creados.length} accent="#F87A36" />
-          </header>
+      {tab === "creados" && (
+        <div className="flex flex-col gap-4">
           {creados.map((plan) => (
             <PlanCard key={plan.id} plan={plan}>
               <DeleteBtn plan_id={plan.id} />
@@ -49,22 +62,36 @@ const MisPlanesToggle = ({ creados, apuntados, userName, userId }: Props) => {
               <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} />
             </PlanCard>
           ))}
-        </section>
-      ) : (
-        <section className="flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3">
-            <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
-              Te has apuntado a
-            </h2>
-            <CounterBadge value={apuntados.length} accent="#FCCE09" />
-          </header>
+        </div>
+      )}
+
+      {tab === "apuntados" && (
+        <div className="flex flex-col gap-4">
           {apuntados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />}
+            >
               <AbandonarBtn plan_id={plan.id} />
               <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} />
             </PlanCard>
           ))}
-        </section>
+        </div>
+      )}
+
+      {tab === "favoritos" && (
+        <div className="flex flex-col gap-4">
+          {favoritos.map((plan) => (
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? true} />}
+            >
+              <JoinBtn plan_id={plan.id} />
+            </PlanCard>
+          ))}
+        </div>
       )}
     </div>
   );
