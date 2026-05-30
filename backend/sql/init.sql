@@ -68,8 +68,8 @@ CREATE TABLE IF NOT EXISTS users (
 
   -- Tabla intermedia de favoritos: relacion N:M entre usuarios y planes. PK compuesta para que un usuario no pueda marcar el mismo plan dos veces.
   CREATE TABLE IF NOT EXISTS favoritos (
-    user_id INTEGER NOT NULL REFERENCES users(id),
-    plan_id INTEGER NOT NULL REFERENCES planes(id),
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    plan_id INTEGER NOT NULL REFERENCES planes(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (user_id, plan_id)
   );
