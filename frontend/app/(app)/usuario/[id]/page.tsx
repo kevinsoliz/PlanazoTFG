@@ -1,9 +1,11 @@
 import Avatar from "@/app/components/ui/Avatar";
+import FavoritoBtn from "@/app/components/features/planes/FavoritoBtn";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import { CATEGORIAS } from "@/app/constants/categorias";
 import { getPerfilPorId } from "@/app/services/perfiles";
 import { getPlanesCreadosPor, getPlanesApuntados } from "@/app/services/planes";
+import { getCurrentUser } from "@/app/services/auth-server";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -22,6 +24,7 @@ const UsuarioPage = async ({ params }: Props) => {
   const planes = await getPlanesCreadosPor(userId);
   const apuntados = await getPlanesApuntados();
   const apuntadosIds = new Set(apuntados.map((p) => p.id));
+  const usuario = await getCurrentUser();
   const userCategorias = perfil.categorias ? perfil.categorias.split(",") : [];
 
   return (
@@ -65,7 +68,7 @@ const UsuarioPage = async ({ params }: Props) => {
       {/* Grid de planes del usuario */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {planes.map((plan) => (
-          <PlanCard key={plan.id} plan={plan}>
+          <PlanCard key={plan.id} plan={plan} favorito={plan.creator_id !== usuario?.id ? <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} /> : undefined}>
             {apuntadosIds.has(plan.id) ? (
               <span className="badge badge-success badge-sm badge-dash place-self-center">Apuntado</span>
             ) : (

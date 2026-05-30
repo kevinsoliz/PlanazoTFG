@@ -55,12 +55,15 @@ export async function crear(
 }
 
 
-export async function listar(categoria?: string): Promise<Plan[]> {
+export async function listar(categoria?: string, userId?: number): Promise<Plan[]> {
   /* La subquery (SELECT COUNT...) calcula los participantes de cada plan en
      una sola query. JOIN con users y perfiles para traer también los datos
-     del creador (nombre, username, avatar_url) y pintarlos en la lista. */
+     del creador (nombre, username, avatar_url) y pintarlos en la lista.
+     userId puede ser null para usuarios no logueados; en ese caso el EXISTS
+     de es_favorito devuelve false porque user_id = NULL no matchea nada. */
   const baseSelect = `SELECT planes.*,
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        EXISTS (SELECT 1 FROM favoritos WHERE favoritos.plan_id = planes.id AND favoritos.user_id = $1) AS es_favorito,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url
@@ -71,24 +74,26 @@ export async function listar(categoria?: string): Promise<Plan[]> {
 
   if (categoria) {
     const resultado = await pool.query(
-      `${baseSelect} AND planes.categoria = $1 ORDER BY planes.fecha ASC`,
-      [categoria],
+      `${baseSelect} AND planes.categoria = $2 ORDER BY planes.fecha ASC`,
+      [userId ?? null, categoria],
     );
     return resultado.rows;
   }
 
   const resultado = await pool.query(
     `${baseSelect} ORDER BY planes.fecha ASC`,
+    [userId ?? null],
   );
   return resultado.rows;
 }
 
 
-export async function listarCreadosPor(userId: number): Promise<Plan[]> {
+export async function listarCreadosPor(creatorId: number, viewerId?: number): Promise<Plan[]> {
   const resultado = await pool.query(
     `SELECT planes.*,
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
         (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
+        EXISTS (SELECT 1 FROM favoritos WHERE favoritos.plan_id = planes.id AND favoritos.user_id = $2) AS es_favorito,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url
@@ -97,7 +102,7 @@ export async function listarCreadosPor(userId: number): Promise<Plan[]> {
         JOIN perfiles ON perfiles.user_id = users.id
         WHERE planes.creator_id = $1
         ORDER BY planes.fecha ASC`,
-    [userId],
+    [creatorId, viewerId ?? null],
   );
   return resultado.rows;
 }
@@ -109,6 +114,7 @@ export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
         (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
         (SELECT puntuacion FROM valoraciones WHERE plan_id = planes.id AND usuario_id = $1) AS mi_voto,
+        EXISTS (SELECT 1 FROM favoritos WHERE favoritos.plan_id = planes.id AND favoritos.user_id = $1) AS es_favorito,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url
@@ -118,6 +124,29 @@ export async function listarApuntadosDe(userId: number): Promise<Plan[]> {
         JOIN perfiles ON perfiles.user_id = users.id
         WHERE plan_participants.user_id = $1
         AND planes.creator_id != $1
+        ORDER BY planes.fecha ASC`,
+    [userId],
+  );
+  return resultado.rows;
+}
+
+
+export async function listarFavoritosDe(userId: number): Promise<Plan[]> {
+  const resultado = await pool.query(
+    `SELECT planes.*,
+        (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
+        (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
+        (SELECT puntuacion FROM valoraciones WHERE plan_id = planes.id AND usuario_id = $1) AS mi_voto,
+        true AS es_favorito,
+        users.nombre AS creador_nombre,
+        perfiles.username AS creador_username,
+        perfiles.avatar_url AS creador_avatar_url
+        FROM planes
+        JOIN favoritos ON favoritos.plan_id = planes.id
+        JOIN users ON planes.creator_id = users.id
+        JOIN perfiles ON perfiles.user_id = users.id
+        WHERE favoritos.user_id = $1
+        AND planes.fecha > NOW()
         ORDER BY planes.fecha ASC`,
     [userId],
   );
@@ -143,6 +172,7 @@ export async function obtenerDetalle(planId: number, userId?: number): Promise<P
         (SELECT COUNT(*) FROM plan_participants WHERE plan_participants.plan_id = planes.id) AS participants,
         (SELECT COALESCE(ROUND(AVG(puntuacion), 1), 0) FROM valoraciones WHERE plan_id = planes.id) AS nota_media,
         (SELECT puntuacion FROM valoraciones WHERE plan_id = planes.id AND usuario_id = $2) AS mi_voto,
+        EXISTS (SELECT 1 FROM favoritos WHERE favoritos.plan_id = planes.id AND favoritos.user_id = $2) AS es_favorito,
         users.nombre AS creador_nombre,
         perfiles.username AS creador_username,
         perfiles.avatar_url AS creador_avatar_url,
@@ -243,6 +273,52 @@ export async function salir(planId: number, userId: number): Promise<void> {
 
   if (resultado.rowCount === 0) {
     throw new AppError(400, "No estabas en este plan");
+  }
+}
+
+
+export async function marcarFavorito(planId: number, userId: number): Promise<void> {
+  const plan = await pool.query("SELECT * FROM planes WHERE id = $1", [planId]);
+
+  if (plan.rows.length === 0) {
+    throw new AppError(404, "Plan no encontrado");
+  }
+
+  if (plan.rows[0].creator_id === userId) {
+    throw new AppError(400, "No puedes marcar como favorito tu propio plan");
+  }
+
+  if (new Date(plan.rows[0].fecha) <= new Date()) {
+    throw new AppError(400, "No puedes marcar como favorito un plan que ya ha terminado");
+  }
+
+  try {
+    await pool.query(
+      "INSERT INTO favoritos (plan_id, user_id) VALUES ($1, $2)",
+      [planId, userId],
+    );
+  } catch (err: unknown) {
+    if (
+      typeof err === "object" &&
+      err !== null &&
+      "code" in err &&
+      (err as { code: string }).code === "23505"
+    ) {
+      throw new AppError(400, "Ya tienes este plan en favoritos");
+    }
+    throw err;
+  }
+}
+
+
+export async function desmarcarFavorito(planId: number, userId: number): Promise<void> {
+  const resultado = await pool.query(
+    "DELETE FROM favoritos WHERE plan_id = $1 AND user_id = $2",
+    [planId, userId],
+  );
+
+  if (resultado.rowCount === 0) {
+    throw new AppError(400, "No tenías este plan en favoritos");
   }
 }
 

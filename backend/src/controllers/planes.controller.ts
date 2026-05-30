@@ -25,7 +25,7 @@ export async function listar(req: Request, res: Response) {
   const categoria =
     typeof req.query.categoria === "string" ? req.query.categoria : undefined;
 
-  const planes = await planesService.listar(categoria);
+  const planes = await planesService.listar(categoria, req.session.userId);
 
   res.json({ planes });
 }
@@ -33,7 +33,7 @@ export async function listar(req: Request, res: Response) {
 
 // GET /api/planes/creados. Planes del usuario logueado.
 export async function listarCreados(req: Request, res: Response) {
-  const planes = await planesService.listarCreadosPor(req.session.userId!);
+  const planes = await planesService.listarCreadosPor(req.session.userId!, req.session.userId!);
   res.json({ planes });
 }
 
@@ -126,7 +126,7 @@ export async function listarCreadosPorUsuario(req: Request, res: Response) {
     throw new AppError(400, "ID de usuario inválido");
   }
 
-  const planes = await planesService.listarCreadosPor(userId);
+  const planes = await planesService.listarCreadosPor(userId, req.session.userId);
   res.json({ planes });
 }
 
@@ -145,4 +145,37 @@ export async function valorar(req: Request, res: Response) {
   await planesService.valorar(planId, req.session.userId!, puntuacion);
 
   res.json({ message: "Valoración guardada" });
+}
+
+
+// POST /api/planes/:id/favorite. Marcar un plan como favorito.
+export async function favoritear(req: Request, res: Response) {
+  const planId = Number(req.params.id);
+  if (Number.isNaN(planId)) {
+    throw new AppError(400, "ID de plan inválido");
+  }
+
+  await planesService.marcarFavorito(planId, req.session.userId!);
+
+  res.json({ message: "Plan añadido a favoritos" });
+}
+
+
+// DELETE /api/planes/:id/favorite. Quitar un plan de favoritos.
+export async function desfavoritear(req: Request, res: Response) {
+  const planId = Number(req.params.id);
+  if (Number.isNaN(planId)) {
+    throw new AppError(400, "ID de plan inválido");
+  }
+
+  await planesService.desmarcarFavorito(planId, req.session.userId!);
+
+  res.json({ message: "Plan eliminado de favoritos" });
+}
+
+
+// GET /api/planes/favoritos. Planes que el usuario logueado tiene en favoritos.
+export async function listarFavoritos(req: Request, res: Response) {
+  const planes = await planesService.listarFavoritosDe(req.session.userId!);
+  res.json({ planes });
 }

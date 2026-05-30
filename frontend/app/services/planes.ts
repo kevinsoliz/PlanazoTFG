@@ -50,6 +50,15 @@ export async function getPlanesApuntados(): Promise<Plan[]> {
     return res.data?.planes ?? [];
 }
 
+// Planes que el usuario logueado tiene marcados como favoritos.
+export async function getPlanesFavoritos(): Promise<Plan[]> {
+    const res = await fetchServer("/api/planes/favoritos");
+
+    if (!res.ok) return [];
+
+    return res.data?.planes ?? [];
+}
+
 // Planes creados por un usuario concreto (para su perfil público).
 export async function getPlanesCreadosPor(userId: number): Promise<Plan[]> {
     const res = await fetchServer(`/api/planes/usuario/${userId}`);

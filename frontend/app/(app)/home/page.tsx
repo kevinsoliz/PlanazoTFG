@@ -1,9 +1,11 @@
 import CategoriaFiltro from "@/app/components/features/planes/CategoriaFiltro";
+import FavoritoBtn from "@/app/components/features/planes/FavoritoBtn";
 import JoinBtn from "@/app/components/features/planes/JoinBtn";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import PlanesApuntadosList from "@/app/components/features/planes/PlanesApuntadosList";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { getPlanes, getPlanesApuntados } from "@/app/services/planes";
+import { getCurrentUser } from "@/app/services/auth-server";
 
 
 // Listado de planes disponibles. Es un server component: los datos se piden antes de enviar el HTML al navegador.
@@ -17,6 +19,7 @@ const Planes = async ({ searchParams }: Props) => {
   const planes = await getPlanes(categoria);
   const apuntados = await getPlanesApuntados();
   const apuntadosIds = new Set(apuntados.map((p) => p.id));
+  const usuario = await getCurrentUser();
 
   return (
     
@@ -29,7 +32,7 @@ const Planes = async ({ searchParams }: Props) => {
         <CategoriaFiltro />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {planes.map((plan) => (
-            <PlanCard key={plan.id} plan={plan}>
+            <PlanCard key={plan.id} plan={plan} favorito={plan.creator_id !== usuario?.id ? <FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} /> : undefined}>
               {apuntadosIds.has(plan.id) ? (
               <span className="badge badge-success badge-sm badge-dash place-self-center">Apuntado</span>
               ) : (

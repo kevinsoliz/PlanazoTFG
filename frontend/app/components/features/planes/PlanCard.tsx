@@ -9,13 +9,14 @@ import MediaPlan from "../valoraciones/media-plan";
 
 interface Props {
   plan: Plan;
+  favorito?: ReactNode;
   children?: ReactNode
 }
 
 /* Tarjeta de plan reutilizable: muestra creador, título, descripción, fecha, ubicación,
    plazas y categoría. Por children le pasamos los botones que cambian según el contexto
    (Join, Edit, Delete, Abandonar, etc.). */
-const PlanCard = ({ plan, children }: Props) => {
+const PlanCard = ({ plan, favorito, children }: Props) => {
 
     const dateObj = new Date(plan.fecha + "Z");
     const planTerminado = dateObj < new Date();
@@ -79,9 +80,12 @@ const PlanCard = ({ plan, children }: Props) => {
           </div>
 
           {/* Botones */}
-          <div className="flex place-content-end gap-3">
-            <DetalleBtn plan_id={plan.id} />
-            {children}
+          <div className="flex items-center gap-3">
+            {!planTerminado && favorito}
+            <div className="flex gap-3 ml-auto">
+              <DetalleBtn plan_id={plan.id} />
+              {children}
+            </div>
           </div>
 
         </div>
