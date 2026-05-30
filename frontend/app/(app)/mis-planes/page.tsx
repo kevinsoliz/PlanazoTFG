@@ -1,12 +1,11 @@
-import AbandonarBtn from "@/app/components/features/planes/AbandonarBtn";
 import DeleteBtn from "@/app/components/features/planes/DeleteBtn";
 import EditBtn from "@/app/components/features/planes/EditBtn";
-import FavoritoBtn from "@/app/components/features/planes/FavoritoBtn";
+import MisPlanesDesktopTabs from "@/app/components/features/planes/MisPlanesDesktopTabs";
 import MisPlanesToggle from "@/app/components/features/planes/MisPlanesToggle";
 import PlanCard from "@/app/components/features/planes/PlanCard";
 import CounterBadge from "@/app/components/ui/CounterBadge";
 import PageHeader from "@/app/components/ui/PageHeader";
-import { getPlanesApuntados, getPlanesCreados } from "@/app/services/planes";
+import { getPlanesApuntados, getPlanesCreados, getPlanesFavoritos } from "@/app/services/planes";
 import { fetchServer } from "@/app/lib/api-server"; // Función para obtener datos del usuario 
 import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Importar nuevo botón
 
@@ -14,6 +13,7 @@ import ChatModalBtn from "@/app/components/features/planes/ChatModalBtn"; // Imp
 const MisPlanes = async () => {
   const creados = await getPlanesCreados();
   const apuntados = await getPlanesApuntados();
+  const favoritos = await getPlanesFavoritos();
 
 // Obtener el nombre de usuario para el chat
   const response = await fetchServer('/api/auth/me'); // Endpoint para obtener datos del usuario
@@ -48,20 +48,12 @@ const MisPlanes = async () => {
           ))}
         </section>
         <div className="divider divider-horizontal"></div>
-        <section className="flex-1 flex flex-col gap-4">
-          <header className="flex items-center justify-between border-b-2 border-dashed border-neutral/30 pb-2 mx-3 lg:sticky lg:top-56 lg:z-10 lg:backdrop-blur-md lg:bg-base-100/40">
-            <h2 className="font-(family-name:--font-bagel-fat-one) text-2xl">
-              Te has apuntado a
-            </h2>
-            <CounterBadge value={apuntados.length} accent="#FCCE09" />
-          </header>
-          {apuntados.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} favorito={<FavoritoBtn plan_id={plan.id} es_favorito={plan.es_favorito ?? false} />}>
-              <AbandonarBtn plan_id={plan.id} />
-              <ChatModalBtn planId={plan.id} userName={userName} userId={userId} planTitulo={plan.titulo} /> {/* Botón de chat */}
-            </PlanCard>
-          ))}
-        </section>
+        <MisPlanesDesktopTabs
+          apuntados={apuntados}
+          favoritos={favoritos}
+          userName={userName}
+          userId={userId}
+        />
       </div>
     </div>
   );
