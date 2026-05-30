@@ -1,7 +1,7 @@
 'use client'
 import { marcarFavoritoPlan, desmarcarFavoritoPlan } from '@/app/actions/planes'
 import { useState, useTransition } from 'react'
-import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 
 const FavoritoBtn = ({ plan_id, es_favorito }: { plan_id: number, es_favorito: boolean }) => {
 
@@ -28,9 +28,9 @@ const FavoritoBtn = ({ plan_id, es_favorito }: { plan_id: number, es_favorito: b
             onClick={handleClick}
             disabled={pending}
             aria-label={favorito ? "Quitar de favoritos" : "Marcar como favorito"}
-            className="btn btn-ghost btn-xs"
+            
         >
-            {favorito ? <FaHeart className="text-error h-4 w-4" /> : <FaRegHeart className="h-4 w-4" />}
+            {favorito ? <AiFillHeart className="text-error" size={25} /> : <AiOutlineHeart size={25} />}
         </button>
     )
 }
